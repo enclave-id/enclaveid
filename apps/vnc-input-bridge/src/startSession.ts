@@ -3,7 +3,7 @@ import { WebSocket } from 'ws';
 
 export async function startSession(ws: WebSocket) {
   // Launch the browser
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false });
 
   // Create a page
   const page = await browser.newPage();

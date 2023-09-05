@@ -2,7 +2,7 @@ import express from 'express';
 import { WebSocketServer } from 'ws';
 import { startSession } from './startSession';
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 8081 });
 let ws = null;
 wss.on('connection', function connection(socket) {
   console.log('WS connected');

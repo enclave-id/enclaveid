@@ -2,7 +2,6 @@
 
 import { BoundingBox } from 'puppeteer';
 import { useEffect, useState } from 'react';
-import WebSocket from 'ws';
 
 async function setupNoVNC(target: HTMLElement) {
   const RFB = (await import('@novnc/novnc/core/rfb')).default;
@@ -52,22 +51,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://www.host.com/path');
+    const ws = new WebSocket('ws://localhost:8081');
 
-    ws.on('connection', () => {
+    ws.onopen = () => {
       fetch('http://localhost:3333/start')
         .then(() => {
           console.log('Session started');
         })
         .catch(console.error);
-    });
+    };
 
-    ws.on('error', console.error);
-
-    ws.on('message', (data) => {
-      const boundingBox: BoundingBox = JSON.parse(data.toString());
+    ws.onmessage = async (event) => {
+      console.log(event);
+      const boundingBox: BoundingBox = JSON.parse(await event.data.text());
       handleNewTouchProxy(boundingBox);
-    });
+    };
   }, []);
 
   return (
