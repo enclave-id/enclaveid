@@ -22,10 +22,12 @@ export async function startSession(ws: WebSocket) {
     })
   );
 
-  boundingBoxes.forEach((bb) => {
-    const bufferLike = Buffer.from(JSON.stringify(bb));
-    ws.send(bufferLike);
-  });
+  boundingBoxes
+    .filter((el) => el)
+    .forEach((bb) => {
+      const bufferLike = Buffer.from(JSON.stringify(bb));
+      ws?.send(bufferLike);
+    });
 
   // Dispose of handle
   //await element.dispose();

@@ -36,11 +36,11 @@ function handleNewTouchProxy(boundingBox: BoundingBox) {
   touchProxy.height = boundingBox.height;
   touchProxy.width = boundingBox.width;
   touchProxy.style.position = 'absolute';
-  touchProxy.style.marginTop = boundingBox.y.toString();
-  touchProxy.style.marginLeft = boundingBox.x.toString();
+  touchProxy.style.marginTop = boundingBox.y.toString() + 'px';
+  touchProxy.style.marginLeft = boundingBox.x.toString() + 'px';
   touchProxy.style.zIndex = '9999999';
 
-  document.body.insertAdjacentElement('afterend', touchProxy);
+  document.querySelector('#noVNC div')?.appendChild(touchProxy);
 }
 
 export default function Home() {

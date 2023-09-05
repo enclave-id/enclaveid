@@ -14,6 +14,7 @@ const app = express();
 
 app.get('/start', (req, res) => {
   startSession(ws);
+  res.status(200).send('Session started');
 });
 
 const port = process.env.PORT || 3333;
