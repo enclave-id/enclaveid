@@ -10,8 +10,12 @@ async function setupNoVNC(target: HTMLElement) {
     credentials: {
       username: 'vnc',
       password: 'magi1000',
+      target: '192.168.1.26:6080',
     },
   });
+
+  vncClient.clipViewport = true;
+  vncClient.scaleViewport = true;
 
   vncClient.addEventListener('connect', function () {
     console.log('Connected to the VNC server');
@@ -50,10 +54,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8081');
+    const ws = new WebSocket('ws://192.168.1.26:8081');
 
     ws.onopen = () => {
-      fetch('http://localhost:3333/start')
+      fetch('http://192.168.1.26:3333/start')
         .then(() => {
           console.log('Session started');
         })
