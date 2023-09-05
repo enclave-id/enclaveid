@@ -30,15 +30,15 @@ async function setupNoVNC(target: HTMLElement) {
   // });
 }
 
-function handleNewTouchProxy(data: BoundingBox) {
+function handleNewTouchProxy(boundingBox: BoundingBox) {
   const touchProxy = document.createElement('input');
 
   touchProxy.type = 'email';
-  touchProxy.height = data.height;
-  touchProxy.width = data.width;
+  touchProxy.height = boundingBox.height;
+  touchProxy.width = boundingBox.width;
   touchProxy.style.position = 'absolute';
-  touchProxy.style.marginTop = data.y.toString();
-  touchProxy.style.marginLeft = data.x.toString();
+  touchProxy.style.marginTop = boundingBox.y.toString();
+  touchProxy.style.marginLeft = boundingBox.x.toString();
   touchProxy.style.zIndex = '9999999';
 
   document.body.insertAdjacentElement('afterend', touchProxy);
@@ -55,12 +55,19 @@ export default function Home() {
     const ws = new WebSocket('ws://www.host.com/path');
 
     ws.on('connection', () => {
-      console.log('WS connected');
+      fetch('http://localhost:3333/start')
+        .then(() => {
+          console.log('Session started');
+        })
+        .catch(console.error);
     });
 
     ws.on('error', console.error);
 
-    ws.on('message', handleNewTouchProxy);
+    ws.on('message', (data) => {
+      const boundingBox: BoundingBox = JSON.parse(data.toString());
+      handleNewTouchProxy(boundingBox);
+    });
   }, []);
 
   return (
