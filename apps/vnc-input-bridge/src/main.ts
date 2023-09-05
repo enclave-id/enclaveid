@@ -9,6 +9,16 @@ import * as path from 'path';
 // Import puppeteer
 import puppeteer from 'puppeteer';
 
+import { WebSocketServer } from 'ws';
+
+const wss = new WebSocketServer({ port: 8080 });
+let ws = null;
+wss.on('connection', function connection(socket) {
+  console.log('WS connected');
+  ws = socket;
+  ws.on('error', console.error);
+});
+
 (async () => {
   // Launch the browser
   const browser = await puppeteer.launch();
@@ -24,13 +34,18 @@ import puppeteer from 'puppeteer';
 
   const elements = await page.$$('input[type="email"], input[type="password"]');
 
-  const boundingBoxes = await Promise.all(elements.map(async (element) => {
-    return element.boundingBox();
-  }))
+  const boundingBoxes = await Promise.all(
+    elements.map(async (element) => {
+      return element.boundingBox();
+    })
+  );
+
+  boundingBoxes.forEach((bb) => {
+    ws.send(bb);
+  });
 
   // Dispose of handle
-  await element.dispose();
-
+  //await element.dispose();
 })();
 
 const app = express();

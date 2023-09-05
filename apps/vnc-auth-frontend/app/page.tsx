@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { BoundingBox } from 'puppeteer';
+import { useEffect, useState } from 'react';
+import WebSocket from 'ws';
 
 async function setupNoVNC(target: HTMLElement) {
   const RFB = (await import('@novnc/novnc/core/rfb')).default;
@@ -21,13 +23,25 @@ async function setupNoVNC(target: HTMLElement) {
     console.log('Disconnected from the VNC server');
   });
 
-  vncClient.addEventListener('securityfailure', function (ev) {
-    console.error(
-      'Security issue: ' + ev.detail.status + ' - ' + ev.detail.reason
-    );
-  });
+  // vncClient.addEventListener('securityfailure', function (ev) {
+  //   console.error(
+  //     'Security issue: ' + ev.detail.status + ' - ' + ev.detail.reason
+  //   );
+  // });
+}
 
-  console.log(vncClient);
+function handleNewTouchProxy(data: BoundingBox) {
+  const touchProxy = document.createElement('input');
+
+  touchProxy.type = 'email';
+  touchProxy.height = data.height;
+  touchProxy.width = data.width;
+  touchProxy.style.position = 'absolute';
+  touchProxy.style.marginTop = data.y.toString();
+  touchProxy.style.marginLeft = data.x.toString();
+  touchProxy.style.zIndex = '9999999';
+
+  document.body.insertAdjacentElement('afterend', touchProxy);
 }
 
 export default function Home() {
@@ -35,6 +49,18 @@ export default function Home() {
     const target = document.getElementById('noVNC');
 
     if (target) setupNoVNC(target);
+  }, []);
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://www.host.com/path');
+
+    ws.on('connection', () => {
+      console.log('WS connected');
+    });
+
+    ws.on('error', console.error);
+
+    ws.on('message', handleNewTouchProxy);
   }, []);
 
   return (
