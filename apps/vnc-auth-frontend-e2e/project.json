@@ -1,19 +1,19 @@
 {
-  "name": "enclaveid-frontend-e2e",
+  "name": "vnc-auth-frontend-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/enclaveid-frontend-e2e/src",
+  "sourceRoot": "apps/vnc-auth-frontend-e2e/src",
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/enclaveid-frontend-e2e/cypress.config.ts",
-        "devServerTarget": "enclaveid-frontend:serve:development",
+        "cypressConfig": "apps/vnc-auth-frontend-e2e/cypress.config.ts",
+        "devServerTarget": "vnc-auth-frontend:serve:development",
         "testingType": "e2e"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "enclaveid-frontend:serve:production"
+          "devServerTarget": "vnc-auth-frontend:serve:production"
         }
       }
     },
@@ -21,10 +21,10 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/enclaveid-frontend-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/vnc-auth-frontend-e2e/**/*.{js,ts}"]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["enclaveid-frontend"]
+  "implicitDependencies": ["vnc-auth-frontend"]
 }

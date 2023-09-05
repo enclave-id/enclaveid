@@ -1,7 +1,7 @@
 {
-  "name": "enclaveid-frontend",
+  "name": "vnc-auth-frontend",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/enclaveid-frontend",
+  "sourceRoot": "apps/vnc-auth-frontend",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,11 +9,11 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/enclaveid-frontend"
+        "outputPath": "dist/apps/vnc-auth-frontend"
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/enclaveid-frontend"
+          "outputPath": "apps/vnc-auth-frontend"
         },
         "production": {}
       }
@@ -22,16 +22,16 @@
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "enclaveid-frontend:build",
+        "buildTarget": "vnc-auth-frontend:build",
         "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "enclaveid-frontend:build:development",
+          "buildTarget": "vnc-auth-frontend:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "enclaveid-frontend:build:production",
+          "buildTarget": "vnc-auth-frontend:build:production",
           "dev": false
         }
       }
@@ -39,14 +39,14 @@
     "export": {
       "executor": "@nx/next:export",
       "options": {
-        "buildTarget": "enclaveid-frontend:build:production"
+        "buildTarget": "vnc-auth-frontend:build:production"
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/enclaveid-frontend/jest.config.ts",
+        "jestConfig": "apps/vnc-auth-frontend/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -60,7 +60,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/enclaveid-frontend/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/vnc-auth-frontend/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

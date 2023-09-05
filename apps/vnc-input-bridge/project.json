@@ -1,0 +1,64 @@
+{
+  "name": "vnc-input-bridge",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/vnc-input-bridge/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/vnc-input-bridge",
+        "main": "apps/vnc-input-bridge/src/main.ts",
+        "tsConfig": "apps/vnc-input-bridge/tsconfig.app.json",
+        "assets": ["apps/vnc-input-bridge/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/vnc-input-bridge/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "vnc-input-bridge:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "vnc-input-bridge:build:development"
+        },
+        "production": {
+          "buildTarget": "vnc-input-bridge:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/vnc-input-bridge/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/vnc-input-bridge/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
