@@ -11,7 +11,6 @@ async function setupNoVNC(target: HTMLElement) {
       username: 'vnc',
       password: 'magi1000',
     },
-    clipViewport: true,
   });
 
   vncClient.addEventListener('connect', function () {

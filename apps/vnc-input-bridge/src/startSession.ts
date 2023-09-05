@@ -3,7 +3,16 @@ import { WebSocket } from 'ws';
 
 export async function startSession(ws: WebSocket) {
   // Launch the browser
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: [
+      '--start-fullscreen',
+      '--kiosk',
+      '--disable-infobars',
+      '--disable-session-crashed-bubble',
+      '--noerrdialogs',
+    ],
+  });
 
   // Create a page
   const page = await browser.newPage();
