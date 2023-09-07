@@ -11,8 +11,8 @@ async function setupNoVNC(target: HTMLElement) {
     `ws://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:6901/websockify`,
     {
       credentials: {
-        username: 'vnc',
-        password: 'magi1000',
+        username: 'vncuser',
+        password: 'vncpassword',
         target: `${process.env.NEXT_PUBLIC_HOST_ADDRESS}:6901`,
       },
     }

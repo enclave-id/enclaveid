@@ -2,6 +2,7 @@ import express from 'express';
 import { WebSocket, WebSocketServer } from 'ws';
 import { startSession } from './startSession';
 import { Browser } from 'puppeteer';
+import cors from 'cors';
 
 let ws: WebSocket = null;
 let browser: Browser = null;
@@ -18,6 +19,8 @@ wss.on('close', () => {
 });
 
 const app = express();
+
+app.use(cors());
 
 app.get('/start', async (req, res) => {
   browser = await startSession(ws);

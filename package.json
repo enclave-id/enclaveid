@@ -8,6 +8,7 @@
     "@novnc/novnc": "^1.4.0",
     "@nx/next": "16.7.4",
     "axios": "^1.0.0",
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "next": "13.4.1",
     "puppeteer": "^21.1.1",
