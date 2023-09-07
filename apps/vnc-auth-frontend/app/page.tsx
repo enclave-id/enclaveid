@@ -78,8 +78,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div id="noVNC"></div>
+    <main className="flex items-stretch flex-col justify-between">
+      <div id="noVNC" className="w-screen h-screen"></div>
     </main>
   );
 }
