@@ -24,7 +24,7 @@ export async function startSession(ws: WebSocket) {
 
   // Create a page
   const page = await browser.newPage();
-  await page.emulate(KnownDevices['iPhone SE']);
+  await page.emulate(KnownDevices['iPhone 8']);
 
   // Go to your site
   await page.goto('https://accounts.google.com');
