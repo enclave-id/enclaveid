@@ -1,19 +1,26 @@
 import express from 'express';
-import { WebSocketServer } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import { startSession } from './startSession';
+import { Browser } from 'puppeteer';
+
+let ws: WebSocket = null;
+let browser: Browser = null;
 
 const wss = new WebSocketServer({ port: 8081 });
-let ws = null;
-wss.on('connection', function connection(socket) {
+wss.on('connection', (socket) => {
   console.log('WS connected');
   ws = socket;
   ws.on('error', console.error);
 });
 
+wss.on('close', () => {
+  if (browser) browser.close();
+});
+
 const app = express();
 
-app.get('/start', (req, res) => {
-  startSession(ws);
+app.get('/start', async (req, res) => {
+  browser = await startSession(ws);
   res.status(200).send('Session started');
 });
 

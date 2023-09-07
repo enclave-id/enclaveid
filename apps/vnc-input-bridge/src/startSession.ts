@@ -45,6 +45,5 @@ export async function startSession(ws: WebSocket) {
       ws?.send(bufferLike);
     });
 
-  // Dispose of handle
-  //await element.dispose();
+  return browser;
 }
