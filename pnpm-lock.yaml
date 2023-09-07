@@ -5,14 +5,17 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@novnc/novnc@1.4.0':
+    hash: ogzbi2d5siwu53p2fazvhtsa4q
+    path: patches/@novnc__novnc@1.4.0.patch
   '@types/novnc__novnc@1.3.0':
-    hash: m7muc5jfwohxakvg3yrb4jnzgu
+    hash: vmxcm7ajyqm3ufazx3saufhoyq
     path: patches/@types__novnc__novnc@1.3.0.patch
 
 dependencies:
   '@novnc/novnc':
     specifier: ^1.4.0
-    version: 1.4.0
+    version: 1.4.0(patch_hash=ogzbi2d5siwu53p2fazvhtsa4q)
   '@nx/next':
     specifier: 16.7.4
     version: 16.7.4(@babel/core@7.22.15)(@types/node@18.14.2)(eslint@8.46.0)(next@13.4.1)(nx@16.7.4)(typescript@5.1.3)(webpack@5.88.2)
@@ -107,7 +110,7 @@ devDependencies:
     version: 18.14.2
   '@types/novnc__novnc':
     specifier: ^1.3.0
-    version: 1.3.0(patch_hash=m7muc5jfwohxakvg3yrb4jnzgu)
+    version: 1.3.0(patch_hash=vmxcm7ajyqm3ufazx3saufhoyq)
   '@types/react':
     specifier: 18.2.14
     version: 18.2.14
@@ -1896,9 +1899,10 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  /@novnc/novnc@1.4.0:
+  /@novnc/novnc@1.4.0(patch_hash=ogzbi2d5siwu53p2fazvhtsa4q):
     resolution: {integrity: sha512-kW6ALMc5BuH08e/ond/I1naYcfjc19JYMN1EdtmgjjjzPGCjW8fMtVM3MwM6q7YLRjPlQ3orEvoKMgSS7RkEVQ==}
     dev: false
+    patched: true
 
   /@nrwl/cypress@16.7.4(@types/node@18.14.2)(cypress@12.16.0)(eslint@8.46.0)(nx@16.7.4)(typescript@5.1.3):
     resolution: {integrity: sha512-FmpCWrBIpoS0MsrMlusSBF7Wr8N6v8nbDpo8M8Bl8a6mGZu3lLnJ1ZnhYtCzwEoK0EnEQLGv76TwagRDhjVvmA==}
@@ -3085,7 +3089,7 @@ packages:
   /@types/node@18.14.2:
     resolution: {integrity: sha512-1uEQxww3DaghA0RxqHx0O0ppVlo43pJhepY51OxuQIKHpjbnYLA7vcdwioNPzIqmC2u3I/dmylcqjlh0e7AyUA==}
 
-  /@types/novnc__novnc@1.3.0(patch_hash=m7muc5jfwohxakvg3yrb4jnzgu):
+  /@types/novnc__novnc@1.3.0(patch_hash=vmxcm7ajyqm3ufazx3saufhoyq):
     resolution: {integrity: sha512-IiNumU7H5ezJhJlhFEUk8ouQ4z+DOX6Ldvlh2MwQ+fsN03FMLHJyAIBLVMaC+1pC43BMAqmTNMTK85sFlq0ADw==}
     dev: true
     patched: true

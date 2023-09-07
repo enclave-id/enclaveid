@@ -1,5 +1,5 @@
 diff --git a/index.d.ts b/index.d.ts
-index 5ed50ea26ae461e8343683195c83c2fa4037fd83..5cf9a3075f465b75b9103b5f9c6e893098d03474 100755
+index 5ed50ea26ae461e8343683195c83c2fa4037fd83..d291dce2bf4dced70e056b59c6d8312f75b77bc8 100755
 --- a/index.d.ts
 +++ b/index.d.ts
 @@ -4,326 +4,344 @@
@@ -603,7 +603,7 @@ index 5ed50ea26ae461e8343683195c83c2fa4037fd83..5cf9a3075f465b75b9103b5f9c6e8930
 +     */
 +    clipboardPasteFrom(text: string): void;
 +
-+    _sendMouse(x: number, y: number, mask: number);
++    sendMouse(x: number, y: number, mask: number);
 +  }
  }
  

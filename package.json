@@ -66,7 +66,8 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "@types/novnc__novnc@1.3.0": "patches/@types__novnc__novnc@1.3.0.patch"
+      "@types/novnc__novnc@1.3.0": "patches/@types__novnc__novnc@1.3.0.patch",
+      "@novnc/novnc@1.4.0": "patches/@novnc__novnc@1.4.0.patch"
     }
   }
 }
