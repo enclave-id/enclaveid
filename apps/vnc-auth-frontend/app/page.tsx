@@ -20,6 +20,7 @@ async function setupNoVNC(target: HTMLElement) {
 
   vncClient.clipViewport = true;
   vncClient.scaleViewport = true;
+  vncClient.resizeSession = true;
 
   vncClient.addEventListener('connect', function () {
     console.log('Connected to the VNC server');

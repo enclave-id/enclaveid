@@ -1,3 +1,4 @@
+import { KnownDevices } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
@@ -23,6 +24,7 @@ export async function startSession(ws: WebSocket) {
 
   // Create a page
   const page = await browser.newPage();
+  await page.emulate(KnownDevices['iPhone SE']);
 
   // Go to your site
   await page.goto('https://accounts.google.com');
