@@ -1,62 +1,23 @@
 'use client';
 
-import { BoundingBox } from 'puppeteer';
 import { useEffect, useState } from 'react';
-
-async function setupNoVNC(target: HTMLElement) {
-  const RFB = (await import('@novnc/novnc/core/rfb')).default;
-
-  const vncClient = new RFB(
-    target,
-    `ws://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:6901/websockify`,
-    {
-      credentials: {
-        username: 'vncuser',
-        password: 'vncpassword',
-        target: `${process.env.NEXT_PUBLIC_HOST_ADDRESS}:6901`,
-      },
-    }
-  );
-
-  vncClient.clipViewport = true;
-  vncClient.scaleViewport = true;
-  vncClient.resizeSession = true;
-
-  vncClient.addEventListener('connect', function () {
-    console.log('Connected to the VNC server');
-  });
-
-  vncClient.addEventListener('disconnect', function () {
-    console.log('Disconnected from the VNC server');
-  });
-
-  // vncClient.addEventListener('securityfailure', function (ev) {
-  //   console.error(
-  //     'Security issue: ' + ev.detail.status + ' - ' + ev.detail.reason
-  //   );
-  // });
-}
-
-function handleNewTouchProxy(boundingBox: BoundingBox) {
-  const touchProxy = document.createElement('input');
-
-  touchProxy.type = 'email';
-  touchProxy.style.height = boundingBox.height.toString() + 'px';
-  touchProxy.style.width = boundingBox.width.toString() + 'px';
-  touchProxy.style.marginTop = boundingBox.y.toString() + 'px';
-  touchProxy.style.marginLeft = boundingBox.x.toString() + 'px';
-  touchProxy.style.position = 'absolute';
-  touchProxy.style.zIndex = '9999999';
-  touchProxy.style.opacity = '0';
-
-  document.querySelector('#noVNC div')?.appendChild(touchProxy);
-}
+import { setupNoVNC } from './utils/noVnc';
+import { BoundingBox } from 'puppeteer';
+import { handleNewTouchProxy } from './utils/touchProxy';
 
 export default function Home() {
-  useEffect(() => {
-    const target = document.getElementById('noVNC');
+  const [vncClient, setVncClient] = useState<any>();
 
-    if (target) setupNoVNC(target);
+  useEffect(() => {
+    async function _setupNoVNC() {
+      const target = document.getElementById('noVNC');
+
+      if (target) {
+        const vc = await setupNoVNC(target);
+        setVncClient(vc);
+      }
+    }
+    _setupNoVNC();
   }, []);
 
   useEffect(() => {
@@ -73,9 +34,8 @@ export default function Home() {
     };
 
     ws.onmessage = async (event) => {
-      console.log(event);
       const boundingBox: BoundingBox = JSON.parse(await event.data.text());
-      handleNewTouchProxy(boundingBox);
+      handleNewTouchProxy(boundingBox, vncClient);
     };
   }, []);
 
