@@ -1,10 +1,6 @@
 import NoVncClient from '@novnc/novnc/core/rfb';
 import { BoundingBox } from 'puppeteer';
 
-function handleFocus(event: FocusEvent) {
-
-}
-
 export function handleNewTouchProxy(
   boundingBox: BoundingBox,
   vncClient: NoVncClient
@@ -21,7 +17,8 @@ export function handleNewTouchProxy(
   touchProxy.style.opacity = '0';
 
   touchProxy.addEventListener('focus', (event) => {
-    vncClient._sendMouse()
+    const bb = touchProxy.getBoundingClientRect();
+    vncClient._sendMouse(bb.x + bb.width / 2, bb.y + bb.height / 2, 1);
   });
   touchProxy.addEventListener('keydown', (event) => {
     vncClient.sendKey(0, event.code, true);
