@@ -41,12 +41,13 @@ function handleNewTouchProxy(boundingBox: BoundingBox) {
   const touchProxy = document.createElement('input');
 
   touchProxy.type = 'email';
-  touchProxy.height = boundingBox.height;
-  touchProxy.width = boundingBox.width;
-  touchProxy.style.position = 'absolute';
+  touchProxy.style.height = boundingBox.height.toString() + 'px';
+  touchProxy.style.width = boundingBox.width.toString() + 'px';
   touchProxy.style.marginTop = boundingBox.y.toString() + 'px';
   touchProxy.style.marginLeft = boundingBox.x.toString() + 'px';
+  touchProxy.style.position = 'absolute';
   touchProxy.style.zIndex = '9999999';
+  touchProxy.style.opacity = '0';
 
   document.querySelector('#noVNC div')?.appendChild(touchProxy);
 }
