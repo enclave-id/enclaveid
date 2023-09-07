@@ -6,13 +6,17 @@ import { useEffect, useState } from 'react';
 async function setupNoVNC(target: HTMLElement) {
   const RFB = (await import('@novnc/novnc/core/rfb')).default;
 
-  const vncClient = new RFB(target, 'ws://192.168.1.26:6080/websockify', {
-    credentials: {
-      username: 'vnc',
-      password: 'magi1000',
-      target: '192.168.1.26:6080',
-    },
-  });
+  const vncClient = new RFB(
+    target,
+    `ws://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:6901/websockify`,
+    {
+      credentials: {
+        username: 'vnc',
+        password: 'magi1000',
+        target: `${process.env.NEXT_PUBLIC_HOST_ADDRESS}:6901`,
+      },
+    }
+  );
 
   vncClient.clipViewport = true;
   vncClient.scaleViewport = true;
@@ -54,10 +58,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://192.168.1.26:8081');
+    const ws = new WebSocket(
+      `ws://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:8081`
+    );
 
     ws.onopen = () => {
-      fetch('http://192.168.1.26:3333/start')
+      fetch(`http://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:3333/start`)
         .then(() => {
           console.log('Session started');
         })

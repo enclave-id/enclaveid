@@ -1,8 +1,23 @@
 FROM consol/debian-xfce-vnc:latest
 
+SHELL ["/bin/bash", "-c"] 
+
 USER 0
 
-RUN apt update && apt install -y nodejs npm chromium 
+RUN apt update && apt install -y ca-certificates curl gnupg
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN apt update && apt install nodejs -y
+
+RUN npm i -g pnpm
+
+RUN apt install -y chromium git
 
 USER 1000
 
+RUN git clone https://github.com/ma9o/enclaveid
+RUN cd enclaveid && pnpm i
+
+EXPOSE 3333
+EXPOSE 8081
