@@ -1,10 +1,7 @@
-import NoVncClient from '@novnc/novnc/core/rfb';
 import { BoundingBox } from 'puppeteer';
+import { getKeycode, getKeysym } from '@novnc/novnc/core/input/util';
 
-export function handleNewTouchProxy(
-  boundingBox: BoundingBox,
-  vncClient: NoVncClient
-) {
+export function handleNewTouchProxy(boundingBox: BoundingBox, vncClient: any) {
   const touchProxy = document.createElement('input');
 
   touchProxy.type = 'email';
@@ -18,13 +15,13 @@ export function handleNewTouchProxy(
 
   touchProxy.addEventListener('focus', (event) => {
     const bb = touchProxy.getBoundingClientRect();
-    vncClient.sendMouse(bb.x + bb.width / 2, bb.y + bb.height / 2, 1);
+    const x = bb.x + bb.width / 2;
+    const y = bb.y + bb.height / 2;
+    vncClient.sendMouse(x, y, 1);
   });
+
   touchProxy.addEventListener('keydown', (event) => {
-    vncClient.sendKey(0, event.code, true);
-  });
-  touchProxy.addEventListener('keyup', (event) => {
-    vncClient.sendKey(0, event.code, false);
+    vncClient.sendKey(getKeysym(event), getKeycode(event));
   });
 
   document.querySelector('#noVNC div')?.appendChild(touchProxy);

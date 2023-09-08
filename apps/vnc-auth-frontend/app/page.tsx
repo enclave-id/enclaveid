@@ -27,8 +27,23 @@ export default function Home() {
 
   useEffect(() => {
     if (ws) {
+      const vw = Math.max(
+        document.documentElement.clientWidth || 0,
+        window.innerWidth || 0
+      );
+      const vh = Math.max(
+        document.documentElement.clientHeight || 0,
+        window.innerHeight || 0
+      );
+
       ws.onopen = () => {
-        fetch(`http://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:3333/start`)
+        fetch(
+          `http://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:3333/start?` +
+            new URLSearchParams({
+              vh: vh.toString(),
+              vw: vw.toString(),
+            })
+        )
           .then(() => {
             console.log('Session started');
           })

@@ -7,7 +7,7 @@ import { WebSocket } from 'ws';
 puppeteer.use(StealthPlugin());
 puppeteer.use(PrefsPlugin());
 
-export async function startSession(ws: WebSocket) {
+export async function startSession(ws: WebSocket, vh: number, vw: number) {
   // Launch the browser
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/chromium-browser',
@@ -20,11 +20,16 @@ export async function startSession(ws: WebSocket) {
       '--noerrdialogs',
     ],
     ignoreDefaultArgs: ['--enable-automation'],
+    defaultViewport: {
+      height: vh,
+      width: vw,
+      isMobile: true,
+    },
   });
 
   // Create a page
   const page = await browser.newPage();
-  await page.emulate(KnownDevices['iPhone 8']);
+  //await page.emulate(KnownDevices['iPhone 8']);
 
   // Go to your site
   await page.goto('https://accounts.google.com');

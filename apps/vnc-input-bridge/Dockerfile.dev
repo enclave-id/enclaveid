@@ -22,4 +22,5 @@ RUN cd enclaveid && pnpm i
 EXPOSE 3333
 EXPOSE 8081
 
-# RUN echo "cd /headless/enclaveid && pnpm exec nx run vnc-input-bridge:serve --configuration=development" >> /dockerstartup/vnc_startup.sh
+RUN echo "cd /headless/enclaveid && pnpm exec nx run vnc-input-bridge:serve --configuration=development" >> /headless/enclaveid/start_bridge.sh
+RUN chmod +x /headless/enclaveid/start_bridge.sh

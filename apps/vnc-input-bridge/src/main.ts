@@ -28,7 +28,11 @@ const app = express();
 app.use(cors());
 
 app.get('/start', async (req, res) => {
-  state.browser = await startSession(state.ws);
+  state.browser = await startSession(
+    state.ws,
+    parseInt(req.query.vh as string),
+    parseInt(req.query.vw as string)
+  );
   res.status(200).send('Session started');
 });
 
