@@ -4,6 +4,7 @@ import { getKeycode, getKeysym } from '@novnc/novnc/core/input/util';
 export function handleNewTouchProxy(boundingBox: BoundingBox, vncClient: any) {
   const touchProxy = document.createElement('input');
 
+  touchProxy.id = 'touchProxy';
   touchProxy.type = 'email';
   touchProxy.style.height = boundingBox.height.toString() + 'px';
   touchProxy.style.width = boundingBox.width.toString() + 'px';

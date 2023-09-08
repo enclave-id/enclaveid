@@ -52,6 +52,7 @@ export default function Home() {
 
       if (vncClient)
         ws.onmessage = async (event) => {
+          document.getElementById('touchProxy')?.remove();
           const boundingBox: BoundingBox = JSON.parse(await event.data.text());
           handleNewTouchProxy(boundingBox, vncClient);
         };

@@ -8,14 +8,13 @@ puppeteer.use(StealthPlugin());
 puppeteer.use(PrefsPlugin());
 
 async function updateBoundingBoxes(page: Page, ws: WebSocket) {
-  await page.waitForSelector('input[type="email"]');
-  await page.waitForSelector('input[type="password"]');
+  await page.waitForNavigation();
 
   const elements = await page.$$('input[type="email"], input[type="password"]');
 
   const boundingBoxes = await Promise.all(
     elements.map(async (element) => {
-      return element.boundingBox();
+      return element?.boundingBox();
     })
   );
 
