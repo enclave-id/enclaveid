@@ -18,7 +18,7 @@ export function handleNewTouchProxy(
 
   touchProxy.addEventListener('focus', (event) => {
     const bb = touchProxy.getBoundingClientRect();
-    vncClient._sendMouse(bb.x + bb.width / 2, bb.y + bb.height / 2, 1);
+    vncClient.sendMouse(bb.x + bb.width / 2, bb.y + bb.height / 2, 1);
   });
   touchProxy.addEventListener('keydown', (event) => {
     vncClient.sendKey(0, event.code, true);
