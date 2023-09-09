@@ -17,11 +17,12 @@ wss.on('connection', (socket) => {
   console.log('WS connected');
   state.ws = socket;
   state.ws.on('error', console.error);
-});
 
-// wss.on('close', () => {
-//   if (state.browser) state.browser.close();
-// });
+  // Add event listener for consent
+  state.ws.onmessage = (event) => {
+    console.log(event.data.toString());
+  };
+});
 
 const app = express();
 

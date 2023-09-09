@@ -4,6 +4,7 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
 import { WebSocket } from 'ws';
 import { exec } from 'node:child_process';
+import { submitTakeoutRequest } from './submitTakeoutRequest';
 
 const displayNumber = ':1';
 
@@ -32,7 +33,9 @@ function finish(ws: WebSocket) {
       })
     ),
     (err) => {
-      if (!err) killVncServer();
+      if (!err) {
+        killVncServer();
+      }
     }
   );
 }
