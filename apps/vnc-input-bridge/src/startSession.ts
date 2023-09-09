@@ -23,9 +23,15 @@ async function updateBoundingBoxes(page: Page, ws: WebSocket) {
       ws?.send(bufferLike);
     });
 
+  const client = await page.target().createCDPSession();
+  await client.send('Page.enable');
+
+  client.on('Page.frameStartedLoading', (event) => {
+    console.log(event);
+  });
+
   page.on('framenavigated', async (frame) => {
-    const newPage = frame.page();
-    await updateBoundingBoxes(newPage, ws);
+    await updateBoundingBoxes(frame.page(), ws);
   });
 }
 
@@ -50,7 +56,7 @@ export async function startSession(ws: WebSocket, vh: number, vw: number) {
 
   const page = await browser.newPage();
 
-  await page.goto('https://accounts.google.com');
+  await page.goto('https://takeout.google.com');
 
   await updateBoundingBoxes(page, ws);
 

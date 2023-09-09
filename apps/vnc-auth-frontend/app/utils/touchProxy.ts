@@ -21,6 +21,7 @@ export function handleNewTouchProxy(boundingBox: BoundingBox, vncClient: any) {
     vncClient.sendMouse(x, y, 1);
   });
 
+  // Doesnt work on android https://bugs.chromium.org/p/chromium/issues/detail?id=118639#c259
   touchProxy.addEventListener('keydown', (event) => {
     vncClient.sendKey(getKeysym(event), getKeycode(event));
   });

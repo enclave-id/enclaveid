@@ -4,23 +4,31 @@ SHELL ["/bin/bash", "-c"]
 
 USER 0
 
+# Get Node 20 
 RUN apt update && apt install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN apt update && apt install nodejs -y
 
+# npm too slow
 RUN npm i -g pnpm
 
+# Get latest chromium for puppeteer
 RUN apt install -y chromium git
+
+# Make cursor transparent
+RUN curl https://github.com/celly/transparent-xcursor/raw/master/transparent > /usr/share/icons/Adwaita/cursors/left_ptr
 
 USER 1000
 
 RUN git clone https://github.com/ma9o/enclaveid
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN cd enclaveid && pnpm i
 
 EXPOSE 3333
 EXPOSE 8081
 
+# Script to launch dev server quickly once ssh'd
 RUN echo "cd /headless/enclaveid && pnpm exec nx run vnc-input-bridge:serve --configuration=development" >> /headless/enclaveid/start_bridge.sh
 RUN chmod +x /headless/enclaveid/start_bridge.sh
