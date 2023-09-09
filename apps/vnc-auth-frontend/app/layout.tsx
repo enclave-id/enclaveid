@@ -1,4 +1,5 @@
 import './global.css';
+import { Providers } from './providers/providers';
 
 export const metadata = {
   title: 'Welcome to vnc-auth-frontend',
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="lock-position">{children}</body>
+      <body className="lock-position">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

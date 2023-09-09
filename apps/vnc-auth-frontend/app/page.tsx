@@ -1,13 +1,33 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { setupNoVNC } from './utils/noVnc';
-import { BoundingBox } from 'puppeteer';
 import { handleNewTouchProxy } from './utils/touchProxy';
+import { NextRouter, useRouter } from 'next/router';
+import { WebSocketContext } from './providers/WebSocketProvider';
+
+function handleWsMessage(vncClient: any, router: NextRouter) {
+  return async function (event: MessageEvent) {
+    const message = JSON.parse(await event.data.text());
+
+    switch (message.type) {
+      case 'finished':
+        router.push('/consent');
+        break;
+      case 'boundingBox':
+        document.getElementById('touchProxy')?.remove();
+        handleNewTouchProxy(message.data, vncClient);
+        break;
+      default:
+        console.error(`Message type ${message.type} not implemented.`);
+    }
+  };
+}
 
 export default function Home() {
   const [vncClient, setVncClient] = useState<any>();
-  const [ws, setWs] = useState<WebSocket>();
+  const router = useRouter();
+  const ws = useContext(WebSocketContext);
 
   useEffect(() => {
     async function _setupNoVNC() {
@@ -22,42 +42,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setWs(new WebSocket(`ws://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:8081`));
-  }, []);
-
-  useEffect(() => {
-    if (ws) {
-      const vw = Math.max(
-        document.documentElement.clientWidth || 0,
-        window.innerWidth || 0
-      );
-      const vh = Math.max(
-        document.documentElement.clientHeight || 0,
-        window.innerHeight || 0
-      );
-
-      ws.onopen = () => {
-        fetch(
-          `http://${process.env.NEXT_PUBLIC_HOST_ADDRESS}:3333/start?` +
-            new URLSearchParams({
-              vh: vh.toString(),
-              vw: vw.toString(),
-            })
-        )
-          .then(() => {
-            console.log('Session started');
-          })
-          .catch(console.error);
-      };
-
-      if (vncClient)
-        ws.onmessage = async (event) => {
-          document.getElementById('touchProxy')?.remove();
-          const boundingBox: BoundingBox = JSON.parse(await event.data.text());
-          handleNewTouchProxy(boundingBox, vncClient);
-        };
-    }
-  }, [ws, vncClient]);
+    if (ws && vncClient && router)
+      ws.onmessage = handleWsMessage(vncClient, router);
+  }, [ws, vncClient, router]);
 
   return (
     <main className="flex items-stretch flex-col justify-between">

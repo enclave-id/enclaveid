@@ -19,20 +19,19 @@ wss.on('connection', (socket) => {
   state.ws.on('error', console.error);
 });
 
-wss.on('close', () => {
-  if (state.browser) state.browser.close();
-});
+// wss.on('close', () => {
+//   if (state.browser) state.browser.close();
+// });
 
 const app = express();
 
 app.use(cors());
 
 app.get('/start', async (req, res) => {
-  state.browser = await startSession(
-    state.ws,
-    parseInt(req.query.vh as string),
-    parseInt(req.query.vw as string)
-  );
+  state.browser = await startSession(state.ws, {
+    vh: parseInt(req.query.vh as string),
+    vw: parseInt(req.query.vw as string),
+  });
   res.status(200).send('Session started');
 });
 

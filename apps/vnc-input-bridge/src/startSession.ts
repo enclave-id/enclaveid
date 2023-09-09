@@ -3,11 +3,41 @@ import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
 import { WebSocket } from 'ws';
+import { exec } from 'node:child_process';
+
+const displayNumber = ':1';
 
 puppeteer.use(StealthPlugin());
 puppeteer.use(PrefsPlugin());
 
-async function updateBoundingBoxes(page: Page, ws: WebSocket) {
+function killVncServer() {
+  exec(`vncserver -kill ${displayNumber}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing command: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Error output: ${stderr}`);
+      return;
+    }
+    console.log(`VNC server stopped on display ${displayNumber}`);
+  });
+}
+
+function finish(ws: WebSocket) {
+  ws.send(
+    Buffer.from(
+      JSON.stringify({
+        type: 'finished',
+      })
+    ),
+    (err) => {
+      if (!err) killVncServer();
+    }
+  );
+}
+
+async function updateBoundingBoxes(ws: WebSocket, page: Page) {
   const elements = await page.$$('input[type="email"], input[type="password"]');
 
   const boundingBoxes = await Promise.all(
@@ -19,23 +49,36 @@ async function updateBoundingBoxes(page: Page, ws: WebSocket) {
   boundingBoxes
     .filter((el) => el)
     .forEach((bb) => {
-      const bufferLike = Buffer.from(JSON.stringify(bb));
-      ws?.send(bufferLike);
+      ws.send(
+        Buffer.from(
+          JSON.stringify({
+            type: 'boundingBox',
+            data: bb,
+          })
+        )
+      );
     });
 
-  const client = await page.target().createCDPSession();
-  await client.send('Page.enable');
+  await page.setRequestInterception(true);
 
-  client.on('Page.frameStartedLoading', (event) => {
-    console.log(event);
+  page.on('request', (request) => {
+    if (request.resourceType() === 'document') {
+      if (request.url() == 'https://takeout.google.com') {
+        finish(ws);
+      }
+    }
+    request.continue();
   });
 
   page.on('framenavigated', async (frame) => {
-    await updateBoundingBoxes(frame.page(), ws);
+    await updateBoundingBoxes(ws, frame.page());
   });
 }
 
-export async function startSession(ws: WebSocket, vh: number, vw: number) {
+export async function startSession(
+  ws: WebSocket,
+  viewport: { vh: number; vw: number }
+) {
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/chromium-browser',
     headless: false,
@@ -48,8 +91,8 @@ export async function startSession(ws: WebSocket, vh: number, vw: number) {
     ],
     ignoreDefaultArgs: ['--enable-automation'],
     defaultViewport: {
-      height: vh,
-      width: vw,
+      height: viewport.vh,
+      width: viewport.vw,
       isMobile: true,
     },
   });
@@ -58,7 +101,7 @@ export async function startSession(ws: WebSocket, vh: number, vw: number) {
 
   await page.goto('https://takeout.google.com');
 
-  await updateBoundingBoxes(page, ws);
+  await updateBoundingBoxes(ws, page);
 
   return browser;
 }
