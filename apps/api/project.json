@@ -104,7 +104,8 @@
     "prisma-reset": {
       "executor": "@nx-tools/nx-prisma:reset",
       "options": {
-        "schema": "apps/api/prisma/schema.prisma"
+        "schema": "apps/api/prisma/schema.prisma",
+        "force": true
       }
     },
     "prisma-resolve": {
@@ -116,7 +117,8 @@
     "prisma-seed": {
       "executor": "@nx-tools/nx-prisma:seed",
       "options": {
-        "schema": "apps/api/prisma/schema.prisma"
+        "schema": "apps/api/prisma/schema.prisma",
+        "script": "apps/api/prisma/seed.ts"
       }
     },
     "prisma-validate": {
