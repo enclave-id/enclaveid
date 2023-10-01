@@ -4,11 +4,29 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://user:password@localhost:5432/enclaveid"
 }
 
-model GoogleSearch {
-  id    Int      @id @default(autoincrement())
-  searchString String
-  time  DateTime
+model Datapoint {
+  id        Int      @id @default(autoincrement())
+  type      String
+  time      DateTime
+  data      Json
+  Account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId Int
+}
+
+model Account {
+  id         Int         @id @default(autoincrement())
+  name       String
+  email      String      @unique
+  datapoints Datapoint[]
+  User       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  accounts Account[]
 }

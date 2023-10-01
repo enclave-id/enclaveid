@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: enclaveid
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  cloudbeaver:
+    image: dbeaver/cloudbeaver
+    depends_on:
+      - postgres
+    environment:
+      CLOUDBEAVER_SERVER_PORT: "8978"
+      CLOUDBEAVER_DATABASE_DRIVER_NAME: postgresql
+      CLOUDBEAVER_DATABASE_URL: jdbc:postgresql://postgres:5432/enclaveid
+      CLOUDBEAVER_DATABASE_USER_NAME: user
+      CLOUDBEAVER_DATABASE_USER_PASSWORD: password
+    ports:
+      - "8978:8978"
+
+volumes:
+  postgres-data:
