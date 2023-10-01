@@ -1,10 +1,10 @@
 'use client';
 
 import { useContext, useEffect, useState } from 'react';
-import { setupNoVNC } from './utils/noVnc';
-import { handleNewTouchProxy } from './utils/touchProxy';
 import { NextRouter, useRouter } from 'next/router';
-import { WebSocketContext } from './providers/WebSocketProvider';
+import { WebSocketContext } from '../app/components/providers/WebSocketProvider';
+import { setupNoVNC } from '../app/lib/vnc/noVnc';
+import { handleNewTouchProxy } from '../app/lib/vnc/touchProxy';
 
 function handleWsMessage(vncClient: any, router: NextRouter) {
   return async function (event: MessageEvent) {
@@ -24,7 +24,7 @@ function handleWsMessage(vncClient: any, router: NextRouter) {
   };
 }
 
-export default function Home() {
+export default function Login() {
   const [vncClient, setVncClient] = useState<any>();
   const router = useRouter();
   const ws = useContext(WebSocketContext);

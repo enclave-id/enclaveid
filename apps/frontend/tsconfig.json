@@ -25,7 +25,8 @@
     "**/*.jsx",
     "../../apps/vnc-auth-frontend/.next/types/**/*.ts",
     "../../dist/apps/vnc-auth-frontend/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "../../apps/frontend/.next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

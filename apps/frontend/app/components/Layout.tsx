@@ -1,5 +1,5 @@
-import './global.css';
-import { Providers } from './providers/providers';
+import '../global.css';
+import { Providers } from './providers/Providers';
 
 export const metadata = {
   title: 'Welcome to vnc-auth-frontend',
