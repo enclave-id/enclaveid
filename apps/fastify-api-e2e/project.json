@@ -1,14 +1,14 @@
 {
-  "name": "api-e2e",
+  "name": "fastify-api-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["api"],
+  "implicitDependencies": ["fastify-api"],
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "apps/api-e2e/jest.config.ts",
+        "jestConfig": "apps/fastify-api-e2e/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -16,7 +16,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/api-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/fastify-api-e2e/**/*.{js,ts}"]
       }
     }
   }
