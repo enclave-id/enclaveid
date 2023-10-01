@@ -3,6 +3,7 @@ import { WebSocket, WebSocketServer } from 'ws';
 import { startSession } from './startSession';
 import { Browser } from 'puppeteer';
 import cors from 'cors';
+import { handleTakeoutRequest } from './handleTakeoutRequest';
 
 const state: {
   ws: WebSocket;
@@ -18,9 +19,16 @@ wss.on('connection', (socket) => {
   state.ws = socket;
   state.ws.on('error', console.error);
 
-  // Add event listener for consent
   state.ws.onmessage = (event) => {
-    console.log(event.data.toString());
+    const { type, data } = JSON.parse(event.data.toString());
+
+    if (type == 'consent') {
+      if (data) {
+        handleTakeoutRequest();
+      } else {
+        // handle no consent given
+      }
+    }
   };
 });
 
