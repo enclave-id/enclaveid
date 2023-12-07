@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@azure/attestation": "^1.0.0",
     "@fastify/autoload": "~5.7.1",
     "@fastify/sensible": "~5.2.0",
     "@nestjs/common": "^10.0.2",

@@ -40,6 +40,3 @@ Thumbs.db
 
 # Next.js
 .next
-
-.env.local
-MyActivity.json
