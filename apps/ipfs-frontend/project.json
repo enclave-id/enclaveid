@@ -1,0 +1,86 @@
+{
+  "name": "ipfs-frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ipfs-frontend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/ipfs-frontend",
+        "index": "apps/ipfs-frontend/src/index.html",
+        "baseHref": "/",
+        "main": "apps/ipfs-frontend/src/main.tsx",
+        "tsConfig": "apps/ipfs-frontend/tsconfig.app.json",
+        "assets": [
+          "apps/ipfs-frontend/src/favicon.ico",
+          "apps/ipfs-frontend/src/assets"
+        ],
+        "styles": ["apps/ipfs-frontend/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "apps/ipfs-frontend/webpack.config.js",
+        "postcssConfig": "apps/ipfs-frontend/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/ipfs-frontend/src/environments/environment.ts",
+              "with": "apps/ipfs-frontend/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "ipfs-frontend:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ipfs-frontend:build:development"
+        },
+        "production": {
+          "buildTarget": "ipfs-frontend:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "ipfs-frontend:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/ipfs-frontend/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
