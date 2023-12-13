@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'graphql-api',
+  displayName: 'api',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/graphql-api',
+  coverageDirectory: '../../coverage/apps/api',
 };

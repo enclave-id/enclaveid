@@ -52,7 +52,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "ipfs-frontend:build",
-        "hmr": true
+        "hmr": true,
+        "proxyConfig": "apps/ipfs-frontend/proxy.conf.json"
       },
       "configurations": {
         "development": {

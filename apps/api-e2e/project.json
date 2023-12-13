@@ -1,14 +1,14 @@
 {
-  "name": "graphql-api-e2e",
+  "name": "api-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["graphql-api"],
+  "implicitDependencies": ["api"],
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "apps/graphql-api-e2e/jest.config.ts",
+        "jestConfig": "apps/api-e2e/jest.config.ts",
         "passWithNoTests": true
       }
     },
