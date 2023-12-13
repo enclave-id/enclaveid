@@ -80,6 +80,49 @@
       "options": {
         "jestConfig": "apps/ipfs-frontend/jest.config.ts"
       }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "apps/ipfs-frontend/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/ipfs-frontend",
+        "configDir": "apps/ipfs-frontend/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c apps/ipfs-frontend/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "ipfs-frontend:build-storybook",
+        "staticFilePath": "dist/storybook/ipfs-frontend"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "ipfs-frontend:build-storybook:ci"
+        }
+      }
     }
   },
   "tags": []
