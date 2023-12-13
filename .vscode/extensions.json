@@ -1,8 +1,5 @@
 {
   "recommendations": [
-    "nrwl.angular-console",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "firsttris.vscode-jest-runner"
+    "ms-vscode-remote.remote-containers"
   ]
 }

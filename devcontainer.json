@@ -1,0 +1,31 @@
+{
+    "name": "Node.js",
+    "image": "mcr.microsoft.com/devcontainers/javascript-node",
+    // More info: https://containers.dev/features.
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/python:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": true
+            },
+            "extensions": [
+                "nrwl.angular-console",
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "firsttris.vscode-jest-runner"
+            ]
+        }
+    }
+    // "forwardPorts": [3000],
+    // "portsAttributes": {
+    //     "3000": {
+    //         "label": "Hello Remote World",
+    //         "onAutoForward": "notify"
+    //     }
+    // },
+    // "postCreateCommand": "yarn install"
+    // "remoteUser": "root"
+}
