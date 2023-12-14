@@ -1,13 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
 
-import NxWelcome from './nx-welcome';
+import PingPong from './components/PingPong';
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from './services/apolloClient';
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="spa-frontend" />
-    </div>
+    <ApolloProvider client={apolloClient}>
+      <PingPong />
+    </ApolloProvider>
   );
 }
 
