@@ -1,6 +1,11 @@
 // AES-CTR encryption and decryption functions
 
-import { arrayBufferToBase64, base64ToArrayBuffer } from './arrayBuffer';
+import {
+  arrayBufferToBase64,
+  base64ToArrayBuffer,
+  base64ToUint8array,
+  uint8arrayToBase64,
+} from './typeConversion';
 
 function getSessionKey(): Uint8Array {
   const key = sessionStorage.getItem('sessionKey');
@@ -21,7 +26,7 @@ export async function encryptVariables(
   variables: Record<string, unknown>
 ): Promise<{
   encryptedVariables: string;
-  nonce: Uint8Array;
+  nonce: string;
 }> {
   const data = JSON.stringify(variables);
   const encodedData = new TextEncoder().encode(data);
@@ -41,12 +46,15 @@ export async function encryptVariables(
     encodedData
   );
 
-  return { encryptedVariables: arrayBufferToBase64(encryptedData), nonce };
+  return {
+    encryptedVariables: arrayBufferToBase64(encryptedData),
+    nonce: uint8arrayToBase64(nonce),
+  };
 }
 
 export async function decryptVariables(
   encryptedVariables: string,
-  nonce: Uint8Array
+  nonce: string
 ): Promise<Record<string, unknown>> {
   const cryptoKey = await window.crypto.subtle.importKey(
     'raw',
@@ -57,7 +65,7 @@ export async function decryptVariables(
   );
 
   const decryptedData = await window.crypto.subtle.decrypt(
-    { name: 'AES-CTR', counter: nonce, length: 64 },
+    { name: 'AES-CTR', counter: base64ToUint8array(nonce), length: 64 },
     cryptoKey,
     base64ToArrayBuffer(encryptedVariables)
   );

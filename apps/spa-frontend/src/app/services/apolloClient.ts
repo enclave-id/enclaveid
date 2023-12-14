@@ -7,7 +7,7 @@ import {
   toPromise,
 } from '@apollo/client';
 import { decryptVariables, encryptVariables } from '../utils/confidentiality';
-const httpLink = new HttpLink({ uri: 'http://your-graphql-endpoint/graphql' });
+const httpLink = new HttpLink({ uri: 'http://localhost:3000/graphql' });
 
 const encryptRequestMiddleware = new ApolloLink((operation, forward) => {
   if (operation.variables === undefined) {
