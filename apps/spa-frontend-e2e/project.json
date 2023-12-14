@@ -1,22 +1,22 @@
 {
-  "name": "ipfs-frontend-e2e",
+  "name": "spa-frontend-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/ipfs-frontend-e2e/src",
+  "sourceRoot": "apps/spa-frontend-e2e/src",
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/ipfs-frontend-e2e/cypress.config.ts",
+        "cypressConfig": "apps/spa-frontend-e2e/cypress.config.ts",
         "testingType": "e2e",
-        "devServerTarget": "ipfs-frontend:serve"
+        "devServerTarget": "spa-frontend:serve"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "ipfs-frontend:serve:production"
+          "devServerTarget": "spa-frontend:serve:production"
         },
         "ci": {
-          "devServerTarget": "ipfs-frontend:serve-static"
+          "devServerTarget": "spa-frontend:serve-static"
         }
       }
     },
@@ -25,6 +25,6 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "implicitDependencies": ["ipfs-frontend"],
+  "implicitDependencies": ["spa-frontend"],
   "tags": []
 }

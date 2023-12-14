@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('ipfs-frontend-e2e', () => {
+describe('spa-frontend-e2e', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
