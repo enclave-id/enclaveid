@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
-import sensible from '@fastify/sensible';
+import helmet from '@fastify/helmet';
 
 export default fp(async function (fastify: FastifyInstance) {
-  fastify.register(sensible);
+  fastify.register(helmet, { global: true });
 });
