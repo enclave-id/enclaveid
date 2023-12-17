@@ -92,6 +92,7 @@
     "axios": "^1.6.2",
     "fastify": "~4.13.0",
     "fastify-plugin": "~4.5.0",
+    "fastify-type-provider-zod": "^1.1.9",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.2",
     "jsonwebtoken": "^9.0.2",
@@ -99,6 +100,7 @@
     "react-dom": "18.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zod": "^3.22.4"
   }
 }

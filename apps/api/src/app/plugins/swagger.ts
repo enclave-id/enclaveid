@@ -2,27 +2,32 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
+import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 
 export default fp(async function (fastify: FastifyInstance) {
-  fastify.register(swagger).register(swaggerUi, {
-    routePrefix: '/documentation',
-    uiConfig: {
-      docExpansion: 'full',
-      deepLinking: false,
-    },
-    uiHooks: {
-      onRequest: function (request, reply, next) {
-        next();
+  fastify
+    .register(swagger, {
+      transform: jsonSchemaTransform,
+    })
+    .register(swaggerUi, {
+      routePrefix: '/swagger',
+      uiConfig: {
+        docExpansion: 'full',
+        deepLinking: false,
       },
-      preHandler: function (request, reply, next) {
-        next();
+      uiHooks: {
+        onRequest: function (request, reply, next) {
+          next();
+        },
+        preHandler: function (request, reply, next) {
+          next();
+        },
       },
-    },
-    staticCSP: true,
-    transformStaticCSP: (header) => header,
-    transformSpecification: (swaggerObject) => {
-      return swaggerObject;
-    },
-    transformSpecificationClone: true,
-  });
+      staticCSP: true,
+      transformStaticCSP: (header) => header,
+      transformSpecification: (swaggerObject) => {
+        return swaggerObject;
+      },
+      transformSpecificationClone: true,
+    });
 });

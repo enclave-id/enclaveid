@@ -17,7 +17,7 @@ model User {
 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  UserTraits UserTraits?
+  userTraits UserTraits?
 }
 
 model Session {
@@ -36,8 +36,9 @@ model UserTraits {
   bigFiveId String  @unique
   bigFive   BigFive @relation(fields: [bigFiveId], references: [id])
 
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -53,5 +54,5 @@ model BigFive {
 
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
-  UserTraits UserTraits[]
+  userTraits UserTraits[]
 }

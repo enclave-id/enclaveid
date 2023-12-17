@@ -14,7 +14,7 @@ export default async function (fastify: FastifyInstance) {
     const { email, password, encryptedSessionKey } = request.body;
 
     const user = await fastify.prisma.user.findUnique({
-      where: { email, password, confirmed: true },
+      where: { email, password, confirmedAt: { not: null } },
     });
 
     if (!user) {
