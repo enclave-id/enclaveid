@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
-import { genericResponseSchema } from '../types/schema/custom';
+import { genericResponseSchema } from '../../types/schema/custom';
 
 const schema = {
   querystring: z.object({

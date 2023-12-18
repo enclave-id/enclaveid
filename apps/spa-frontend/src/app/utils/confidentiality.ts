@@ -22,10 +22,19 @@ function generateNonce(): Uint8Array {
   return window.crypto.getRandomValues(new Uint8Array(16));
 }
 
-export async function encryptVariables(
+export function asymmetricEncrypt(
+  data: string,
+  publicKey: CryptoKey
+): Promise<string> {
+  return window.crypto.subtle
+    .encrypt({ name: 'RSA-OAEP' }, publicKey, new TextEncoder().encode(data))
+    .then(arrayBufferToBase64);
+}
+
+export async function symmetricEncrypt(
   variables: Record<string, unknown>
 ): Promise<{
-  encryptedVariables: string;
+  encryptedData: string;
   nonce: string;
 }> {
   const data = JSON.stringify(variables);
@@ -47,13 +56,13 @@ export async function encryptVariables(
   );
 
   return {
-    encryptedVariables: arrayBufferToBase64(encryptedData),
+    encryptedData: arrayBufferToBase64(encryptedData),
     nonce: uint8arrayToBase64(nonce),
   };
 }
 
-export async function decryptVariables(
-  encryptedVariables: string,
+export async function symmetricDecrypt(
+  encryptedData: string,
   nonce: string
 ): Promise<Record<string, unknown>> {
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -67,7 +76,7 @@ export async function decryptVariables(
   const decryptedData = await window.crypto.subtle.decrypt(
     { name: 'AES-CTR', counter: base64ToUint8array(nonce), length: 64 },
     cryptoKey,
-    base64ToArrayBuffer(encryptedVariables)
+    base64ToArrayBuffer(encryptedData)
   );
 
   const data = new TextDecoder().decode(decryptedData);

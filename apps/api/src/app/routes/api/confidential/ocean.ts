@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { bigFiveSchema } from '../../types/schema/generated';
+import { bigFiveSchema } from '../../../types/schema/generated';
 
 const schema = {
   response: {

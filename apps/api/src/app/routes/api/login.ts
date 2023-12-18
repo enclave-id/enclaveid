@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
-import * as tpm from '../services/tpm';
-import { genericResponseSchema } from '../types/schema/custom';
+import * as tpm from '../../services/tpm';
+import { genericResponseSchema } from '../../types/schema/custom';
 import { z } from 'zod';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 
