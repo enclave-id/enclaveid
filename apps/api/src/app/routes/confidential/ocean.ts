@@ -1,13 +1,10 @@
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { z } from 'zod';
-import { BigFive } from '../../types';
-
-type t =  z.infer<BigFive>
+import { bigFiveSchema } from '../../types/schema';
 
 const schema = {
   response: {
-    200: ,
+    200: bigFiveSchema,
   },
 };
 

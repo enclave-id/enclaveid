@@ -13,18 +13,10 @@ declare module 'fastify' {
     decryptRequest: RequestDecorator;
     encryptResponse: RequestDecorator;
   }
-
-  interface FastifyRequest {
-    user: {
-      id: string;
-    };
-  }
 }
 
-export interface BigFive {
-  openness: number;
-  conscientiousness: number;
-  extraversion: number;
-  agreeableness: number;
-  neuroticism: number;
+declare module '@fastify/jwt' {
+  interface FastifyJWT {
+    user: { id: string };
+  }
 }
