@@ -132,7 +132,7 @@
       }
     },
     "ts-to-zod":{
-      "command": "pnpm ts-to-zod apps/api/src/app/types/types.ts /apps/api/src/app/types/schema.ts"
+      "command": "pnpm ts-to-zod apps/api/src/app/types/shared.ts /apps/api/src/app/types/schema/generated.ts"
     }
   },
   "tags": []

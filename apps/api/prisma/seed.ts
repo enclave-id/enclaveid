@@ -6,6 +6,7 @@ async function main() {
     data: {
       email: 'john.doe@example.com',
       password: 'password',
+      confirmedAt: new Date(),
       userTraits: {
         create: {
           bigFive: {

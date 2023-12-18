@@ -1,7 +1,6 @@
 import crypto from 'crypto';
-import fs from 'fs';
-import path from 'path';
 import jwt from 'jsonwebtoken';
+import { sampleAttestationToken } from './sampleAttestationToken';
 
 const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
   modulusLength: 2048,
@@ -26,14 +25,15 @@ export function decrypt(encryptedText: string) {
 }
 
 export function getAttestation(nonce: string) {
-  const attestation = JSON.parse(
-    fs.readFileSync(
-      path.join(__dirname, 'mocks', 'sampleAttestationToken.json'),
-      'utf8'
-    )
-  );
+  sampleAttestationToken['x-ms-runtime']['client-payload']['nonce'] = nonce;
 
-  attestation['x-ms-runtime']['client-payload']['nonce'] = nonce;
+  sampleAttestationToken['x-ms-runtime']['keys'].forEach((key) => {
+    key['TpmEphemeralEncryptionKey'] = publicKey;
+  });
 
-  return jwt.sign(attestation, publicKey, { algorithm: 'RS256' });
+  // We use the same privateKey for signing the token as we use for decrypting.
+  // This is not how it works in production.
+  return jwt.sign(sampleAttestationToken, privateKey, {
+    algorithm: 'RS256',
+  });
 }

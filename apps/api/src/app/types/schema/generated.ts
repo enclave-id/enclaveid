@@ -8,13 +8,3 @@ export const bigFiveSchema = z.object({
   agreeableness: z.number(),
   neuroticism: z.number(),
 });
-
-// Custom type definitions
-export const genericResponseSchema = {
-  200: z.object({
-    success: z.boolean(),
-  }),
-  400: z.object({
-    error: z.string(),
-  }),
-};

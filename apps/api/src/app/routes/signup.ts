@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import * as tpm from '../services/tpm';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
-import { genericResponseSchema } from '../types/schema';
+import { genericResponseSchema } from '../types/schema/custom';
 
 const schema = {
   body: z.object({

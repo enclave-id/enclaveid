@@ -1,15 +1,11 @@
 import { FastifyInstance } from 'fastify';
-import * as tpm from '../services/tpm';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
 const schema = {
-  querystring: z.object({
-    nonce: z.string(),
-  }),
   response: {
     200: z.object({
-      jwt: z.string(),
+      url: z.string(),
     }),
   },
 };
@@ -17,11 +13,15 @@ const schema = {
 export default async function (fastify: FastifyInstance) {
   fastify
     .withTypeProvider<ZodTypeProvider>()
-    .get('/attestation', { schema }, async (request, reply) => {
-      const { nonce } = request.query;
+    .post(
+      '/connect-rdp',
+      { onRequest: [fastify.authenticate], schema },
+      async (request, reply) => {
+        // TODO implement
 
-      reply.send({
-        jwt: tpm.getAttestation(nonce),
-      });
-    });
+        reply.send({
+          url: '/example-url',
+        });
+      }
+    );
 }

@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import * as mocks from './mocks/mockTpm';
 
 export function getPublicKey() {
@@ -17,12 +16,7 @@ export function decrypt(encryptedText: string) {
   }
 }
 
-export function getAttestation(encryptedChallenge: string) {
-  const nonce = crypto
-    .createHash('sha256')
-    .update(decrypt(encryptedChallenge))
-    .digest('hex');
-
+export function getAttestation(nonce: string) {
   if (process.env.NODE_ENV === 'development') {
     return mocks.getAttestation(nonce);
   } else {
