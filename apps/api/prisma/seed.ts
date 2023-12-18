@@ -1,12 +1,24 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const PrismaClient = require('@prisma/client').PrismaClient;
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
   return await prisma.user.create({
     data: {
-      email: 'test@gmail.com',
-      password: 'test',
+      email: 'john.doe@example.com',
+      password: 'password',
+      userTraits: {
+        create: {
+          bigFive: {
+            create: {
+              openness: 0.5,
+              conscientiousness: 0.4,
+              extraversion: 0.3,
+              agreeableness: 0.2,
+              neuroticism: 0.1,
+            },
+          },
+        },
+      },
     },
   });
 }
