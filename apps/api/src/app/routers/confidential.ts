@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { AppContext } from '../context';
 import { publicProcedure, router } from '../trpc';
+import { encryptResponsePayload } from '../services/symmetricCrypto';
 
 export const confidential = router({
   ocean: publicProcedure
@@ -9,6 +10,7 @@ export const confidential = router({
         nonce: z.string(),
       })
     )
+
     .query(async (opts) => {
       const {
         prisma,
@@ -22,6 +24,6 @@ export const confidential = router({
 
       const bigFive = user?.userTraits?.bigFive;
 
-      return { bigFive };
+      return await encryptResponsePayload(userId, bigFive);
     }),
 });
