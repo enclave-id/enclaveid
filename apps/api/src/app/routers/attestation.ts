@@ -1,6 +1,6 @@
 import * as tpm from '../services/tpm';
 import { z } from 'zod';
-import { publicProcedure, router } from '../router';
+import { publicProcedure, router } from '../trpc';
 
 export const attestation = router({
   getAttestation: publicProcedure

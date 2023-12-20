@@ -46,6 +46,9 @@ CREATE TABLE "BigFive" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_confirmationCode_key" ON "User"("confirmationCode");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Session_userId_key" ON "Session"("userId");
 
 -- CreateIndex

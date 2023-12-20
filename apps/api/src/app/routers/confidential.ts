@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { AppContext } from '../context';
-import { publicProcedure, router } from '../router';
+import { publicProcedure, router } from '../trpc';
 
 export const confidential = router({
   ocean: publicProcedure

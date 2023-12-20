@@ -1,6 +1,6 @@
 import * as tpm from '../services/tpm';
 import { z } from 'zod';
-import { publicProcedure, router } from '../router';
+import { publicProcedure, router } from '../trpc';
 import { AppContext } from '../context';
 import { TRPCError } from '@trpc/server';
 
@@ -80,14 +80,15 @@ export const authentication = router({
     .input(
       z.object({
         confirmationCode: z.string(),
+        email: z.string(),
       })
     )
     .mutation(async (opts) => {
-      const { confirmationCode } = opts.input;
+      const { confirmationCode, email } = opts.input;
       const { prisma } = opts.ctx as AppContext;
 
       const user = await prisma.user.findUnique({
-        where: { confirmationCode },
+        where: { confirmationCode, email },
       });
 
       if (!user) {
