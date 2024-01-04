@@ -10,8 +10,6 @@ declare module 'fastify' {
   interface FastifyInstance {
     prisma: PrismaClient;
     authenticate: RequestDecorator;
-    decryptRequest: RequestDecorator;
-    encryptResponse: RequestDecorator;
   }
 }
 

@@ -10,7 +10,6 @@ export const confidential = router({
         nonce: z.string(),
       })
     )
-
     .query(async (opts) => {
       const {
         prisma,
