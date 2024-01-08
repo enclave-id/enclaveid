@@ -2,15 +2,9 @@
 import styles from './app.module.css';
 
 import PingPong from './components/PingPong';
-import { ApolloProvider } from '@apollo/client';
-import { apolloClient } from './services/apolloClient';
 
 export function App() {
-  return (
-    <ApolloProvider client={apolloClient}>
-      <PingPong />
-    </ApolloProvider>
-  );
+  return <PingPong title="enclaveid" />;
 }
 
 export default App;
