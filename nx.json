@@ -3,8 +3,13 @@
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     },
     "lint": {
       "cache": true,
@@ -17,11 +22,18 @@
     },
     "e2e": {
       "cache": true,
-      "inputs": ["default", "^production"]
+      "inputs": [
+        "default",
+        "^production"
+      ]
     },
     "@nx/jest:jest": {
       "cache": true,
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.preset.js"
+      ],
       "options": {
         "passWithNoTests": true
       },
@@ -43,11 +55,20 @@
     },
     "@nx/vite:test": {
       "cache": true,
-      "inputs": ["default", "^production"]
+      "inputs": [
+        "default",
+        "^production"
+      ]
+    },
+    "install": {
+      "cache": true
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/cypress/**/*",
@@ -66,7 +87,10 @@
     ],
     "sharedGlobals": []
   },
-  "plugins": ["@nxlv/python"],
+  "plugins": [
+    "@nxlv/python",
+    "@nxrocks/nx-spring-boot"
+  ],
   "nxCloudAccessToken": "MWRiZmM1ODUtOTM0Ni00MDExLTgzODQtMjk0MjIxZDJjMDllfHJlYWQtd3JpdGU=",
   "generators": {
     "@nx/react": {
@@ -88,7 +112,9 @@
   "tasksRunnerOptions": {
     "default": {
       "options": {
-        "cacheableOperations": ["build-storybook"]
+        "cacheableOperations": [
+          "build-storybook"
+        ]
       }
     }
   }
