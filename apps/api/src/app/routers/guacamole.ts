@@ -1,18 +1,25 @@
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
+import { AppContext } from '../context';
+import { provisionChrome } from '../services/kubernetes';
 
 export const guacamole = router({
-  newConnection: publicProcedure
-    .input(
-      z.object({
-        nonce: z.string(),
-      })
-    )
-    .mutation(() => {
+  provisionChrome: publicProcedure.mutation(async (opts) => {
+    const {
+      user: { id: userId },
+    } = opts.ctx as AppContext;
+
+    let podId;
+
+    try {
+      podId = await provisionChrome(userId);
+    } catch (error) {
       throw new TRPCError({
-        code: 'NOT_IMPLEMENTED',
-        message: 'Not implemented',
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error.message,
       });
-    }),
+    }
+
+    return { podId };
+  }),
 });
