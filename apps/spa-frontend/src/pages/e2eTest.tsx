@@ -1,6 +1,6 @@
 import { trpc } from '../utils/trpc';
-import { asymmetricEncrypt } from '../utils/confidentiality';
 import { AuthenticationContainer } from '../components/AuthenticationContainer';
+import { FileUploadContainer } from '../components/FileUploadContainer';
 
 export function E2eTest() {
   const attestationQuery = trpc.getAttestation.useQuery({ nonce: 'test' });
@@ -34,10 +34,39 @@ export function E2eTest() {
           }}
         </AuthenticationContainer>
 
+        <FileUploadContainer>
+          {({ handleFileUpload, validateFile }) => {
+            return (
+              <div>
+                <input
+                  id="fileUpload"
+                  type="file"
+                  accept=".zip"
+                  multiple={false}
+                ></input>
+                <button
+                  onClick={(event) => {
+                    const zipFile = (event.target as HTMLInputElement)
+                      ?.files?.[0];
+
+                    if (zipFile) handleFileUpload(zipFile);
+                  }}
+                  onChange={(event) => {
+                    const zipFile = (event.target as HTMLInputElement)
+                      ?.files?.[0];
+
+                    if (zipFile) validateFile(zipFile);
+                  }}
+                >
+                  Upload
+                </button>
+              </div>
+            );
+          }}
+        </FileUploadContainer>
+
         <input type="file" id="myFile" name="filename"></input>
         <button>Upload files</button>
-
-        <div id="contents"></div>
       </div>
     </div>
   );

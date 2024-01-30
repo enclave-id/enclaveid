@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { trpc } from '../utils/trpc';
 import { parsePublicKey } from '../utils/attestation';
 import { asymmetricEncrypt } from '../utils/confidentiality';
-import { AuthenticationComponentProps } from '../types/containers';
+import { AuthenticationComponentProps } from '../types/components';
 
 export function AuthenticationContainer({
   children,
@@ -14,6 +14,10 @@ export function AuthenticationContainer({
 
   const handleSubmit = useCallback(
     (email: string, password: string) => {
+      if (!jwt) {
+        throw new Error('Attestation JWT not found');
+      }
+
       const pubKey = parsePublicKey(jwt);
 
       asymmetricEncrypt(
