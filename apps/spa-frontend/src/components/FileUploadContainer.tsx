@@ -10,8 +10,7 @@ export function FileUploadContainer({
 }: {
   children: (props: FileUploadComponentProps) => React.ReactNode;
 }) {
-
-    
+  const handleFileUpload = useCallback((zipFile: File) => {}, []);
 
   return children({
     handleFileUpload,
