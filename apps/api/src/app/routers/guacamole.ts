@@ -9,17 +9,17 @@ export const guacamole = router({
       user: { id: userId },
     } = opts.ctx as AppContext;
 
-    let podId;
-
     try {
-      podId = await provisionChrome(userId);
+      const podId = await provisionChrome(userId);
+
+      return { podId };
     } catch (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: error.message,
       });
-    }
 
-    return { podId };
+      return { podId: null };
+    }
   }),
 });

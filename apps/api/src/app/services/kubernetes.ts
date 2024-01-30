@@ -1,4 +1,5 @@
 import k8s from '@kubernetes/client-node';
+import { prisma } from '../services/prisma';
 
 const k8sApi = k8s.Config.defaultClient();
 
@@ -38,9 +39,38 @@ const podManifest = {
 };
 
 export async function provisionChrome(userId: string): Promise<string> {
-  podManifest.metadata.name = `chrome-pod-${userId}`;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
 
-  // Check if pod exists
+  if (!user) throw new Error('User not found');
+
+  const podId = `chrome-pod-${userId}`;
+
+  prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      chromePod: {
+        connectOrCreate: {
+          where: {
+            chromePodId: podId,
+          },
+          create: {
+            chromePodId: podId,
+            rdpUsername: 'user',
+            rdpPassword: 'password',
+          },
+        },
+      },
+    },
+  });
+
+  podManifest.metadata.name = podId;
+
   const podExists = await k8sApi
     .readNamespacedPod(podManifest.metadata.name, 'default')
     .then(() => {

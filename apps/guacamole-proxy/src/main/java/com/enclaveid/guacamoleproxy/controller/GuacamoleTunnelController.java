@@ -27,7 +27,7 @@ public class GuacamoleTunnelController {
     public GuacamoleTunnel connect(HttpServletRequest request) throws GuacamoleException {
         // VNC connection information
         GuacamoleConfiguration config = new GuacamoleConfiguration();
-        config.setProtocol("vnc");
+        config.setProtocol("rdp");
         config.setParameter("hostname", "localhost");
         config.setParameter("port", "5901");
         config.setParameter("password", "potato");

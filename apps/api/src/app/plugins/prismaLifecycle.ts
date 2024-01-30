@@ -5,8 +5,6 @@ import { prisma } from '../services/prisma';
 export default fp(async (fastify: FastifyInstance) => {
   await prisma.$connect();
 
-  //fastify.decorate('prisma', prisma);
-
   fastify.addHook('onClose', async (server) => {
     server.log.info('disconnecting Prisma from DB');
     await prisma.$disconnect();

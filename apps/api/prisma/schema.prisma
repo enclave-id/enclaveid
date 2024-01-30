@@ -15,9 +15,11 @@ model User {
   confirmedAt      DateTime?
   session          Session?
 
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  userTraits UserTraits?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userTraits  UserTraits?
+  chromePod   ChromePod?  @relation(fields: [chromePodId], references: [id])
+  chromePodId String?
 }
 
 model Session {
@@ -55,4 +57,17 @@ model BigFive {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   userTraits UserTraits[]
+}
+
+model ChromePod {
+  id String @id @default(cuid())
+
+  chromePodId String @unique
+
+  rdpUsername String
+  rdpPassword String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
 }
