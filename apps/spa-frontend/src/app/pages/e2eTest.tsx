@@ -1,6 +1,6 @@
 import { trpc } from '../utils/trpc';
-import { AuthenticationContainer } from '../components/AuthenticationContainer';
-import { FileUploadContainer } from '../components/FileUploadContainer';
+import { AuthenticationContainer } from '../components/containers/AuthenticationContainer';
+import { FileUploadContainer } from '../components/containers/FileUploadContainer';
 
 export function E2eTest() {
   const attestationQuery = trpc.getAttestation.useQuery({ nonce: 'test' });
