@@ -7,23 +7,19 @@ import {
 
 const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
 const accountKey = process.env.AZURE_STORAGE_ACCOUNT_KEY;
-
 const defaultContainerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
 
-export async function generateSasUrl(
-  blobName,
-  containerName = defaultContainerName
-) {
-  const creds = new StorageSharedKeyCredential(accountName, accountKey);
-  const blobServiceClient = new BlobServiceClient(
-    `https://${accountName}.blob.core.windows.net`,
-    creds
-  );
+const creds = new StorageSharedKeyCredential(accountName, accountKey);
+const blobServiceClient = new BlobServiceClient(
+  `https://${accountName}.blob.core.windows.net`,
+  creds
+);
+const containerClient =
+  blobServiceClient.getContainerClient(defaultContainerName);
 
-  const containerClient = blobServiceClient.getContainerClient(containerName);
-
+export async function generateSasUrl(blobName) {
   const sasOptions = {
-    containerName,
+    containerName: defaultContainerName,
     blobName,
     permissions: BlobSASPermissions.parse('w'), // w is for write permissions
     startsOn: new Date(),
@@ -33,4 +29,9 @@ export async function generateSasUrl(
   const sasToken = generateBlobSASQueryParameters(sasOptions, creds).toString();
 
   return `${containerClient.url}/${blobName}?${sasToken}`;
+}
+
+export async function streamingUpload(filename, file) {
+  const blockBlobClient = containerClient.getBlockBlobClient(filename);
+  return await blockBlobClient.uploadStream(file);
 }

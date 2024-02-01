@@ -17,6 +17,9 @@ dependencies:
   '@fastify/autoload':
     specifier: ~5.7.2
     version: 5.7.2
+  '@fastify/busboy':
+    specifier: ^2.1.0
+    version: 2.1.0
   '@fastify/cookie':
     specifier: ^9.2.0
     version: 9.2.0
@@ -145,12 +148,18 @@ devDependencies:
   '@pmmmwh/react-refresh-webpack-plugin':
     specifier: ^0.5.11
     version: 0.5.11(react-refresh@0.10.0)(webpack@5.89.0)
+  '@storybook/addon-actions':
+    specifier: ^7.6.12
+    version: 7.6.12
   '@storybook/addon-essentials':
     specifier: 7.6.4
     version: 7.6.4(@types/react-dom@18.2.14)(@types/react@18.2.33)(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-interactions':
     specifier: ^7.6.7
     version: 7.6.7
+  '@storybook/addon-viewport':
+    specifier: ^7.6.12
+    version: 7.6.12
   '@storybook/core-server':
     specifier: 7.6.4
     version: 7.6.4
@@ -2536,6 +2545,11 @@ packages:
 
   /@fastify/autoload@5.7.2:
     resolution: {integrity: sha512-eSHuUHARbVocO3L7A1/q6YO+kkoWI2PsXJBpDsX+i3PcGTVncjn9771FaaM5BjOPx+44GxIjaszGOM/BZdfzaA==}
+    dev: false
+
+  /@fastify/busboy@2.1.0:
+    resolution: {integrity: sha512-+KpH+QxZU7O4675t3mnkQKcZZg56u+K/Ct2K+N2AZYNVK8kyeo/bI18tI8aPm3tvNNRyTWfj6s5tnGNlcbQRsA==}
+    engines: {node: '>=14'}
     dev: false
 
   /@fastify/cookie@9.2.0:
@@ -5755,6 +5769,17 @@ packages:
       '@sinonjs/commons': 1.8.6
     dev: true
 
+  /@storybook/addon-actions@7.6.12:
+    resolution: {integrity: sha512-vK/H6K+AJ4ZSsCu/+MapYYI/xrynB6JoCOejt//flTigZOhwTWv7WXbmEeqGIIToXy0LA2IUZ1/kCjFXR0lEdQ==}
+    dependencies:
+      '@storybook/core-events': 7.6.12
+      '@storybook/global': 5.0.0
+      '@types/uuid': 9.0.7
+      dequal: 2.0.3
+      polished: 4.2.2
+      uuid: 9.0.1
+    dev: true
+
   /@storybook/addon-actions@7.6.4:
     resolution: {integrity: sha512-91UD5KPDik74VKVioPMcbwwvDXN/non8p1wArYAHCHCmd/Pts5MJRiFueSdfomSpNjUtjtn6eSXtwpIL3XVOfQ==}
     dependencies:
@@ -5884,6 +5909,12 @@ packages:
 
   /@storybook/addon-toolbars@7.6.4:
     resolution: {integrity: sha512-ENMQJgU4sRCLLDVXYfa+P3cQVV9PC0ZxwVAKeM3NPYPNH/ODoryGNtq+Q68LwHlM4ObCE2oc9MzaQqPxloFcCw==}
+    dev: true
+
+  /@storybook/addon-viewport@7.6.12:
+    resolution: {integrity: sha512-51zsBeoaEzq699SKDCe+GG/2PDAJKKJtpjqxIc4lDskogaCJSb3Ie8LyookHAKYgbi2qealVgK8zaP27KUj3Pg==}
+    dependencies:
+      memoizerific: 1.11.3
     dev: true
 
   /@storybook/addon-viewport@7.6.4:
@@ -6179,6 +6210,12 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: true
+
+  /@storybook/core-events@7.6.12:
+    resolution: {integrity: sha512-IO4cwk7bBCKH6lLnnIlHO9FwQXt/9CzLUAoZSY9msWsdPppCdKlw8ynJI5YarSNKDBUn8ArIfnRf0Mve0KQr9Q==}
+    dependencies:
+      ts-dedent: 2.2.0
     dev: true
 
   /@storybook/core-events@7.6.4:
