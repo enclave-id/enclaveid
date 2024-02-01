@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { AppContext } from '../context';
-import { publicProcedure, router } from '../trpc';
+import { authenticatedProcedure, router } from '../trpc';
 import { encryptResponsePayload } from '../services/symmetricCrypto';
 
 export const confidential = router({
-  ocean: publicProcedure
+  ocean: authenticatedProcedure
     .input(
       z.object({
         nonce: z.string(),

@@ -23,7 +23,7 @@ export async function generateSasUrl(blobName) {
     blobName,
     permissions: BlobSASPermissions.parse('w'), // w is for write permissions
     startsOn: new Date(),
-    expiresOn: new Date(new Date().valueOf() + 86400), // URL valid for 1 day
+    expiresOn: new Date(new Date().valueOf() + 3600 * 1000), // URL valid for 1h
   };
 
   const sasToken = generateBlobSASQueryParameters(sasOptions, creds).toString();

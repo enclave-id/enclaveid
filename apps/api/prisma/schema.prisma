@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./db.sql"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -15,11 +15,12 @@ model User {
   confirmedAt      DateTime?
   session          Session?
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   userTraits  UserTraits?
-  chromePod   ChromePod?  @relation(fields: [chromePodId], references: [id])
+  chromePod   ChromePod?    @relation(fields: [chromePodId], references: [id])
   chromePodId String?
+  TakeoutFile TakeoutFile[]
 }
 
 model Session {
@@ -70,4 +71,21 @@ model ChromePod {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   User      User[]
+}
+
+model TakeoutFile {
+  id           String       @id @default(cuid())
+  dataProvider DataProvider
+  filename     String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum DataProvider {
+  GOOGLE
+  FACEBOOK
 }
