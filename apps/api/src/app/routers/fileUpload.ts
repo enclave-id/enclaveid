@@ -3,12 +3,13 @@ import { AppContext } from '../context';
 import { z } from 'zod';
 import { generateSasUrl } from '../services/azureStorage';
 import { TRPCError } from '@trpc/server';
+import { DataProvider } from '@prisma/client';
 
 export const fileUpload = router({
   getPresignedUrl: authenticatedProcedure
     .input(
       z.object({
-        dataProvider: z.enum(['google', 'facebook']),
+        dataProvider: z.nativeEnum(DataProvider),
       })
     )
     .query(async (opts) => {
@@ -23,7 +24,7 @@ export const fileUpload = router({
         .then((url) => {
           prisma.takeoutFile.create({
             data: {
-              blobName,
+              filename: blobName,
               user: { connect: { id: userId } },
               dataProvider: opts.input.dataProvider,
             },
