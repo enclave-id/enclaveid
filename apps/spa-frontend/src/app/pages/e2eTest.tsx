@@ -1,14 +1,30 @@
 import { trpc } from '../utils/trpc';
 import { AuthenticationContainer } from '../components/containers/AuthenticationContainer';
 import { FileUploadContainer } from '../components/containers/FileUploadContainer';
+import { symmetricDecrypt, symmetricEncrypt } from '../utils/confidentiality';
+import { useEffect } from 'react';
 
 export function E2eTest() {
   const attestationQuery = trpc.getAttestation.useQuery({ nonce: 'test' });
 
+  const { mutate, data, isSuccess } = trpc.pingPong.useMutation();
+  const pingChallenge = 'pingu';
+
+  useEffect(() => {
+    if (isSuccess) {
+      symmetricDecrypt(data?.encryptedPayload, data?.nonce).then(
+        (decryptedPayload) => {
+          document.getElementById('pingpong-result')!.innerHTML =
+            decryptedPayload['pong'] as string;
+        }
+      );
+    }
+  }, [data?.encryptedPayload, data?.nonce, isSuccess]);
+
   return (
     <div>
       <div className="flex justify-center mt-8">
-        <button>Get Attestation</button>
+        <p>Attestaition:</p>
         <div id="attestation">{attestationQuery.data?.jwt}</div>
 
         <AuthenticationContainer>
@@ -33,6 +49,21 @@ export function E2eTest() {
             );
           }}
         </AuthenticationContainer>
+
+        <p>PingPong test:</p>
+        <button
+          onClick={() => {
+            symmetricEncrypt({
+              ping: pingChallenge,
+            }).then(({ encryptedPayload, nonce }) => {
+              mutate({
+                encryptedPayload,
+                nonce,
+              });
+            });
+          }}
+        />
+        <p id="pingpong-result"></p>
 
         <FileUploadContainer>
           {({ handleFileUpload, validateFile }) => {

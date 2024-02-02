@@ -38,7 +38,7 @@ export function asymmetricEncrypt(
 export async function symmetricEncrypt(
   variables: Record<string, unknown>
 ): Promise<{
-  encryptedData: string;
+  encryptedPayload: string;
   nonce: string;
 }> {
   const data = JSON.stringify(variables);
@@ -53,20 +53,20 @@ export async function symmetricEncrypt(
   );
 
   const nonce = generateNonce();
-  const encryptedData = await window.crypto.subtle.encrypt(
+  const encryptedPayload = await window.crypto.subtle.encrypt(
     { name: 'AES-CTR', counter: nonce, length: 64 },
     cryptoKey,
     encodedData
   );
 
   return {
-    encryptedData: arrayBufferToBase64(encryptedData),
+    encryptedPayload: arrayBufferToBase64(encryptedPayload),
     nonce: uint8arrayToBase64(nonce),
   };
 }
 
 export async function symmetricDecrypt(
-  encryptedData: string,
+  encryptedPyload: string,
   nonce: string
 ): Promise<Record<string, unknown>> {
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -77,12 +77,12 @@ export async function symmetricDecrypt(
     ['decrypt']
   );
 
-  const decryptedData = await window.crypto.subtle.decrypt(
+  const decryptedPayload = await window.crypto.subtle.decrypt(
     { name: 'AES-CTR', counter: base64ToUint8array(nonce), length: 64 },
     cryptoKey,
-    base64ToArrayBuffer(encryptedData)
+    base64ToArrayBuffer(encryptedPyload)
   );
 
-  const data = new TextDecoder().decode(decryptedData);
+  const data = new TextDecoder().decode(decryptedPayload);
   return JSON.parse(data);
 }
