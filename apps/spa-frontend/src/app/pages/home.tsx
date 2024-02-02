@@ -1,10 +1,10 @@
-import Button from '../components/Button';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
     <div>
       <div className="flex justify-center mt-8">
-        <Button onClick={() => {}}>Go to app</Button>
+        <Link to="/e2eTest">E2E Test</Link>
       </div>
     </div>
   );

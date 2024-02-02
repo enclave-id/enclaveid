@@ -22,10 +22,10 @@ export function E2eTest() {
   }, [data?.encryptedPayload, data?.nonce, isSuccess]);
 
   return (
-    <div>
+    <div className="container">
       <div className="flex justify-center mt-8">
         <p>Attestaition:</p>
-        <div id="attestation">{attestationQuery.data?.jwt}</div>
+        {/* <div id="attestation">{attestationQuery.data?.jwt}</div> */}
 
         <AuthenticationContainer>
           {({ handleSubmit }) => {
@@ -62,7 +62,10 @@ export function E2eTest() {
               });
             });
           }}
-        />
+        >
+          Run test
+        </button>
+        <p>Result:</p>
         <p id="pingpong-result"></p>
 
         <FileUploadContainer>
@@ -95,9 +98,6 @@ export function E2eTest() {
             );
           }}
         </FileUploadContainer>
-
-        <input type="file" id="myFile" name="filename"></input>
-        <button>Upload files</button>
       </div>
     </div>
   );
