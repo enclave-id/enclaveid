@@ -1,8 +1,9 @@
 import { FC, useState } from 'react';
-import { Button } from '../Button/Button';
-import { Input } from '../Input/Input';
-import { Logo } from '../Logo/Logo';
-import CardLayout from '../CardLayout';
+
+import { Logo } from './Logo';
+import CardLayout from './CardLayout';
+import { Input } from './Input';
+import { Button } from './Button';
 
 export interface AuthenticationFormProps {
   handleSubmit: (email: string, password: string) => void;

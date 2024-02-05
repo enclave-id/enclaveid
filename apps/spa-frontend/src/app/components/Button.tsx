@@ -4,12 +4,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   fullWidth?: boolean;
   variant?: 'primary' | 'secondary';
+  size?: 'small';
 }
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   label,
   fullWidth,
+  size,
   ...rest
 }) => {
   const className = `
@@ -20,6 +22,11 @@ export const Button: React.FC<ButtonProps> = ({
         : 'text-greenBg underline bg-transparent'
     }
     ${fullWidth ? 'w-full' : variant === 'primary' ? 'px-8' : ''}
+    ${
+      variant === 'secondary' && size === 'small'
+        ? 'text-xs font-normal !leading-4'
+        : ''
+    }
   `;
 
   return (
