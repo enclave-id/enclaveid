@@ -9,10 +9,10 @@ export const attestation = router({
         nonce: z.string(),
       })
     )
-    .query((opts) => {
+    .query(async (opts) => {
       const { nonce } = opts.input;
 
-      const jwt = tpm.getAttestation(nonce);
+      const jwt = await tpm.getAttestation(nonce);
 
       return { jwt };
     }),

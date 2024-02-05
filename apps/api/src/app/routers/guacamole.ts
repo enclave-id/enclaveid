@@ -1,10 +1,10 @@
 import { TRPCError } from '@trpc/server';
-import { publicProcedure, router } from '../trpc';
+import { authenticatedProcedure, router } from '../trpc';
 import { AppContext } from '../context';
 import { provisionChrome } from '../services/kubernetes';
 
 export const guacamole = router({
-  provisionChrome: publicProcedure.mutation(async (opts) => {
+  provisionChrome: authenticatedProcedure.mutation(async (opts) => {
     const {
       user: { id: userId },
     } = opts.ctx as AppContext;
