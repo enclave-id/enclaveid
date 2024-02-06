@@ -1,4 +1,4 @@
-import UploadForm from './UploadForm';
+import { UploadForm } from './UploadForm';
 
 export default {
   title: 'Components/UploadForm',

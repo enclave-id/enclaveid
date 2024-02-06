@@ -1,4 +1,4 @@
-const SVGLogo = () => {
+function SVGLogo() {
   return (
     <svg
       width="48"
@@ -69,6 +69,6 @@ const SVGLogo = () => {
       </defs>
     </svg>
   );
-};
+}
 
 export default SVGLogo;

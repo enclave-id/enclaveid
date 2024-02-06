@@ -1,10 +1,10 @@
-import { AnchorHTMLAttributes, FC } from 'react';
+import { AnchorHTMLAttributes } from 'react';
 
 interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   underlined?: boolean;
 }
 
-const Link: FC<LinkProps> = ({ underlined = true, ...props }) => {
+function Link({ underlined = true, ...props }: LinkProps) {
   const className = `text-greenBg text-center font-medium leading-[22.4px] ${
     underlined ? 'underline' : ''
   }`;
@@ -14,6 +14,6 @@ const Link: FC<LinkProps> = ({ underlined = true, ...props }) => {
       {props.children}
     </a>
   );
-};
+}
 
-export default Link;
+export { Link };

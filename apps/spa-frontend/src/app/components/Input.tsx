@@ -1,11 +1,11 @@
-import { FC, InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   fullWidth?: boolean;
 }
 
-export const Input: FC<InputProps> = ({ label, fullWidth, ...rest }) => {
+function Input({ label, fullWidth, ...rest }: InputProps) {
   return (
     <div>
       <label
@@ -24,4 +24,6 @@ export const Input: FC<InputProps> = ({ label, fullWidth, ...rest }) => {
       </div>
     </div>
   );
-};
+}
+
+export { Input };

@@ -4,7 +4,7 @@ interface LogoProps {
   withoutIcon?: boolean;
 }
 
-export const Logo = ({ withoutIcon }: LogoProps) => {
+function Logo({ withoutIcon }: LogoProps) {
   return (
     <div className="flex items-center justify-center gap-[18px]">
       {!withoutIcon && <SVGLogo />}
@@ -13,4 +13,6 @@ export const Logo = ({ withoutIcon }: LogoProps) => {
       </span>
     </div>
   );
-};
+}
+
+export { Logo };

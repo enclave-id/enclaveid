@@ -1,4 +1,4 @@
-export const GoogleIcon = () => {
+export function GoogleIcon() {
   return (
     <svg
       width="55"
@@ -214,9 +214,9 @@ export const GoogleIcon = () => {
       </defs>
     </svg>
   );
-};
+}
 
-export const FacebookIcon = () => {
+export function FacebookIcon() {
   return (
     <svg
       width="55"
@@ -420,9 +420,9 @@ export const FacebookIcon = () => {
       </defs>
     </svg>
   );
-};
+}
 
-export const UploadIcon = () => {
+export function UploadIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -443,4 +443,4 @@ export const UploadIcon = () => {
       />
     </svg>
   );
-};
+}

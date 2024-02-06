@@ -1,32 +1,32 @@
 import { useCallback, useRef, useState } from 'react';
 import { Button } from './Button';
-import CardLayout from './CardLayout';
 import { FacebookIcon, GoogleIcon } from './Icons';
-import Link from './Link';
 import { useDropzone } from 'react-dropzone';
 import { FileUploadSection } from './FileUploadSection';
+import { CardLayout } from './CardLayout';
+import { Link } from './Link';
 
-const UploadForm = () => {
+function UploadForm() {
   const [googleFiles, setGoogleFiles] = useState<File[]>([]);
   const [facebookFiles, setFacebookFiles] = useState<File[]>([]);
   const googleUploadInputRef = useRef<HTMLInputElement | null>(null);
   const facebookUploadInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleGoogleFiles = useCallback((acceptedFiles: File[]) => {
+  const handleGoogleFiles = useCallback(function (acceptedFiles: File[]) {
     setGoogleFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
   }, []);
 
-  const handleFacebookFiles = useCallback((acceptedFiles: File[]) => {
+  const handleFacebookFiles = useCallback(function (acceptedFiles: File[]) {
     setFacebookFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
   }, []);
 
-  const removeLastGoogleFile = () => {
+  function removeLastGoogleFile() {
     setGoogleFiles((prevFiles) => prevFiles.slice(0, prevFiles.length - 1));
-  };
+  }
 
-  const removeLastFacebookFile = () => {
+  function removeLastFacebookFile() {
     setFacebookFiles((prevFiles) => prevFiles.slice(0, prevFiles.length - 1));
-  };
+  }
 
   const googleDropzone = useDropzone({
     onDrop: handleGoogleFiles,
@@ -38,13 +38,13 @@ const UploadForm = () => {
     noClick: true,
   });
 
-  const openGoogleFileDialog = () => {
+  function openGoogleFileDialog() {
     googleUploadInputRef.current?.click();
-  };
+  }
 
-  const openFacebookFileDialog = () => {
+  function openFacebookFileDialog() {
     facebookUploadInputRef.current?.click();
-  };
+  }
 
   return (
     <div className="flex flex-col gap-9 max-w-[597px] w-full mx-auto">
@@ -83,6 +83,6 @@ const UploadForm = () => {
       </CardLayout>
     </div>
   );
-};
+}
 
-export default UploadForm;
+export { UploadForm };

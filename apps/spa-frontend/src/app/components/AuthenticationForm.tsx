@@ -1,17 +1,14 @@
-import { FC, useState } from 'react';
-
+import { useState } from 'react';
 import { Logo } from './Logo';
-import CardLayout from './CardLayout';
 import { Input } from './Input';
 import { Button } from './Button';
+import { CardLayout } from './CardLayout';
 
 export interface AuthenticationFormProps {
   handleSubmit: (email: string, password: string) => void;
 }
 
-export const AuthenticationForm: FC<AuthenticationFormProps> = ({
-  handleSubmit,
-}) => {
+function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -54,4 +51,6 @@ export const AuthenticationForm: FC<AuthenticationFormProps> = ({
       </CardLayout>
     </div>
   );
-};
+}
+
+export { AuthenticationForm };

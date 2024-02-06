@@ -6,22 +6,23 @@ interface DropzoneProps {
   dropzone: DropzoneState;
 }
 
-const Dropzone = forwardRef<HTMLInputElement, DropzoneProps>(
-  ({ children, dropzone }, ref) => {
-    const { getRootProps, getInputProps, isDragActive } = dropzone;
+const Dropzone = forwardRef<HTMLInputElement, DropzoneProps>(function Dropzone(
+  { children, dropzone },
+  ref
+) {
+  const { getRootProps, getInputProps, isDragActive } = dropzone;
 
-    return (
-      <div
-        {...getRootProps()}
-        className={`rounded-md bg-white shadow pl-[15px] pt-[17pt] pr-[18px] pb-5 dropzone ${
-          isDragActive ? 'active' : ''
-        }`}
-      >
-        <input {...getInputProps()} ref={ref} />
-        {children}
-      </div>
-    );
-  }
-);
+  return (
+    <div
+      {...getRootProps()}
+      className={`rounded-md bg-white shadow pl-[15px] pt-[17pt] pr-[18px] pb-5 dropzone ${
+        isDragActive ? 'active' : ''
+      }`}
+    >
+      <input {...getInputProps()} ref={ref} />
+      {children}
+    </div>
+  );
+});
 
-export default Dropzone;
+export { Dropzone };

@@ -1,8 +1,9 @@
 import { Button } from './Button';
 import { UploadIcon } from './Icons';
-import Dropzone from './Dropzone';
+
 import { DropzoneState } from 'react-dropzone';
 import { MutableRefObject } from 'react';
+import { Dropzone } from './Dropzone';
 
 interface Props {
   files: File[];
@@ -14,7 +15,7 @@ interface Props {
   description: string;
 }
 
-export const FileUploadSection = ({
+function FileUploadSection({
   files,
   removeLastFile,
   dropzone,
@@ -22,7 +23,7 @@ export const FileUploadSection = ({
   openFileDialog,
   icon,
   description,
-}: Props) => {
+}: Props) {
   return (
     <Dropzone dropzone={dropzone} ref={uploadInputRef}>
       <div className="flex flex-col gap-[9px]">
@@ -73,4 +74,5 @@ export const FileUploadSection = ({
       </div>
     </Dropzone>
   );
-};
+}
+export { FileUploadSection };

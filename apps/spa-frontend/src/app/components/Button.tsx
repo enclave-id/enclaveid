@@ -7,13 +7,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small';
 }
 
-export const Button: React.FC<ButtonProps> = ({
+function Button({
   variant = 'primary',
   label,
   fullWidth,
   size,
   ...rest
-}) => {
+}: ButtonProps) {
   const className = `
     rounded-md font-medium leading-[22.4px] text-center
     ${
@@ -34,4 +34,6 @@ export const Button: React.FC<ButtonProps> = ({
       {label}
     </button>
   );
-};
+}
+
+export { Button };

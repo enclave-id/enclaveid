@@ -21,9 +21,11 @@ export default {
 
 export const SignUp: StoryObj<AuthenticationFormProps> = {
   args: {
-    handleSubmit: (email, password) => {
+    handleSubmit: function (email, password) {
       console.log(`Email: ${email}, Password: ${password}`);
     },
   },
-  render: (args) => <AuthenticationForm {...args} />,
+  render: function (args) {
+    return <AuthenticationForm {...args} />;
+  },
 };
