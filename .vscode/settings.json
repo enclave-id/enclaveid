@@ -12,7 +12,7 @@
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.compile.nullAnalysis.mode": "automatic",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.removeUnusedImports": true
-  },
+    "source.fixAll.eslint": "explicit",
+    "source.removeUnusedImports": "explicit"
+  }
 }

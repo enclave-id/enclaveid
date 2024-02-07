@@ -1,15 +1,31 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { AuthenticationForm } from './AuthenticationForm';
+import { Meta, StoryObj } from '@storybook/react';
+import {
+  AuthenticationForm,
+  AuthenticationFormProps,
+} from './AuthenticationForm';
 
-const meta: Meta<typeof AuthenticationForm> = {
+export default {
+  title: 'Components/AuthenticationForm',
   component: AuthenticationForm,
-};
+  argTypes: {
+    email: {
+      control: 'text',
+      defaultValue: '',
+    },
+    password: {
+      control: 'text',
+      defaultValue: '',
+    },
+  },
+} as Meta;
 
-export default meta;
-type Story = StoryObj<typeof AuthenticationForm>;
-
-export const Primary: Story = {
+export const SignUp: StoryObj<AuthenticationFormProps> = {
   args: {
-    handleSubmit: (email, passowrd) => {},
+    handleSubmit: function (email, password) {
+      console.log(`Email: ${email}, Password: ${password}`);
+    },
+  },
+  render: function (args) {
+    return <AuthenticationForm {...args} />;
   },
 };
