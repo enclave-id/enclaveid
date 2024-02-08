@@ -3,7 +3,7 @@ import { Button } from './Button';
 import { FacebookIcon, GoogleIcon } from './Icons';
 import { useDropzone } from 'react-dropzone';
 import { FileUploadSection } from './FileUploadSection';
-import { CardLayout } from './CardLayout';
+import { CardLayout } from './FormCardLayout';
 import { Link } from './Link';
 
 function UploadForm() {

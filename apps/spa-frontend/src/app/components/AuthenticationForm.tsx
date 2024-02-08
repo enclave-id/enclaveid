@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Logo } from './Logo';
 import { Input } from './Input';
 import { Button } from './Button';
-import { CardLayout } from './CardLayout';
+import { FormCardLayout } from './FormCardLayout';
 
 export interface AuthenticationFormProps {
   handleSubmit: (email: string, password: string) => void;
@@ -15,7 +15,7 @@ function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
   return (
     <div className="flex flex-col gap-10 max-w-[478px] w-full mx-auto">
       <Logo />
-      <CardLayout>
+      <FormCardLayout>
         <p className="description-text">
           Your credentials will only be used for Lorem ipsum dolor sit amet,
           consectetur adipiscing elit. Fusce eget condimentum augue. Aenean
@@ -48,7 +48,7 @@ function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
             onClick={() => handleSubmit(email, password)}
           />
         </div>
-      </CardLayout>
+      </FormCardLayout>
     </div>
   );
 }
