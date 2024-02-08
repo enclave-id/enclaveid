@@ -34,6 +34,11 @@ function GradientLine({
     transform: 'translateX(-50%)',
   };
 
+  const barColor =
+    variant === 'primary'
+      ? 'from-[#5799E6] to-[#2FA68A]'
+      : 'from-[#C6DED8] to-[#C9DEEC]';
+
   return (
     <div
       className={`flex flex-col max-w-[490px] w-full ${
@@ -67,7 +72,9 @@ function GradientLine({
             {title}
           </span>
         )}
-        <div className="h-2.5 rounded-full w-full bg-gradient-to-r from-[#5799E6] to-[#2FA68A] relative">
+        <div
+          className={`h-2.5 rounded-full w-full bg-gradient-to-r ${barColor} relative`}
+        >
           <Pin style={pinStyle} variant={variant} />
         </div>
       </div>
