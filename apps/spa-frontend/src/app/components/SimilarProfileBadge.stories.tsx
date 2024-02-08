@@ -6,4 +6,12 @@ export default {
   component: SimilarProfileBadge,
 } as Meta;
 
-export const Default: StoryObj<typeof SimilarProfileBadge> = {};
+export const Default: StoryObj<typeof SimilarProfileBadge> = {
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '250px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};

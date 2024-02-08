@@ -36,13 +36,6 @@ function SimilarProfileBadge({
           {`${peopleCount.toLocaleString()} people have a similar profile`}
         </span>
       </div>
-      {url && (
-        <div className="mt-2">
-          <a href={url} className="text-[#6C7A8A] text-xs underline">
-            Click to explore.
-          </a>
-        </div>
-      )}
     </div>
   );
 }
