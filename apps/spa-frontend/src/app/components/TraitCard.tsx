@@ -9,7 +9,7 @@ interface TraitCardProps {
 function TraitCard({ title, value }: TraitCardProps) {
   return (
     <DashboardCardLayout>
-      <div className="flex flex-col gap-[27px]">
+      <div className="flex flex-col gap-[27px] px-6 py-[26px]">
         <GradientLine title={title} value={value} />
         <p className="text-[#6C7A8A] leading-[22px]">
           Lorem Ipsum is simply dummy text of the printing and typesetting

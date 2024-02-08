@@ -6,7 +6,7 @@ interface CardLayoutProps {
 
 function DashboardCardLayout({ children }: CardLayoutProps) {
   return (
-    <article className="px-6 py-[26px] border border-[#E5E8EE] rounded-3xl bg-white">
+    <article className="border border-[#E5E8EE] rounded-3xl bg-white">
       {children}
     </article>
   );
