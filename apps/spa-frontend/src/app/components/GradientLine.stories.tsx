@@ -16,12 +16,39 @@ export default {
       control: 'text',
       defaultValue: 'Openness to Experiences',
     },
+    variant: {
+      control: { type: 'select', options: ['primary', 'secondary'] },
+      defaultValue: 'primary',
+    },
   },
 } as Meta<typeof GradientLine>;
 
-export const Default: StoryObj<typeof GradientLine> = {
+export const Primary: StoryObj<typeof GradientLine> = {
   args: {
     value: 50,
     title: 'Openness to Experiences',
+    variant: 'primary',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '490px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Secondary: StoryObj<typeof GradientLine> = {
+  args: {
+    value: 75,
+    title: 'Warmth',
+    variant: 'secondary',
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '538px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
