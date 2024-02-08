@@ -3,7 +3,10 @@ interface SimilarProfileBadgeProps {
   url?: string;
 }
 
-function SimilarProfileBadge({ peopleCount, url }: SimilarProfileBadgeProps) {
+function SimilarProfileBadge({
+  peopleCount = 1123,
+  url,
+}: SimilarProfileBadgeProps) {
   return (
     <div className="bg-white pt-[15px] pb-[13px] pl-[9px] pr-[17px] border border-[#E5E8EE] rounded-xl w-full">
       <div className="flex items-center gap-2.5">
