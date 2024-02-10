@@ -40,12 +40,8 @@ Thumbs.db
 
 # nx
 .nx/cache
+.cache
 
 # .env files
 .env*
 
-# Dagster tmp folders
-tmp*/
-
-# Python
-*.pyc
