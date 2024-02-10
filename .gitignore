@@ -38,7 +38,14 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# nx
 .nx/cache
 
 # .env files
 .env*
+
+# Dagster tmp folders
+tmp*/
+
+# Python
+*.pyc

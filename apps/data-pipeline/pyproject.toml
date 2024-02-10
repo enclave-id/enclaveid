@@ -1,3 +1,9 @@
+[tool.dagster]
+module_name = "data_pipeline"
+
+[tool.nx]
+autoActivate = true
+
 [tool.coverage.run]
 branch = true
 source = [ "data_pipeline" ]
@@ -22,6 +28,10 @@ readme = 'README.md'
 
   [tool.poetry.dependencies]
   python = ">=3.9,<3.11"
+  dagster = "^1.6.4"
+  dagster-webserver = "^1.6.4"
+  pandas = "^2.2.0"
+  faker = "^23.1.0"
 
   [tool.poetry.group.dev.dependencies]
   autopep8 = "2.0.2"

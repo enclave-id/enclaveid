@@ -4,6 +4,13 @@
   "projectType": "application",
   "sourceRoot": "apps/data-pipeline/data_pipeline",
   "targets": {
+    "dev": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "dagster dev",
+        "cwd": "apps/data-pipeline"
+      }
+    },
     "lock": {
       "executor": "@nxlv/python:run-commands",
       "options": {
