@@ -3,7 +3,7 @@ import { Button } from './Button';
 import { FacebookIcon, GoogleIcon } from './Icons';
 import { useDropzone } from 'react-dropzone';
 import { FileUploadSection } from './FileUploadSection';
-import { CardLayout } from './FormCardLayout';
+import { FormCardLayout } from './FormCardLayout';
 import { Link } from './Link';
 
 function UploadForm() {
@@ -51,7 +51,7 @@ function UploadForm() {
       <h1 className="text-[#6C7A8A] text-4xl font-medium leading-[-0.72px] text-center">
         Upload your data files
       </h1>
-      <CardLayout>
+      <FormCardLayout>
         <p className="description-text">
           Your credentials will only be used for Lorem ipsum dolor sit amet,
           consectetur adipiscing elit.
@@ -80,7 +80,7 @@ function UploadForm() {
           <Button label="Upload Data" fullWidth />
           <Link href="/">I want to learn more</Link>
         </div>
-      </CardLayout>
+      </FormCardLayout>
     </div>
   );
 }
