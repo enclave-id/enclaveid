@@ -9,9 +9,12 @@ export default {
 export const DefaultSidebar: StoryObj<typeof Sidebar> = {
   decorators: [
     (Story) => (
-      <div className="min-h-screen flex bg-white">
+      <div className="flex bg-white" style={{ height: '100vh' }}>
         <Story />
       </div>
     ),
   ],
+  parameters: {
+    layout: 'fullscreen',
+  },
 };
