@@ -42,7 +42,7 @@ function GradientLine({
   return (
     <div
       className={`flex flex-col max-w-[490px] w-full ${
-        variant === 'primary' ? 'gap-7' : 'gap-3'
+        variant === 'primary' ? 'gap-6' : 'gap-3'
       }`}
     >
       <div className="flex items-center justify-between">
