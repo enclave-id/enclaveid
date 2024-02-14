@@ -10,7 +10,10 @@ export default {
       defaultValue: 'Default Button',
     },
     variant: {
-      control: { type: 'select', options: ['primary', 'secondary'] },
+      control: {
+        type: 'select',
+        options: ['primary', 'secondary', 'tertiary'],
+      },
       defaultValue: 'primary',
     },
     fullWidth: {
@@ -32,6 +35,14 @@ export const Secondary: StoryObj<typeof Button> = {
   args: {
     label: 'Secondary Button',
     variant: 'secondary',
+    fullWidth: false,
+  },
+};
+
+export const Tertiary: StoryObj<typeof Button> = {
+  args: {
+    label: 'Tertiary Button',
+    variant: 'tertiary',
     fullWidth: false,
   },
 };
