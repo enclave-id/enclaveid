@@ -14,6 +14,10 @@ module.exports = {
     extend: {
       colors: {
         greenBg: '#2FA68A',
+        iconColor: '#D2D6DE',
+        activeIconColor: '#98C6BB',
+        passiveIconColor: '#D2D6DE',
+        passiveLinkColor: '#6C7A8A',
       },
       fontFamily: {
         sans: ['Work Sans', 'sans-serif'],
