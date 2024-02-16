@@ -43,10 +43,11 @@ export const Secondary: StoryObj<typeof GradientLine> = {
     value: 75,
     title: 'Warmth',
     variant: 'secondary',
+    index: 0,
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '538px' }}>
+      <div style={{ maxWidth: '538px', paddingTop: '40px' }}>
         <Story />
       </div>
     ),
