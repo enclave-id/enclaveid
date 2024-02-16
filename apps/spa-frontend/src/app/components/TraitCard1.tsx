@@ -1,34 +1,16 @@
 import { GradientLine } from './GradientLine';
 import { Button } from './Button';
 
+interface DataProps {
+  label: string;
+  value: number;
+}
 interface TraitCardProps {
   title: string;
+  data: DataProps[];
 }
 
-function TraitCard1({ title }: TraitCardProps) {
-  const data = [
-    {
-      label: 'Openness to Experiences',
-      value: 95,
-    },
-    {
-      label: 'Conscientiousness',
-      value: 30,
-    },
-    {
-      label: 'Extraversion',
-      value: 5,
-    },
-    {
-      label: 'Agreeableness',
-      value: 50,
-    },
-    {
-      label: 'Neuroticism',
-      value: 75,
-    },
-  ];
-
+function TraitCard1({ title, data }: TraitCardProps) {
   return (
     <div className="flex flex-col gap-2.5">
       <h2 className="text-lg leading-[21px] text-passiveLinkColor text-center uppercase">

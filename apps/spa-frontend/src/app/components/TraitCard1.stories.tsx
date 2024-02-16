@@ -12,9 +12,32 @@ export default {
   },
 } as Meta<typeof TraitCard1>;
 
+const data = [
+  {
+    label: 'Openness to Experiences',
+    value: 95,
+  },
+  {
+    label: 'Conscientiousness',
+    value: 30,
+  },
+  {
+    label: 'Extraversion',
+    value: 5,
+  },
+  {
+    label: 'Agreeableness',
+    value: 50,
+  },
+  {
+    label: 'Neuroticism',
+    value: 75,
+  },
+];
 export const Default: StoryObj<typeof TraitCard1> = {
   args: {
     title: 'Ocean',
+    data: data,
   },
   decorators: [
     (Story) => (
