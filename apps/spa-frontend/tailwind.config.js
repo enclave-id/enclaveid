@@ -22,6 +22,7 @@ module.exports = {
         'primary-gradient-stop': '#2FA68A',
         'secondary-gradient-start': '#C6DED8',
         'secondary-gradient-stop': '#C9DEEC',
+        'active-breadcrumb-title': '#AFB5BC',
       },
       fontFamily: {
         sans: ['Work Sans', 'sans-serif'],
