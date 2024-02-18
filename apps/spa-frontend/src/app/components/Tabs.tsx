@@ -1,6 +1,7 @@
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
 import { Fragment } from 'react';
+import { PersonalityContent } from './PersonalityContent';
 
 function Tabs() {
   return (
@@ -10,7 +11,7 @@ function Tabs() {
           {({ selected }) => (
             <button
               className={classNames(
-                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative',
+                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative focus:outline-none',
                 selected
                   ? 'font-medium text-greenBg tabButtonSelected'
                   : 'font-normal text-passiveLinkColor'
@@ -24,7 +25,7 @@ function Tabs() {
           {({ selected }) => (
             <button
               className={classNames(
-                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative',
+                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative focus:outline-none',
                 selected
                   ? 'font-medium text-greenBg tabButtonSelected'
                   : 'font-normal text-passiveLinkColor'
@@ -33,12 +34,12 @@ function Tabs() {
               Politics
             </button>
           )}
-        </Tab>{' '}
+        </Tab>
         <Tab as={Fragment}>
           {({ selected }) => (
             <button
               className={classNames(
-                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative',
+                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative focus:outline-none',
                 selected
                   ? 'font-medium text-greenBg tabButtonSelected'
                   : 'font-normal text-passiveLinkColor'
@@ -47,12 +48,12 @@ function Tabs() {
               Career
             </button>
           )}
-        </Tab>{' '}
+        </Tab>
         <Tab as={Fragment}>
           {({ selected }) => (
             <button
               className={classNames(
-                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative',
+                'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative focus:outline-none',
                 selected
                   ? 'font-medium text-greenBg tabButtonSelected'
                   : 'font-normal text-passiveLinkColor'
@@ -64,7 +65,9 @@ function Tabs() {
         </Tab>
       </Tab.List>
       <Tab.Panels className="pt-3.5">
-        <Tab.Panel>Content 1</Tab.Panel>
+        <Tab.Panel>
+          <PersonalityContent />
+        </Tab.Panel>
         <Tab.Panel>Content 2</Tab.Panel>
         <Tab.Panel>Content 3</Tab.Panel>
         <Tab.Panel>Content 4</Tab.Panel>
