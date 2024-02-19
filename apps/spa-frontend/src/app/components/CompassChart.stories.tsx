@@ -23,4 +23,11 @@ export const Default: StoryObj<typeof CompassChart> = {
     x: 0,
     y: 0,
   },
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '10px 0 0 20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
