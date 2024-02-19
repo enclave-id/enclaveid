@@ -10,3 +10,8 @@
     @apply text-[#6C7A8A] leading-[22.4px];
   }
 }
+
+.text-rotation {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
