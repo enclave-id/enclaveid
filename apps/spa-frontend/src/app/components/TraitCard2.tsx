@@ -11,21 +11,22 @@ interface TraitCardProps {
   data: DataProps[];
 }
 
-function TraitCard1({ title, data }: TraitCardProps) {
+function TraitCard2({ title, data }: TraitCardProps) {
   return (
     <DashboardCardLayout withTitle title={title}>
-      <div className="flex flex-col pt-[26px] pb-3.5 px-3">
-        <div className="px-3 flex flex-col gap-6">
+      <div className="flex flex-col px-3 pb-[15px] pt-[52px]">
+        <div className="pl-[15px] pr-3 flex flex-col gap-5">
           {data.map((result, index) => (
             <GradientLine
               title={result.label}
               value={result.value}
               key={index}
               index={index}
+              variant="secondary"
             />
           ))}
         </div>
-        <div className="mt-[15px]">
+        <div className="mt-[86px]">
           <Button label="Dive Deeper" variant="tertiary" fullWidth />
         </div>
       </div>
@@ -33,4 +34,4 @@ function TraitCard1({ title, data }: TraitCardProps) {
   );
 }
 
-export { TraitCard1 };
+export { TraitCard2 };

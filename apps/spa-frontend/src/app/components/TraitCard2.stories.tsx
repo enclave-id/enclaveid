@@ -1,22 +1,22 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { TraitCard1 } from './TraitCard1';
-import { traitCard1 } from './mock-data';
+import { TraitCard2 } from './TraitCard2';
+import { traitCard2 } from './mock-data';
 
 export default {
-  title: 'Components/TraitCard1',
-  component: TraitCard1,
+  title: 'Components/TraitCard2',
+  component: TraitCard2,
   argTypes: {
     title: {
       control: 'text',
       defaultValue: 'Personality Traits',
     },
   },
-} as Meta<typeof TraitCard1>;
+} as Meta<typeof TraitCard2>;
 
-export const Default: StoryObj<typeof TraitCard1> = {
+export const Default: StoryObj<typeof TraitCard2> = {
   args: {
-    title: 'Ocean',
-    data: traitCard1,
+    title: '16FP',
+    data: traitCard2,
   },
   decorators: [
     (Story) => (

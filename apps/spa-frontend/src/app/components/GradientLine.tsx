@@ -12,12 +12,14 @@ interface GradientLineProps {
   value: number;
   title: string;
   variant?: 'primary' | 'secondary';
+  index: number;
 }
 
 function GradientLine({
   value,
   title,
   variant = 'primary',
+  index,
 }: GradientLineProps) {
   const getLabel = (value: number): Label => {
     if (value <= 20) return Label.VeryLow;
@@ -34,44 +36,46 @@ function GradientLine({
     transform: 'translateX(-50%)',
   };
 
-  const barColor =
-    variant === 'primary'
-      ? 'from-[#5799E6] to-[#2FA68A]'
-      : 'from-[#C6DED8] to-[#C9DEEC]';
+  const barColors = {
+    primary: 'from-primary-gradient-start to-primary-gradient-stop',
+    secondary: 'from-secondary-gradient-start to-secondary-gradient-stop',
+  };
+
+  const barColor = barColors[variant];
+  if (variant === 'secondary') {
+    return (
+      <div className="flex gap-[18px] items-center">
+        <span className="text-[#6C7A8A] font-medium leading-4 text-sm max-w-[142px] w-full text-right">
+          {title}
+        </span>
+        <div
+          className={`h-2.5 rounded-full w-full bg-gradient-to-r ${barColor} relative`}
+        >
+          <Pin style={pinStyle} variant={variant} />
+          {index === 0 && (
+            <div className="flex items-center justify-between absolute -top-8 w-full ">
+              <span className="text-[#5799E6] text-sm font-medium leading-4">
+                Low
+              </span>
+              <span className="text-[#30A78A] text-sm font-medium leading-4">
+                High
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={`flex flex-col max-w-[490px] w-full ${
-        variant === 'primary' ? 'gap-6' : 'gap-3'
-      }`}
-    >
+    <div className="flex flex-col w-full gap-6">
       <div className="flex items-center justify-between">
-        {variant === 'primary' ? (
-          <>
-            <span className="text-[#6C7A8A] font-medium leading-[19px]">
-              {title}
-            </span>
-            <span className="text-greenBg font-medium leading-[19px]">
-              {label}
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="text-[#5799E6] text-sm font-medium leading-4">
-              Low
-            </span>
-            <span className="text-[#30A78A] text-sm font-medium leading-4">
-              High
-            </span>
-          </>
-        )}
+        <span className="text-[#6C7A8A] font-medium leading-[19px]">
+          {title}
+        </span>
+        <span className="text-greenBg font-medium leading-[19px]">{label}</span>
       </div>
       <div className="flex gap-[18px] items-center">
-        {variant === 'secondary' && (
-          <span className="text-[#6C7A8A] font-medium leading-4 text-sm">
-            {title}
-          </span>
-        )}
         <div
           className={`h-2.5 rounded-full w-full bg-gradient-to-r ${barColor} relative`}
         >

@@ -18,6 +18,11 @@ module.exports = {
         activeIconColor: '#98C6BB',
         passiveIconColor: '#D2D6DE',
         passiveLinkColor: '#6C7A8A',
+        'primary-gradient-start': '#5799E6',
+        'primary-gradient-stop': '#2FA68A',
+        'secondary-gradient-start': '#C6DED8',
+        'secondary-gradient-stop': '#C9DEEC',
+        'active-breadcrumb-title': '#AFB5BC',
       },
       fontFamily: {
         sans: ['Work Sans', 'sans-serif'],
