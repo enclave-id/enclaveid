@@ -1,26 +1,33 @@
+import { useElementWidth } from '../hooks/useElementWidth';
+
+const MAX_COMPASS_VALUE = 5;
+
 interface CompassChartProps {
   x: number;
   y: number;
 }
 
 function CompassChart({ x, y }: CompassChartProps) {
-  const unitToPixels = 264 / 10;
+  const [compassRef, compassWidth] = useElementWidth();
 
-  const centerX = 132;
-  const centerY = 132;
+  const unitToPixels = compassWidth / 10;
 
-  const posX = centerX + x * unitToPixels;
-  const posY = centerY - y * unitToPixels;
+  const posX = compassWidth / 2 + x * unitToPixels;
+  const posY = compassWidth / 2 - y * unitToPixels;
 
-  let label = '';
-  if (x > 0 && y > 0) {
-    label = 'Authoritarian Right';
-  } else if (x < 0 && y > 0) {
-    label = 'Authoritarian Left';
-  } else if (x < 0 && y < 0) {
-    label = 'Libertarian Left';
-  } else if (x > 0 && y < 0) {
-    label = 'Libertarian Right';
+  let label = 'Unaligned';
+  if (y > 0) {
+    label = 'Authoritarian';
+  } else if (y < 0) {
+    label = 'Libertarian';
+  }
+
+  if (x > 0) {
+    label += ' Right';
+  } else if (x < 0) {
+    label += ' Left';
+  } else {
+    label += ' Center';
   }
 
   return (
@@ -28,10 +35,15 @@ function CompassChart({ x, y }: CompassChartProps) {
       <h2 className="text-[#6D4190] text-xl leading-6">
         {label}{' '}
         <span className="text-[#6C7A8A]">
-          (+{x};-{y})
+          ({x > 0 ? '+' : ''}
+          {x};{y > 0 ? '+' : ''}
+          {y})
         </span>
       </h2>
-      <div className="max-w-max relative">
+      <div
+        ref={compassRef as React.RefObject<HTMLDivElement>}
+        className="max-w-max relative"
+      >
         <div className="grid grid-cols-2 max-h-max">
           <div className="w-[132px] h-[132px] border border-[#AFB5BC] bg-[#FFE5E5] relative">
             <span className="absolute -bottom-px right-1 text-[#7A818A] text-sm leading-[14px] uppercase">
@@ -40,20 +52,20 @@ function CompassChart({ x, y }: CompassChartProps) {
           </div>
           <div className="w-[132px] h-[132px] border border-[#AFB5BC] border-l-0 bg-[#E5F1FF] relative">
             <span className="absolute top-px left-[2px] text-[#7A818A] text-sm leading-4">
-              +5
+              +{MAX_COMPASS_VALUE}
             </span>
           </div>
           <div className="w-[132px] h-[132px] border border-[#AFB5BC] border-t-0 bg-[#E5FFEE] relative">
             <span className="absolute top-px left-[2px] text-[#7A818A] text-sm leading-4">
-              -5
+              -{MAX_COMPASS_VALUE}
             </span>
           </div>
           <div className="w-[132px] h-[132px] border border-[#AFB5BC] border-t-0 border-l-0 bg-[#F7E5FF] relative">
             <span className="absolute top-px right-[2px] text-[#7A818A] text-sm leading-4">
-              +5
+              +{MAX_COMPASS_VALUE}
             </span>
             <span className="absolute bottom-px left-[2px] text-[#7A818A] text-sm leading-4">
-              -5
+              -{MAX_COMPASS_VALUE}
             </span>
             <span className="absolute top-1 left-[2px] text-rotation text-[#7A818A] text-sm leading-[14px] uppercase">
               Social
