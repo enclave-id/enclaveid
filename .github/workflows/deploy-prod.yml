@@ -34,7 +34,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ steps.set_ip.outputs.ec2_host }}
-        username: ${{ secrets.EC2_USER }}
+        username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           git clone https://github.com/enclave-id/enclaveid
