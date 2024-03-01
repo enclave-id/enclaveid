@@ -3,11 +3,11 @@ import * as ReactDOM from 'react-dom/client';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Home from './app/pages/home';
 import { E2eTest } from './app/pages/e2eTest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { trpc } from './app/utils/trpc';
+import { Landing } from './app/pages/landing';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <Landing />,
   },
   {
     path: '/e2eTest',
