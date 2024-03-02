@@ -13,12 +13,12 @@ RUN npm install -g pnpm@8.15.4
 
 COPY ./* /app/
 WORKDIR /app
+
 RUN pnpm install
 
-EXPOSE 4200
-
 COPY --from=builder /nitriding-daemon/nitriding /usr/local/bin/nitriding
-COPY entrypoint.sh /entrypoint.sh
 
-CMD ["entrypoint.sh"]
+EXPOSE 3000
+
+ENTRYPOINT ["./entrypoint.sh"]
 
