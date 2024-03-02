@@ -88,7 +88,6 @@
     "sharedGlobals": []
   },
   "plugins": [
-    "@nxlv/python",
     "@nxrocks/nx-spring-boot"
   ],
   "nxCloudAccessToken": "MWRiZmM1ODUtOTM0Ni00MDExLTgzODQtMjk0MjIxZDJjMDllfHJlYWQtd3JpdGU=",

@@ -5,3 +5,7 @@ declare module '@fastify/jwt' {
     user: { id: string };
   }
 }
+
+export interface UserCookie {
+  id: string;
+}
