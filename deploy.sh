@@ -3,7 +3,7 @@
 # Set program variables
 prog="enclaveid"
 
-version=$(git describe --tag --dirty)
+version=$(git describe --tag --dirty || echo "v0.0.0")
 image_tag="${prog}:${version}"
 image_tar="${prog}-${version}-kaniko.tar"
 image_eif="${image_tar%.tar}.eif"
