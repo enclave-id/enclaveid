@@ -1,10 +1,10 @@
 import { authenticatedProcedure, router } from '../trpc';
-import { AppContext } from '../context';
 import {
   decryptRequestPayload,
   encryptResponsePayload,
 } from '../services/symmetricCrypto';
 import { z } from 'zod';
+import { AppContext } from '../context';
 
 export const pingPong = router({
   pingPong: authenticatedProcedure

@@ -2,7 +2,9 @@
   "name": "@enclaveid/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "fleek-build": "pnpm exec nx run api:prisma-generate && pnpm exec nx run spa-frontend:build --configuration=production "
+  },
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.23.9",
