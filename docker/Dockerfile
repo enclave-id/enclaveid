@@ -1,0 +1,24 @@
+FROM golang:1.20 as builder
+
+WORKDIR /
+
+# Clone the repository and build the stand-alone nitriding executable.
+RUN git clone https://github.com/brave/nitriding-daemon.git -b  v1.4.2
+ARG TARGETARCH
+RUN ARCH=${TARGETARCH} make -C nitriding-daemon/ nitriding
+
+FROM node:21.6.2-alpine3.18
+
+RUN npm install -g pnpm@8.15.4
+
+COPY ./* /app/
+WORKDIR /app
+RUN pnpm install
+
+EXPOSE 4200
+
+COPY --from=builder /nitriding-daemon/nitriding /usr/local/bin/nitriding
+COPY entrypoint.sh /entrypoint.sh
+
+CMD ["entrypoint.sh"]
+
