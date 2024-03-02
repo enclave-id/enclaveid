@@ -43,6 +43,8 @@ start_proxy() {
     wget -O gvproxy https://github.com/containers/gvisor-tap-vsock/releases/download/v0.7.3/gvproxy-linux-amd64
     chmod +x gvproxy
 
+    killall gvproxy
+
     ./gvproxy -listen vsock://:1024 -listen unix:///tmp/network.sock & 
 
     # Expose the port
