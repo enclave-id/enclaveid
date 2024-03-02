@@ -47,6 +47,9 @@ start_proxy() {
 
     ./gvproxy -listen vsock://:1024 -listen unix:///tmp/network.sock & 
 
+    # Wait for the proxy to start
+    sleep 3
+
     # Expose the port
     curl --unix-socket /tmp/network.sock http:/unix/services/forwarder/expose -X POST -d '{"local":":8443","remote":"192.168.127.2:443"}' 
 }
