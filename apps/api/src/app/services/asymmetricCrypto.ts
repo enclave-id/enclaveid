@@ -9,22 +9,22 @@ export async function generateAsymmetricKeyPair() {
     generateKeyPair(
       'rsa',
       {
-        modulusLength: 2048, // Key size in bits
+        modulusLength: 2048,
         publicKeyEncoding: {
-          type: 'spki', // Recommended public key encoding
+          type: 'spki',
           format: 'pem',
         },
         privateKeyEncoding: {
-          type: 'pkcs8', // Recommended private key encoding
+          type: 'pkcs8',
           format: 'pem',
-          cipher: 'aes-256-cbc', // Optional private key encryption
-          passphrase: '', // Optional passphrase for private key encryption
+          cipher: 'aes-256-cbc',
+          passphrase: '',
         },
       },
       (err, publicKey, privateKey) => {
         if (err) reject(err);
         else resolve({ publicKey, privateKey });
-      },
+      }
     );
   });
 
@@ -32,6 +32,7 @@ export async function generateAsymmetricKeyPair() {
   await writeFile('privateKey.pem', privateKey);
 }
 
+// cat publicKey.pem | openssl dgst -sha256 -binary | base64
 export async function getPublicKeyHash() {
   const publicKey = await readFile('publicKey.pem', { encoding: 'utf-8' });
   const hash = createHash('sha256');
@@ -51,6 +52,6 @@ export async function asymmetricDecrypt(encryptedText: string) {
 
   return privateDecrypt(
     privateEncryptionKey,
-    Buffer.from(encryptedText, 'base64'),
+    Buffer.from(encryptedText, 'base64')
   ).toString();
 }
