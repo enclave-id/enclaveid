@@ -3,7 +3,10 @@ import AutoLoad from '@fastify/autoload';
 import path from 'path';
 import staticFiles from '@fastify/static';
 import axios from 'axios';
-import { generateAsymmetricKeyPair } from './app/services/asymmetricCrypto';
+import {
+  generateAsymmetricKeyPair,
+  getPublicKeyHash,
+} from './app/services/asymmetricCrypto';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -35,7 +38,7 @@ server.listen({ port, host }, (err) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  await axios.get('http://127.0.0.1:8080//enclave/ready').then((res) => {
+  await axios.get('http://127.0.0.1:8080/enclave/ready').then((res) => {
     console.log("Told Nitriding we're ready", res.data);
   });
 

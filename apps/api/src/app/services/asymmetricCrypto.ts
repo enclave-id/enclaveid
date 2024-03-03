@@ -1,4 +1,4 @@
-import { generateKeyPair, createHash } from 'crypto';
+import { generateKeyPair, createHash, privateDecrypt } from 'crypto';
 import { writeFile, readFile } from 'fs/promises';
 
 export async function generateAsymmetricKeyPair() {
@@ -38,4 +38,19 @@ export async function getPublicKeyHash() {
   hash.update(publicKey);
   const digest = hash.digest('hex');
   return digest;
+}
+
+export async function getPublicKey() {
+  return await readFile('publicKey.pem', { encoding: 'utf-8' });
+}
+
+export async function asymmetricDecrypt(encryptedText: string) {
+  const privateEncryptionKey = await readFile('privateKey.pem', {
+    encoding: 'utf-8',
+  });
+
+  return privateDecrypt(
+    privateEncryptionKey,
+    Buffer.from(encryptedText, 'base64'),
+  ).toString();
 }
