@@ -108,6 +108,7 @@
     "fastify": "~4.13.0",
     "fastify-plugin": "~4.5.1",
     "jszip": "^3.10.1",
+    "multiformats": "^13.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",

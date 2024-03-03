@@ -83,6 +83,9 @@ dependencies:
   jszip:
     specifier: ^3.10.1
     version: 3.10.1
+  multiformats:
+    specifier: ^13.1.0
+    version: 13.1.0
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -15121,6 +15124,10 @@ packages:
       dns-packet: 5.6.1
       thunky: 1.1.0
     dev: true
+
+  /multiformats@13.1.0:
+    resolution: {integrity: sha512-HzdtdBwxsIkzpeXzhQ5mAhhuxcHbjEHH+JQoxt7hG/2HGFjjwyolLo7hbaexcnhoEuV4e0TNJ8kkpMjiEYY4VQ==}
+    dev: false
 
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
