@@ -6,6 +6,7 @@ import {
 } from '../utils/attestation';
 import { generateNonce } from '../utils/confidentiality';
 import { trpc } from '../utils/trpc';
+import { validateAttestationSignature } from '../utils/coseValidation';
 
 export function useAttestation() {
   const [publicKey, setPublicKey] = useState<string | null>(null);
@@ -20,14 +21,17 @@ export function useAttestation() {
 
         const { publicKey, base64Cbor } = attestationQuery.data ?? {};
 
-        if (!base64Cbor) {
-          throw new Error('Missing attestation data');
-        }
+        if (!publicKey) throw new Error('Missing public key');
+        if (!base64Cbor) throw new Error('Missing attestation data');
 
+        // Validate the attestation signature
+        const validationResult = await validateAttestationSignature(base64Cbor);
+        if (!validationResult) throw new Error('Invalid attestation signature');
+
+        // Validate the attestation contents
         const { pcr0, nonce, b64PublicKeyDigest } =
           decodeAttestation(base64Cbor);
 
-        // Validate the attestation
         if (nonce !== attestationQuery.data?.nonce) {
           throw new Error(
             `Invalid nonce value: ${nonce}. Expected: ${attestationQuery.data?.nonce}`

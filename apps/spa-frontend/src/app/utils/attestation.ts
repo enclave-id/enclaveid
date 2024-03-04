@@ -4,7 +4,7 @@ import { base64ToUint8array } from './typeConversion';
 export const expectedPcr0 = process.env.PCR0;
 
 function deserialize(userData: Uint8Array) {
-  const hashPrefixSize = 7; // Size of hashPrefix
+  const hashPrefixSize = 7; // Size of hashPrefix "sha256:"
   const hashSize = 32; // Size of SHA-256 hash
 
   // Extract tlsKeyHash
@@ -13,7 +13,7 @@ function deserialize(userData: Uint8Array) {
   const tlsKeyHashBytes = userData.slice(tlsKeyHashStart, tlsKeyHashEnd);
 
   // Extract appKeyHash
-  const appKeyHashStart = tlsKeyHashEnd + hashPrefixSize + 1;
+  const appKeyHashStart = tlsKeyHashEnd + hashPrefixSize + 1; // +1 for semicolon
   const appKeyHashEnd = appKeyHashStart + hashSize;
   const appKeyHashBytes = userData.slice(appKeyHashStart, appKeyHashEnd);
 
