@@ -1,7 +1,7 @@
 import { decode } from 'cbor-x/decode';
 import { base64ToUint8array } from './typeConversion';
 
-export const expectedPcr0 = process.env.PCR0;
+export const expectedPcr0 = 'process.env.PCR0';
 
 function deserialize(userData: Uint8Array) {
   const hashPrefixSize = 7; // Size of hashPrefix "sha256:"

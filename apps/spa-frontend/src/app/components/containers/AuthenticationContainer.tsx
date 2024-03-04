@@ -2,30 +2,25 @@ import React, { useCallback } from 'react';
 import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/confidentiality';
 import { AuthenticationFormProps } from '../AuthenticationForm';
-import { useTpmEncryptionKey } from '../../hooks/useTpmEncryptionKey';
+import { useAttestation } from '../../hooks/useAttestation';
 
 export function AuthenticationContainer({
   children,
 }: {
   children: (props: AuthenticationFormProps) => React.ReactNode;
 }) {
-  const jwt = trpc.getAttestation.useQuery({ nonce: 'test' }).data?.jwt;
   const loginMutation = trpc.login.useMutation();
 
-  const { tpmEncryptionKey } = useTpmEncryptionKey(jwt);
+  const { publicKey, error } = useAttestation();
 
   const handleSubmit = useCallback(
     async (email: string, password: string) => {
-      if (!tpmEncryptionKey) {
-        throw new Error('Attestation JWT not found');
-      }
-
       const encryptedCredentials = await asymmetricEncrypt(
         {
           email,
           password,
         },
-        tpmEncryptionKey
+        publicKey
       );
 
       await loginMutation.mutate({
@@ -34,7 +29,7 @@ export function AuthenticationContainer({
 
       console.log('Logged in');
     },
-    [loginMutation, tpmEncryptionKey, jwt]
+    [loginMutation, publicKey]
   );
 
   return children({

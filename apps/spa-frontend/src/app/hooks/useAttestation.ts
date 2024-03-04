@@ -8,7 +8,10 @@ import { generateNonce } from '../utils/confidentiality';
 import { trpc } from '../utils/trpc';
 import { validateAttestationSignature } from '../utils/coseValidation';
 
-export function useAttestation() {
+export function useAttestation(): {
+  publicKey: string | null;
+  error: string | null;
+} {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 

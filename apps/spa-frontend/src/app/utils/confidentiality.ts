@@ -24,15 +24,28 @@ export function generateNonce(): Uint8Array {
 
 export function asymmetricEncrypt(
   data: unknown,
-  publicKey: CryptoKey
+  publicKey: string
 ): Promise<string> {
-  return window.crypto.subtle
-    .encrypt(
-      { name: 'RSA-OAEP' },
-      publicKey,
-      new TextEncoder().encode(JSON.stringify(data))
+  return crypto.subtle
+    .importKey(
+      'spki',
+      Buffer.from(publicKey, 'base64'),
+      {
+        name: 'RSA-OAEP',
+        hash: 'SHA-256',
+      },
+      true,
+      ['encrypt']
     )
-    .then(arrayBufferToBase64);
+    .then((pk) => {
+      return window.crypto.subtle
+        .encrypt(
+          { name: 'RSA-OAEP' },
+          pk,
+          new TextEncoder().encode(JSON.stringify(data))
+        )
+        .then(arrayBufferToBase64);
+    });
 }
 
 export async function symmetricEncrypt(

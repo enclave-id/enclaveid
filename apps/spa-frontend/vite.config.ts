@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
   root: __dirname,
@@ -17,12 +18,17 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(), nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+  plugins: [
+    react(),
+    nxViteTsPaths(),
+    nodePolyfills({
+      // @ts-expect-error: Type 'string' is not assignable to type 'never'.
+      include: ['buffer', 'stream'],
+      globals: {
+        Buffer: true,
+      },
+    }),
+  ],
 
   build: {
     outDir: '../../dist/apps/spa-frontend',
