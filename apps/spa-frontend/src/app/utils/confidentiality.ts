@@ -18,7 +18,7 @@ function getSessionKey(): Uint8Array {
   }
 }
 
-function generateNonce(): Uint8Array {
+export function generateNonce(): Uint8Array {
   return window.crypto.getRandomValues(new Uint8Array(16));
 }
 

@@ -33,8 +33,8 @@ export function uint8arrayToBase64(bytes: Uint8Array) {
   return window.btoa(binary);
 }
 
-export function base64ToUint8array(base64) {
-  const binary_string = atob(base64);
+export function base64ToUint8array(base64: string) {
+  const binary_string = window.atob(base64);
   const len = binary_string.length;
   const bytes = new Uint8Array(len);
 
