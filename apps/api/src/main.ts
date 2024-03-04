@@ -38,17 +38,17 @@ server.listen({ port, host }, (err) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  await axios.get('http://127.0.0.1:8080/enclave/ready').then((res) => {
+  axios.get('http://127.0.0.1:8080/enclave/ready').then((res) => {
     console.log("Told Nitriding we're ready", res.data);
-  });
 
-  await generateAsymmetricKeyPair();
-
-  const publicKeyHash = await getPublicKeyHash();
-
-  await axios
-    .post('http://127.0.0.1:8080/enclave/hash', publicKeyHash)
-    .then((res) => {
-      console.log('Registered new public key', res.data);
+    generateAsymmetricKeyPair().then(() => {
+      getPublicKeyHash().then((publicKeyHash) => {
+        axios
+          .post('http://127.0.0.1:8080/enclave/hash', publicKeyHash)
+          .then((res) => {
+            console.log('Registered new public key', res.data);
+          });
+      });
     });
+  });
 }

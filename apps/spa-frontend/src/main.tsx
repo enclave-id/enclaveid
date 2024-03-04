@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { trpc } from './app/utils/trpc';
 import { Landing } from './app/pages/landing';
+import { AttestationTest } from './app/pages/attestationTest';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/e2eTest',
     element: <E2eTest />,
+  },
+  {
+    path: '/attestation',
+    element: <AttestationTest />,
   },
 ]);
 

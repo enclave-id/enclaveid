@@ -1,5 +1,6 @@
 import { generateKeyPair, createHash, privateDecrypt } from 'crypto';
 import { writeFile, readFile } from 'fs/promises';
+import { mockPublicKey } from './mocks';
 
 export async function generateAsymmetricKeyPair() {
   const { privateKey, publicKey } = await new Promise<{
@@ -32,7 +33,7 @@ export async function generateAsymmetricKeyPair() {
   await writeFile('privateKey.pem', privateKey);
 }
 
-// cat publicKey.pem | openssl dgst -sha256 -binary | base64
+// Same as: cat publicKey.pem | openssl dgst -sha256 -binary | base64
 export async function getPublicKeyHash() {
   const publicKey = await readFile('publicKey.pem', { encoding: 'utf-8' });
   const hash = createHash('sha256');
@@ -41,7 +42,9 @@ export async function getPublicKeyHash() {
   return digest;
 }
 
-export async function getPublicKey() {
+export async function getPublicKey(): Promise<string> {
+  if (process.env.NODE_ENV === 'development') return mockPublicKey;
+
   return await readFile('publicKey.pem', { encoding: 'utf-8' });
 }
 

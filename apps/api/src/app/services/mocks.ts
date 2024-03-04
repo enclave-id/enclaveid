@@ -1,4 +1,4 @@
-import { createPrivateKey, createPublicKey } from 'crypto';
+import { createPrivateKey } from 'crypto';
 
 const mockNonce = 'dbfc891be3687e6fa54cda65129ca6412be18edb';
 
@@ -37,7 +37,7 @@ Kq3WelA9EWzjUQR/ggWuxYvCQMYSWwzMTNFIv0WEmU6n
 -----END ENCRYPTED PRIVATE KEY-----`);
 
 // SHA-256 hash: lPEt0C1N6HXbg75v2jYIQTLv7RkrYwQnxseEuPWRHoU=
-const mockPublicKey = createPublicKey(`-----BEGIN PUBLIC KEY-----
+const mockPublicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnpZ7KpwymjY8uG9Lfd3q
 2fkMyzUdRdretHSGG+eFyO+9Iheo0EfBEM9QiM39R/vAYsZr5bOE+QM0FZynIjmB
 t6B75Pk7VXKhA2DKxLEoPxd8QfOOE7w+UEDVqpC6Fz4sjxW9Dyy6jQ9PqTUechNr
@@ -45,6 +45,6 @@ t6B75Pk7VXKhA2DKxLEoPxd8QfOOE7w+UEDVqpC6Fz4sjxW9Dyy6jQ9PqTUechNr
 LMswObjFFRyo+/nWjQOvXBhhQFlzGIoT1anKHccfXrZzv/GGl9DU8cknes9+5Hnl
 36yaT+XAjl98e6h0gNSxcuBmC2j2J5PI7ad0zzwkaAxLqaGReX1BkbPfkbkuMMTg
 1wIDAQAB
------END PUBLIC KEY-----`);
+-----END PUBLIC KEY-----`;
 
 export { mockNonce, mockAttestation, mockPrivateKey, mockPublicKey };

@@ -15,8 +15,10 @@ export function useAttestation() {
   useEffect(() => {
     async function validateAttestation() {
       try {
+        const expectedNonce = Buffer.from(generateNonce()).toString('hex');
+
         const attestationQuery = await trpc.getAttestation.useQuery({
-          nonce: Buffer.from(generateNonce()).toString('hex'),
+          nonce: expectedNonce,
         });
 
         const { publicKey, base64Cbor } = attestationQuery.data ?? {};
@@ -32,9 +34,9 @@ export function useAttestation() {
         const { pcr0, nonce, b64PublicKeyDigest } =
           decodeAttestation(base64Cbor);
 
-        if (nonce !== attestationQuery.data?.nonce) {
+        if (nonce !== expectedNonce) {
           throw new Error(
-            `Invalid nonce value: ${nonce}. Expected: ${attestationQuery.data?.nonce}`
+            `Invalid nonce value: ${nonce}. Expected: ${expectedNonce}`
           );
         }
 

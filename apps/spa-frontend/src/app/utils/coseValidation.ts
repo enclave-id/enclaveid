@@ -18,20 +18,19 @@ IwLz3/Y=
 -----END CERTIFICATE-----`;
 
 async function pemToCryptoKey(pem: string) {
-  // Step 1: Remove PEM header and footer
+  // Remove PEM header and footer
   const pemHeader = '-----BEGIN PUBLIC KEY-----';
   const pemFooter = '-----END PUBLIC KEY-----';
   let pemContents = pem.replace(pemHeader, '').replace(pemFooter, '');
   pemContents = pemContents.replace(/\s+/g, ''); // Remove whitespace
 
-  // Step 2: Base64 decode the string to an ArrayBuffer
+  // Base64 decode the string to an ArrayBuffer
   const binaryDerString = window.atob(pemContents);
   const binaryDer = new Uint8Array(binaryDerString.length);
   for (let i = 0; i < binaryDerString.length; i++) {
     binaryDer[i] = binaryDerString.charCodeAt(i);
   }
 
-  // Step 3: Import the key to a CryptoKey object
   return await window.crypto.subtle.importKey(
     'spki',
     binaryDer.buffer,
