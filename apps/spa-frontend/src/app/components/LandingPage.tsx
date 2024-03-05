@@ -1,8 +1,8 @@
-import { LandingConnections } from './LandingConnections';
-import { LandingFeatures } from './LandingFeatures';
-import { LandingHero } from './LandingHero';
-import { LandingInformation } from './LandingInformation';
-import { LandingNavbar } from './LandingNavbar';
+import { LandingConnections } from './landingPage/LandingConnections';
+import { LandingFeatures } from './landingPage/LandingFeatures';
+import { LandingHero } from './landingPage/LandingHero';
+import { LandingInformation } from './landingPage/LandingInformation';
+import { LandingNavbar } from './landingPage/LandingNavbar';
 
 function LandingPage() {
   return (

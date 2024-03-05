@@ -1,32 +1,30 @@
 import { useState, useEffect } from 'react';
 import {
   decodeAttestation,
-  expectedPcr0,
-  getb64PublicKeyDigest,
-} from '../utils/attestation';
-import { generateNonce } from '../utils/confidentiality';
+  getPublicKeyHashBrowser,
+} from '../utils/attestation/attestation';
 import { trpcClient } from '../utils/trpc';
-import { Buffer } from 'buffer';
-// @ts-expect-error TODO idk why but vite won't compile without the .ts
-import { mockNonce } from 'apps/api/src/app/services/mocks.ts';
+import { useGoWasm } from './useGoWasm';
+import { getExpectedMesaurements } from '../utils/attestation/measurements';
 
-const debug = process.env.NODE_ENV === 'development';
-
-export function useAttestation(isWasmReady: boolean): {
+export function useAttestation(): {
   publicKey: string | null;
   error: Error | null;
 } {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const { isReady, error: wasmError } = useGoWasm('./nitrite.wasm');
+
+  useEffect(() => {
+    if (wasmError) setError(wasmError);
+  }, [wasmError]);
 
   useEffect(() => {
     async function runAttestation() {
-      if (!isWasmReady) return;
+      if (!isReady) return;
 
       try {
-        const expectedNonce = debug
-          ? mockNonce
-          : Buffer.from(generateNonce()).toString('hex');
+        const { expectedNonce, expectedPcr0 } = getExpectedMesaurements();
 
         const attestationQuery = await trpcClient.getAttestation.query({
           nonce: expectedNonce,
@@ -37,12 +35,14 @@ export function useAttestation(isWasmReady: boolean): {
         if (!publicKey) throw new Error('Missing public key');
         if (!base64Cbor) throw new Error('Missing attestation data');
 
+        // Validate the signature and decode the attestation document
         const { result: validationResult, error: validationError } = JSON.parse(
-          window.validateAttestation(base64Cbor, debug),
+          window.validateAttestation(
+            base64Cbor,
+            process.env.NODE_ENV === 'development',
+          ),
         );
         if (validationError !== '') throw new Error(validationError);
-
-        console.log('Attestation validation result:', validationResult);
 
         // Validate the attestation contents
         const { pcr0, nonce, b64PublicKeyDigest } =
@@ -61,7 +61,8 @@ export function useAttestation(isWasmReady: boolean): {
         }
 
         const expectedb64PublicKeyDigest =
-          await getb64PublicKeyDigest(publicKey);
+          await getPublicKeyHashBrowser(publicKey);
+
         if (b64PublicKeyDigest !== expectedb64PublicKeyDigest) {
           throw new Error(
             `Invalid public key digest value: ${b64PublicKeyDigest}. Expected: ${expectedb64PublicKeyDigest}`,
@@ -79,7 +80,7 @@ export function useAttestation(isWasmReady: boolean): {
     }
 
     runAttestation();
-  }, [isWasmReady]);
+  }, [isReady]);
 
   return { publicKey, error };
 }

@@ -1,11 +1,5 @@
 // AES-CTR encryption and decryption functions
 
-import {
-  arrayBufferToBase64,
-  base64ToArrayBuffer,
-  base64ToUint8array,
-  uint8arrayToBase64,
-} from './typeConversion';
 import { Buffer } from 'buffer';
 
 function getSessionKey(): Uint8Array {
@@ -45,7 +39,9 @@ export function asymmetricEncrypt(
           pk,
           new TextEncoder().encode(JSON.stringify(data)),
         )
-        .then(arrayBufferToBase64);
+        .then((encrypted) => {
+          return Buffer.from(encrypted).toString('base64');
+        });
     });
 }
 
@@ -74,8 +70,8 @@ export async function symmetricEncrypt(
   );
 
   return {
-    encryptedPayload: arrayBufferToBase64(encryptedPayload),
-    nonce: uint8arrayToBase64(nonce),
+    encryptedPayload: Buffer.from(encryptedPayload).toString('base64'),
+    nonce: Buffer.from(nonce).toString('base64'),
   };
 }
 
@@ -92,9 +88,9 @@ export async function symmetricDecrypt(
   );
 
   const decryptedPayload = await window.crypto.subtle.decrypt(
-    { name: 'AES-CTR', counter: base64ToUint8array(nonce), length: 64 },
+    { name: 'AES-CTR', counter: Buffer.from(nonce, 'base64'), length: 64 },
     cryptoKey,
-    base64ToArrayBuffer(encryptedPyload),
+    Buffer.from(encryptedPyload, 'base64'),
   );
 
   const data = new TextDecoder().decode(decryptedPayload);

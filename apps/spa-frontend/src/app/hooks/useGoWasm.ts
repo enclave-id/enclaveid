@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import '../utils/wasm_exec.js';
+import '../utils/attestation/wasm_exec.js';
 
 export function useGoWasm(wasmURL: string) {
   const [isReady, setIsReady] = useState(false);

@@ -5,7 +5,7 @@ import staticFiles from '@fastify/static';
 import axios from 'axios';
 import {
   generateAsymmetricKeyPair,
-  getPublicKeyHash,
+  getPublicKeyHashNode,
 } from './app/services/asymmetricCrypto';
 
 const host = process.env.HOST ?? 'localhost';
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'production') {
     console.log("Told Nitriding we're ready", res.data);
 
     generateAsymmetricKeyPair().then(() => {
-      getPublicKeyHash().then((publicKeyHash) => {
+      getPublicKeyHashNode().then((publicKeyHash) => {
         axios
           .post('http://127.0.0.1:8080/enclave/hash', publicKeyHash)
           .then((res) => {
