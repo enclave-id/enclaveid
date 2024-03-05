@@ -25,7 +25,7 @@ export async function generateAsymmetricKeyPair() {
       (err, publicKey, privateKey) => {
         if (err) reject(err);
         else resolve({ publicKey, privateKey });
-      }
+      },
     );
   });
 
@@ -55,6 +55,6 @@ export async function asymmetricDecrypt(encryptedText: string) {
 
   return privateDecrypt(
     privateEncryptionKey,
-    Buffer.from(encryptedText, 'base64')
+    Buffer.from(encryptedText, 'base64'),
   ).toString();
 }

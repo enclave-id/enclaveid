@@ -1,7 +1,34 @@
-import { decode } from 'cbor-x/decode';
-import { base64ToUint8array } from './typeConversion';
+// @ts-expect-error TODO idk why but vite won't compile without the .ts
+import { mockPCR0 } from 'apps/api/src/app/services/mocks.ts';
+import {
+  arrayBufferToBase64,
+  base64ToArrayBuffer,
+  base64ToUint8array,
+} from './typeConversion';
+import { Buffer } from 'buffer';
 
-export const expectedPcr0 = 'process.env.PCR0';
+export const expectedPcr0 =
+  process.env.NODE_ENV === 'development' ? mockPCR0 : 'TODO';
+
+export async function pemToCryptoKey(pem: string) {
+  // Remove PEM header and footer
+
+  // base64 decode the string to get the binary data
+  const binaryDerString = window.atob(pemContents);
+  // convert from a binary string to an ArrayBuffer
+  const binaryDer = str2ab(binaryDerString);
+
+  return await window.crypto.subtle.importKey(
+    'spki',
+    binaryDer,
+    {
+      name: 'ECDSA',
+      namedCurve: 'P-384',
+    },
+    true,
+    ['sign'],
+  );
+}
 
 function deserialize(userData: Uint8Array) {
   const hashPrefixSize = 7; // Size of hashPrefix "sha256:"
@@ -20,25 +47,37 @@ function deserialize(userData: Uint8Array) {
   return { tlsKeyHashBytes, appKeyHashBytes };
 }
 
-export function decodeAttestation(base64Attestation: string) {
-  const cborBytes = base64ToUint8array(base64Attestation);
-  const cose = decode(cborBytes);
-  const attestation = decode(cose);
+export function decodeAttestation(validationResult: string) {
+  const attestation = JSON.parse(validationResult);
 
-  const pcr0 = Buffer.from(attestation.pcrs['0']).toString('hex');
-  const nonce = Buffer.from(attestation.nonce).toString('hex');
-  const { appKeyHashBytes } = deserialize(attestation.user_data);
+  const pcr0 = Buffer.from(base64ToUint8array(attestation.pcrs['0'])).toString(
+    'hex',
+  );
+  const nonce = Buffer.from(base64ToUint8array(attestation.nonce)).toString(
+    'hex',
+  );
+  const { appKeyHashBytes } = deserialize(
+    base64ToUint8array(attestation.user_data),
+  );
 
   const b64PublicKeyDigest = Buffer.from(appKeyHashBytes).toString('base64');
 
   return { pcr0, nonce, b64PublicKeyDigest };
 }
 
-export function getb64PublicKeyDigest(publicKey: CryptoKey) {
-  return window.crypto.subtle.exportKey('raw', publicKey).then((keyData) => {
-    const keyArray = new Uint8Array(keyData);
-    return window.crypto.subtle.digest('SHA-256', keyArray).then((hash) => {
-      return Buffer.from(hash).toString('base64');
-    });
-  });
+export async function getb64PublicKeyDigest(publicKeyPem: string) {
+  const pemHeader = '-----BEGIN PUBLIC KEY-----';
+  const pemFooter = '-----END PUBLIC KEY-----';
+
+  const pemContents = publicKeyPem.substring(
+    pemHeader.length + 1,
+    publicKeyPem.length - pemFooter.length - 1,
+  );
+
+  console.log('pemContents:', pemContents);
+
+  const keyArray = base64ToArrayBuffer(pemContents);
+  const hash = await window.crypto.subtle.digest('SHA-256', keyArray);
+
+  return arrayBufferToBase64(hash);
 }

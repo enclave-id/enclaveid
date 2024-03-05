@@ -6,6 +6,7 @@ import {
   base64ToUint8array,
   uint8arrayToBase64,
 } from './typeConversion';
+import { Buffer } from 'buffer';
 
 function getSessionKey(): Uint8Array {
   const key = sessionStorage.getItem('sessionKey');
@@ -24,7 +25,7 @@ export function generateNonce(): Uint8Array {
 
 export function asymmetricEncrypt(
   data: unknown,
-  publicKey: string
+  publicKey: string,
 ): Promise<string> {
   return crypto.subtle
     .importKey(
@@ -35,21 +36,21 @@ export function asymmetricEncrypt(
         hash: 'SHA-256',
       },
       true,
-      ['encrypt']
+      ['encrypt'],
     )
     .then((pk) => {
       return window.crypto.subtle
         .encrypt(
           { name: 'RSA-OAEP' },
           pk,
-          new TextEncoder().encode(JSON.stringify(data))
+          new TextEncoder().encode(JSON.stringify(data)),
         )
         .then(arrayBufferToBase64);
     });
 }
 
 export async function symmetricEncrypt(
-  variables: Record<string, unknown>
+  variables: Record<string, unknown>,
 ): Promise<{
   encryptedPayload: string;
   nonce: string;
@@ -62,14 +63,14 @@ export async function symmetricEncrypt(
     getSessionKey(),
     { name: 'AES-CTR' },
     false,
-    ['encrypt']
+    ['encrypt'],
   );
 
   const nonce = generateNonce();
   const encryptedPayload = await window.crypto.subtle.encrypt(
     { name: 'AES-CTR', counter: nonce, length: 64 },
     cryptoKey,
-    encodedData
+    encodedData,
   );
 
   return {
@@ -80,20 +81,20 @@ export async function symmetricEncrypt(
 
 export async function symmetricDecrypt(
   encryptedPyload: string,
-  nonce: string
+  nonce: string,
 ): Promise<Record<string, unknown>> {
   const cryptoKey = await window.crypto.subtle.importKey(
     'raw',
     getSessionKey(),
     { name: 'AES-CTR' },
     false,
-    ['decrypt']
+    ['decrypt'],
   );
 
   const decryptedPayload = await window.crypto.subtle.decrypt(
     { name: 'AES-CTR', counter: base64ToUint8array(nonce), length: 64 },
     cryptoKey,
-    base64ToArrayBuffer(encryptedPyload)
+    base64ToArrayBuffer(encryptedPyload),
   );
 
   const data = new TextDecoder().decode(decryptedPayload);

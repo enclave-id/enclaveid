@@ -1,5 +1,8 @@
-import { base64ToUint8array } from './typeConversion';
 import * as cose from 'cose-js';
+import { base64ToUint8array } from './typeConversion';
+import { Certificate, ECPublicKey } from 'pkijs';
+import { fromBER } from 'asn1js';
+import { bufferToHexCodes, fromBase64, stringToArrayBuffer } from 'pvutils';
 
 // From: https://docs.aws.amazon.com/enclaves/latest/user/verify-root.html
 const awsPem = `-----BEGIN CERTIFICATE-----
@@ -17,40 +20,45 @@ rfMCMQCi85sWBbJwKKXdS6BptQFuZbT73o/gBh1qUxl/nNr12UO8Yfwr6wPLb+6N
 IwLz3/Y=
 -----END CERTIFICATE-----`;
 
-async function pemToCryptoKey(pem: string) {
-  // Remove PEM header and footer
-  const pemHeader = '-----BEGIN PUBLIC KEY-----';
-  const pemFooter = '-----END PUBLIC KEY-----';
-  let pemContents = pem.replace(pemHeader, '').replace(pemFooter, '');
-  pemContents = pemContents.replace(/\s+/g, ''); // Remove whitespace
+// Function to convert PEM to ArrayBuffer
+function pemToArrayBuffer(pem) {
+  const b64 = pem.replace(/(-----(BEGIN|END) CERTIFICATE-----|[\n\r])/g, '');
+  return new Uint8Array(stringToArrayBuffer(fromBase64(b64))).buffer;
+}
 
-  // Base64 decode the string to an ArrayBuffer
-  const binaryDerString = window.atob(pemContents);
-  const binaryDer = new Uint8Array(binaryDerString.length);
-  for (let i = 0; i < binaryDerString.length; i++) {
-    binaryDer[i] = binaryDerString.charCodeAt(i);
-  }
+// Function to extract ECC public key components for COSE
+async function pemToCoseKey(pem) {
+  const pemBuffer = pemToArrayBuffer(pem);
+  const asn1 = fromBER(pemBuffer);
+  const certificate = new Certificate({ schema: asn1.result });
 
-  return await window.crypto.subtle.importKey(
-    'spki',
-    binaryDer.buffer,
-    {
-      name: 'RSA-OAEP',
-      hash: 'SHA-256',
-    },
-    true,
-    ['encrypt']
-  );
+  // Assuming ECC public key
+  const { x, y } = certificate.subjectPublicKeyInfo.parsedKey as ECPublicKey;
+
+  const coseKey = {
+    kty: 'ECDSA',
+    crv: 'P-384',
+    x: bufferToHexCodes(x),
+    y: bufferToHexCodes(y),
+  };
+
+  return coseKey;
 }
 
 export async function validateAttestationSignature(base64Attestation: string) {
   const cborBytes = base64ToUint8array(base64Attestation);
 
-  const signingKey = await pemToCryptoKey(awsPem);
-  const jwk = await window.crypto.subtle.exportKey('jwk', signingKey);
-  const validationResult = await cose.sign.verify(cborBytes, {
-    key: jwk,
-  });
+  const signingKey = await pemToCoseKey(awsPem);
+
+  const validationResult = await cose.sign.verify(
+    cborBytes,
+    {
+      key: signingKey,
+    },
+    {
+      defaultType: 18, //cose.sign.Sign1Tag,
+    }
+  );
 
   return validationResult;
 }
