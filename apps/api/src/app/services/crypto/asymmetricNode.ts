@@ -1,62 +1,39 @@
 import {
   createHash,
   createPublicKey,
-  generateKeyPair,
+  generateKeyPairSync,
   privateDecrypt,
 } from 'crypto';
-import { writeFile, readFile } from 'fs/promises';
 import { mockPrivateKey, mockPublicKey } from '../mocks';
 import { RSA_PKCS1_OAEP_PADDING } from 'node:constants';
 
+const { privateKey: privateKeyProd, publicKey: publicKeyProd } =
+  generateKeyPairSync('rsa', {
+    modulusLength: 2048,
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem',
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem',
+      cipher: 'aes-256-cbc',
+      passphrase: '',
+    },
+  });
+
 export async function getPublicEncryptionKey() {
   const pem =
-    process.env.NODE_ENV === 'development'
-      ? mockPublicKey
-      : await readFile('publicKey.pem', { encoding: 'utf-8' });
+    process.env.NODE_ENV === 'development' ? mockPublicKey : publicKeyProd;
 
   return createPublicKey(pem);
 }
 
 async function getPrivateEncryptionKey() {
   const pem =
-    process.env.NODE_ENV === 'development'
-      ? mockPrivateKey
-      : await readFile('privateKey.pem', { encoding: 'utf-8' });
+    process.env.NODE_ENV === 'development' ? mockPrivateKey : privateKeyProd;
 
   return pem;
-}
-
-export async function generateAsymmetricKeyPair() {
-  if (process.env.NODE_ENV === 'development') return;
-
-  const { privateKey, publicKey } = await new Promise<{
-    privateKey: string;
-    publicKey: string;
-  }>((resolve, reject) => {
-    generateKeyPair(
-      'rsa',
-      {
-        modulusLength: 2048,
-        publicKeyEncoding: {
-          type: 'spki',
-          format: 'pem',
-        },
-        privateKeyEncoding: {
-          type: 'pkcs8',
-          format: 'pem',
-          cipher: 'aes-256-cbc',
-          passphrase: '',
-        },
-      },
-      (err, publicKey, privateKey) => {
-        if (err) reject(err);
-        else resolve({ publicKey, privateKey });
-      },
-    );
-  });
-
-  await writeFile('publicKey.pem', publicKey);
-  await writeFile('privateKey.pem', privateKey);
 }
 
 export async function getPublicKeyHashNode() {

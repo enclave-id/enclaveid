@@ -3,10 +3,7 @@ import AutoLoad from '@fastify/autoload';
 import path from 'path';
 import staticFiles from '@fastify/static';
 import axios from 'axios';
-import {
-  generateAsymmetricKeyPair,
-  getPublicKeyHashNode,
-} from './app/services/crypto/asymmetricNode';
+import { getPublicKeyHashNode } from './app/services/crypto/asymmetricNode';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -41,14 +38,12 @@ if (process.env.NODE_ENV === 'production') {
   axios.get('http://127.0.0.1:8080/enclave/ready').then((res) => {
     console.log("Told Nitriding we're ready", res.data);
 
-    generateAsymmetricKeyPair().then(() => {
-      getPublicKeyHashNode().then((publicKeyHash) => {
-        axios
-          .post('http://127.0.0.1:8080/enclave/hash', publicKeyHash)
-          .then((res) => {
-            console.log('Registered new public key', res.data);
-          });
-      });
+    getPublicKeyHashNode().then((publicKeyHash) => {
+      axios
+        .post('http://127.0.0.1:8080/enclave/hash', publicKeyHash)
+        .then((res) => {
+          console.log('Registered new public key', res.data);
+        });
     });
   });
 }
