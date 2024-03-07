@@ -1,9 +1,9 @@
-import { prisma } from './prisma';
+import { prisma } from '../prisma';
 import crypto from 'crypto';
 
 export async function encryptResponsePayload(
   userId: string,
-  payload: Record<string, unknown>
+  payload: Record<string, unknown>,
 ): Promise<{
   encryptedPayload: string;
   nonce: string;
@@ -29,7 +29,7 @@ export async function encryptResponsePayload(
 export async function decryptRequestPayload(
   userId: string,
   encryptedPayload: string,
-  nonce: string
+  nonce: string,
 ): Promise<{
   payload: Record<string, unknown>;
 }> {
@@ -43,7 +43,7 @@ export async function decryptRequestPayload(
   const decipher = crypto.createDecipheriv(
     'aes-256-ctr',
     sessionKey,
-    Buffer.from(nonce, 'hex')
+    Buffer.from(nonce, 'hex'),
   );
   const payload =
     decipher.update(encryptedPayload, 'hex', 'utf8') + decipher.final('utf8');

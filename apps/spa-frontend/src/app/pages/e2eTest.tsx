@@ -1,7 +1,10 @@
 import { trpc } from '../utils/trpc';
 import { AuthenticationContainer } from '../components/containers/AuthenticationContainer';
 import { FileUploadContainer } from '../components/containers/FileUploadContainer';
-import { symmetricDecrypt, symmetricEncrypt } from '../utils/confidentiality';
+import {
+  symmetricDecrypt,
+  symmetricEncrypt,
+} from '../utils/crypto/symmetricBrowser';
 import { useEffect } from 'react';
 import { useAttestation } from '../hooks/useAttestation';
 import { AuthenticationForm } from '../components/AuthenticationForm';

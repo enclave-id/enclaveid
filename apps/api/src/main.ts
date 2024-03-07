@@ -6,7 +6,7 @@ import axios from 'axios';
 import {
   generateAsymmetricKeyPair,
   getPublicKeyHashNode,
-} from './app/services/asymmetricCrypto';
+} from './app/services/crypto/asymmetricNode';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;

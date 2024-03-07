@@ -2,7 +2,7 @@ import { authenticatedProcedure, router } from '../trpc';
 import {
   decryptRequestPayload,
   encryptResponsePayload,
-} from '../services/symmetricCrypto';
+} from '../services/crypto/symmetricNode';
 import { z } from 'zod';
 import { AppContext } from '../context';
 
@@ -12,7 +12,7 @@ export const pingPong = router({
       z.object({
         encryptedPayload: z.string(),
         nonce: z.string(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       const {

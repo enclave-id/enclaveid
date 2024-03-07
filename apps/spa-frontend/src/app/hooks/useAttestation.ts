@@ -6,7 +6,10 @@ import {
 import { trpc } from '../utils/trpc';
 import { useGoWasm } from './useGoWasm';
 import { getExpectedMesaurements } from '../utils/attestation/measurements';
-import { getEnclaveCryptoKey, parsePublicKey } from '../utils/confidentiality';
+import {
+  getEnclaveCryptoKey,
+  parsePublicKey,
+} from '../utils/crypto/asymmetricBrowser';
 
 export function useAttestation(): {
   publicKey: CryptoKey | null;

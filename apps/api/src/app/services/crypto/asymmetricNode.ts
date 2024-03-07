@@ -5,7 +5,7 @@ import {
   privateDecrypt,
 } from 'crypto';
 import { writeFile, readFile } from 'fs/promises';
-import { mockPrivateKey, mockPublicKey } from './mocks';
+import { mockPrivateKey, mockPublicKey } from '../mocks';
 import { RSA_PKCS1_OAEP_PADDING } from 'node:constants';
 
 export async function getPublicEncryptionKey() {

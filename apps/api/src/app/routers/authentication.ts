@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { AppContext } from '../context';
 import { TRPCError } from '@trpc/server';
-import { asymmetricDecrypt } from '../services/asymmetricCrypto';
+import { asymmetricDecrypt } from '../services/crypto/asymmetricNode';
 
 export const authentication = router({
   login: publicProcedure

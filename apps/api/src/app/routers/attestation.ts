@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { getBase64Cbor } from '../services/attestation';
-import { getPublicEncryptionKey } from '../services/asymmetricCrypto';
+import { getPublicEncryptionKey } from '../services/crypto/asymmetricNode';
 
 export const attestation = router({
   getAttestation: publicProcedure

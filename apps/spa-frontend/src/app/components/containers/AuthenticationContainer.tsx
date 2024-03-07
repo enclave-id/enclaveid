@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback } from 'react';
 import { trpc } from '../../utils/trpc';
-import { asymmetricEncrypt } from '../../utils/confidentiality';
+import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
 import { useAttestation } from '../../hooks/useAttestation';
 
