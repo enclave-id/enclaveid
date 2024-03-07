@@ -31,18 +31,8 @@ export function decodeAttestation(validationResult: string) {
   return { pcr0, nonce, b64PublicKeyDigest };
 }
 
-export async function getPublicKeyHashBrowser(publicKeyString) {
-  const pemHeader = '-----BEGIN PUBLIC KEY-----';
-  const pemFooter = '-----END PUBLIC KEY-----';
-  const keyBody = publicKeyString
-    .replace(pemHeader, '')
-    .replace(pemFooter, '')
-    .replace(/\s+/g, '');
-
-  const hashBuffer = await crypto.subtle.digest(
-    'SHA-256',
-    Buffer.from(keyBody, 'base64'),
-  );
+export async function getPublicKeyHashBrowser(publicKeyBuffer: Buffer) {
+  const hashBuffer = await crypto.subtle.digest('SHA-256', publicKeyBuffer);
 
   return Buffer.from(hashBuffer).toString('base64');
 }

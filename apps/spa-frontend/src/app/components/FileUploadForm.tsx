@@ -6,7 +6,15 @@ import { FileUploadSection } from './FileUploadSection';
 import { FormCardLayout } from './FormCardLayout';
 import { Link } from './Link';
 
-function UploadForm() {
+export interface FileUploadFormProps {
+  validateFile?: (file: File) => void;
+  handleFileUpload?: (file: File) => void;
+}
+
+export function FileUploadForm({
+  handleFileUpload,
+  validateFile,
+}: FileUploadFormProps) {
   const [googleFiles, setGoogleFiles] = useState<File[]>([]);
   const [facebookFiles, setFacebookFiles] = useState<File[]>([]);
   const googleUploadInputRef = useRef<HTMLInputElement | null>(null);
@@ -84,5 +92,3 @@ function UploadForm() {
     </div>
   );
 }
-
-export { UploadForm };

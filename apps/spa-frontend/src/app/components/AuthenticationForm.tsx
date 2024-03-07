@@ -5,7 +5,7 @@ import { Button } from './Button';
 import { FormCardLayout } from './FormCardLayout';
 
 export interface AuthenticationFormProps {
-  handleSubmit: (email: string, password: string) => void;
+  handleSubmit?: (email: string, password: string) => void;
 }
 
 function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
@@ -45,7 +45,9 @@ function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
           <Button
             label="Sign Up"
             fullWidth
-            onClick={() => handleSubmit(email, password)}
+            onClick={() => {
+              if (handleSubmit) handleSubmit(email, password);
+            }}
           />
         </div>
       </FormCardLayout>

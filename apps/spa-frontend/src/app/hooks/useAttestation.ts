@@ -6,12 +6,13 @@ import {
 import { trpcClient } from '../utils/trpc';
 import { useGoWasm } from './useGoWasm';
 import { getExpectedMesaurements } from '../utils/attestation/measurements';
+import { getEnclaveCryptoKey, parsePublicKey } from '../utils/confidentiality';
 
 export function useAttestation(): {
-  publicKey: string | null;
+  publicKey: CryptoKey | null;
   error: Error | null;
 } {
-  const [publicKey, setPublicKey] = useState<string | null>(null);
+  const [publicKey, setPublicKey] = useState<CryptoKey | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const { isReady, error: wasmError } = useGoWasm('./nitrite.wasm');
 
@@ -60,8 +61,10 @@ export function useAttestation(): {
           );
         }
 
+        const publicKeyBuffer = await parsePublicKey(publicKey);
+
         const expectedb64PublicKeyDigest =
-          await getPublicKeyHashBrowser(publicKey);
+          await getPublicKeyHashBrowser(publicKeyBuffer);
 
         if (b64PublicKeyDigest !== expectedb64PublicKeyDigest) {
           throw new Error(
@@ -69,7 +72,9 @@ export function useAttestation(): {
           );
         }
 
-        setPublicKey(publicKey);
+        const cryptoKey = await getEnclaveCryptoKey(publicKeyBuffer);
+
+        setPublicKey(cryptoKey);
       } catch (e) {
         if (e instanceof Error) {
           setError(e);

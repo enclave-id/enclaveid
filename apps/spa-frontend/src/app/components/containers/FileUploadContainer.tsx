@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react';
-import { FileUploadComponentProps } from '../../types/components';
+import { ReactElement, cloneElement, useCallback } from 'react';
 import { validateGoogleTakoutZip } from '../../utils/archiveValidation';
+import { FileUploadFormProps } from '../FileUploadForm';
 
 export function FileUploadContainer({
   children,
 }: {
-  children: (props: FileUploadComponentProps) => React.ReactNode;
+  children: ReactElement<FileUploadFormProps>;
 }) {
   const handleFileUpload = useCallback((zipFile: File) => {}, []);
 
-  return children({
+  return cloneElement(children, {
     handleFileUpload,
     validateFile: validateGoogleTakoutZip,
   });

@@ -3,9 +3,12 @@ import { AuthenticationContainer } from '../components/containers/Authentication
 import { FileUploadContainer } from '../components/containers/FileUploadContainer';
 import { symmetricDecrypt, symmetricEncrypt } from '../utils/confidentiality';
 import { useEffect } from 'react';
+import { useAttestation } from '../hooks/useAttestation';
+import { AuthenticationForm } from '../components/AuthenticationForm';
+import { FileUploadForm } from '../components/FileUploadForm';
 
 export function E2eTest() {
-  const attestationQuery = trpc.getAttestation.useQuery({ nonce: 'testnonce' });
+  const { publicKey, error: attestationError } = useAttestation();
 
   const { mutate, data, isSuccess } = trpc.pingPong.useMutation();
   const pingChallenge = 'pingu';
@@ -14,9 +17,9 @@ export function E2eTest() {
     if (isSuccess) {
       symmetricDecrypt(data?.encryptedPayload, data?.nonce).then(
         (decryptedPayload) => {
-          document.getElementById('pingpong-result')!.innerHTML =
+          document.getElementById('pingpong-result').innerHTML =
             decryptedPayload['pong'] as string;
-        }
+        },
       );
     }
   }, [data?.encryptedPayload, data?.nonce, isSuccess]);
@@ -24,37 +27,11 @@ export function E2eTest() {
   return (
     <div className="container flex flex-col justify-center mt-8">
       <p>Attestaition:</p>
-      <div id="attestation">{attestationQuery.data?.jwt}</div>
+      <div>Key: {publicKey && 'GOT KEY'}</div>
+      <div>Error: {attestationError?.message}</div>
 
       <AuthenticationContainer>
-        {({ handleSubmit }) => {
-          return (
-            <div>
-              <input
-                id="email"
-                type="email"
-                defaultValue={'john.doe@example.com'}
-              ></input>
-              <input
-                id="password"
-                type="password"
-                defaultValue={'password'}
-              ></input>
-              <button
-                onClick={() => {
-                  handleSubmit(
-                    (document.getElementById('email') as HTMLInputElement)
-                      .value,
-                    (document.getElementById('password') as HTMLInputElement)
-                      .value
-                  );
-                }}
-              >
-                Login
-              </button>
-            </div>
-          );
-        }}
+        <AuthenticationForm />
       </AuthenticationContainer>
 
       <p>PingPong test:</p>
@@ -76,34 +53,7 @@ export function E2eTest() {
       <p id="pingpong-result"></p>
 
       <FileUploadContainer>
-        {({ handleFileUpload, validateFile }) => {
-          return (
-            <div>
-              <input
-                id="fileUpload"
-                type="file"
-                accept=".zip"
-                multiple={false}
-              ></input>
-              <button
-                onClick={(event) => {
-                  const zipFile = (event.target as HTMLInputElement)
-                    ?.files?.[0];
-
-                  if (zipFile) handleFileUpload(zipFile);
-                }}
-                onChange={(event) => {
-                  const zipFile = (event.target as HTMLInputElement)
-                    ?.files?.[0];
-
-                  if (zipFile) validateFile(zipFile);
-                }}
-              >
-                Upload
-              </button>
-            </div>
-          );
-        }}
+        <FileUploadForm />
       </FileUploadContainer>
     </div>
   );

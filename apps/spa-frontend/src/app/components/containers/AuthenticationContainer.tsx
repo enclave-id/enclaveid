@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/confidentiality';
 import { AuthenticationFormProps } from '../AuthenticationForm';
@@ -7,7 +7,7 @@ import { useAttestation } from '../../hooks/useAttestation';
 export function AuthenticationContainer({
   children,
 }: {
-  children: (props: AuthenticationFormProps) => React.ReactNode;
+  children: ReactElement<AuthenticationFormProps>;
 }) {
   const loginMutation = trpc.login.useMutation();
 
@@ -20,7 +20,7 @@ export function AuthenticationContainer({
           email,
           password,
         },
-        publicKey
+        publicKey,
       );
 
       await loginMutation.mutate({
@@ -29,10 +29,8 @@ export function AuthenticationContainer({
 
       console.log('Logged in');
     },
-    [loginMutation, publicKey]
+    [loginMutation, publicKey],
   );
 
-  return children({
-    handleSubmit,
-  });
+  return React.cloneElement(children, { handleSubmit });
 }

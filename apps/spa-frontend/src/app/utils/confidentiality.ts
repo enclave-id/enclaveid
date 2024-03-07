@@ -13,35 +13,48 @@ function getSessionKey(): Uint8Array {
   }
 }
 
+export function parsePublicKey(publicKeyString: string): Buffer {
+  const pemHeader = '-----BEGIN PUBLIC KEY-----';
+  const pemFooter = '-----END PUBLIC KEY-----';
+  const keyBody = publicKeyString
+    .replace(pemHeader, '')
+    .replace(pemFooter, '')
+    .replace(/\s+/g, '');
+
+  return Buffer.from(keyBody, 'base64');
+}
+
+export async function getEnclaveCryptoKey(
+  publicKeyBuffer: Buffer,
+): Promise<CryptoKey> {
+  return await crypto.subtle.importKey(
+    'spki',
+    publicKeyBuffer,
+    {
+      name: 'RSA-OAEP',
+      hash: 'SHA-256',
+    },
+    true,
+    ['encrypt'],
+  );
+}
+
 export function generateNonce(): Uint8Array {
   return window.crypto.getRandomValues(new Uint8Array(16));
 }
 
 export function asymmetricEncrypt(
   data: unknown,
-  publicKey: string,
+  publicKey: CryptoKey,
 ): Promise<string> {
-  return crypto.subtle
-    .importKey(
-      'spki',
-      Buffer.from(publicKey, 'base64'),
-      {
-        name: 'RSA-OAEP',
-        hash: 'SHA-256',
-      },
-      true,
-      ['encrypt'],
+  return window.crypto.subtle
+    .encrypt(
+      { name: 'RSA-OAEP' },
+      publicKey,
+      new TextEncoder().encode(JSON.stringify(data)),
     )
-    .then((pk) => {
-      return window.crypto.subtle
-        .encrypt(
-          { name: 'RSA-OAEP' },
-          pk,
-          new TextEncoder().encode(JSON.stringify(data)),
-        )
-        .then((encrypted) => {
-          return Buffer.from(encrypted).toString('base64');
-        });
+    .then((encrypted) => {
+      return Buffer.from(encrypted).toString('base64');
     });
 }
 
