@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 import { Landing } from './pages/landing';
 import { E2eTest } from './pages/e2eTest';
+import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter([
   {
@@ -15,5 +16,10 @@ const router = createBrowserRouter([
 ]);
 
 export function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <div>
+      <RouterProvider router={router} />;
+      <Toaster position="bottom-right" reverseOrder={false} />
+    </div>
+  );
 }

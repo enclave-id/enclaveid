@@ -7,7 +7,7 @@ export function GoogleIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_244_155)">
+      <g clipPath="url(#clip0_244_155)">
         <rect width="55" height="55" rx="8.8" fill="#F4F5F7" />
         <g filter="url(#filter0_d_244_155)">
           <circle cx="27.5437" cy="27.5437" r="31.0122" fill="#F4F5F7" />
@@ -65,7 +65,7 @@ export function GoogleIcon() {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -147,7 +147,7 @@ export function GoogleIcon() {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -225,7 +225,7 @@ export function FacebookIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_244_171)">
+      <g clipPath="url(#clip0_244_171)">
         <rect y="0.5" width="55" height="55" rx="8.8" fill="#F4F5F7" />
         <g filter="url(#filter0_d_244_171)">
           <circle cx="27.5437" cy="28.0437" r="31.0122" fill="#F4F5F7" />
@@ -312,7 +312,7 @@ export function FacebookIcon() {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -353,7 +353,7 @@ export function FacebookIcon() {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

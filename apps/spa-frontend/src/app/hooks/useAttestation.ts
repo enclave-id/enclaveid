@@ -10,6 +10,7 @@ import {
   getEnclaveCryptoKey,
   parsePublicKey,
 } from '../utils/crypto/asymmetricBrowser';
+import toast from 'react-hot-toast';
 
 export function useAttestation(): {
   publicKey: CryptoKey | null;
@@ -84,7 +85,15 @@ export function useAttestation(): {
         throw e;
       }
     }
-    if (isWasmReady && base64Cbor && publicKey) runAttestation();
+    if (isWasmReady && base64Cbor && publicKey) {
+      const promise = runAttestation();
+
+      toast.promise(promise, {
+        loading: 'Running attestation...',
+        success: 'Attestation successful',
+        error: 'Attestation failed',
+      });
+    }
   }, [base64Cbor, expectedNonce, expectedPcr0, isWasmReady, publicKey]);
 
   return { publicKey: publicCryptoKey, error };
