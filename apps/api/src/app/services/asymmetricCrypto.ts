@@ -1,8 +1,34 @@
-import { createHash, generateKeyPair, privateDecrypt } from 'crypto';
+import {
+  createHash,
+  createPrivateKey,
+  createPublicKey,
+  generateKeyPair,
+  privateDecrypt,
+} from 'crypto';
 import { writeFile, readFile } from 'fs/promises';
-import { mockPublicKey } from './mocks';
+import { mockPrivateKey, mockPublicKey } from './mocks';
+
+async function getPublicEncryptionKey() {
+  const pem =
+    process.env.NODE_ENV === 'development'
+      ? mockPublicKey
+      : await readFile('publicKey.pem', { encoding: 'utf-8' });
+
+  return createPublicKey(pem);
+}
+
+async function getPrivateEncryptionKey() {
+  const pem =
+    process.env.NODE_ENV === 'development'
+      ? mockPrivateKey
+      : await readFile('privateKey.pem', { encoding: 'utf-8' });
+
+  return createPrivateKey(pem);
+}
 
 export async function generateAsymmetricKeyPair() {
+  if (process.env.NODE_ENV === 'development') return;
+
   const { privateKey, publicKey } = await new Promise<{
     privateKey: string;
     publicKey: string;
@@ -33,31 +59,17 @@ export async function generateAsymmetricKeyPair() {
   await writeFile('privateKey.pem', privateKey);
 }
 
-// Same as: cat publicKey.pem | openssl dgst -sha256 -binary | base64
 export async function getPublicKeyHashNode() {
-  const publicKey = await readFile('publicKey.pem', { encoding: 'utf-8' });
-  const pemHeader = '-----BEGIN PUBLIC KEY-----';
-  const pemFooter = '-----END PUBLIC KEY-----';
-  const keyBody = publicKey
-    .replace(pemHeader, '')
-    .replace(pemFooter, '')
-    .replace(/\s+/g, '');
+  const publicKey = await getPublicEncryptionKey();
+  const keyDer = publicKey.export({ type: 'spki', format: 'der' });
 
   const hash = createHash('sha256');
-  hash.update(Buffer.from(keyBody, 'base64'));
+  hash.update(keyDer);
   return hash.digest('base64');
 }
 
-export async function getPublicKey(): Promise<string> {
-  if (process.env.NODE_ENV === 'development') return mockPublicKey;
-
-  return await readFile('publicKey.pem', { encoding: 'utf-8' });
-}
-
 export async function asymmetricDecrypt(encryptedText: string) {
-  const privateEncryptionKey = await readFile('privateKey.pem', {
-    encoding: 'utf-8',
-  });
+  const privateEncryptionKey = await getPrivateEncryptionKey();
 
   return privateDecrypt(
     privateEncryptionKey,

@@ -3,7 +3,7 @@ import {
   decodeAttestation,
   getPublicKeyHashBrowser,
 } from '../utils/attestation/attestation';
-import { trpcClient } from '../utils/trpc';
+import { trpc } from '../utils/trpc';
 import { useGoWasm } from './useGoWasm';
 import { getExpectedMesaurements } from '../utils/attestation/measurements';
 import { getEnclaveCryptoKey, parsePublicKey } from '../utils/confidentiality';
@@ -12,9 +12,20 @@ export function useAttestation(): {
   publicKey: CryptoKey | null;
   error: Error | null;
 } {
-  const [publicKey, setPublicKey] = useState<CryptoKey | null>(null);
+  const [publicCryptoKey, setPublicCryptoKey] = useState<CryptoKey | null>(
+    null,
+  );
   const [error, setError] = useState<Error | null>(null);
-  const { isReady, error: wasmError } = useGoWasm('./nitrite.wasm');
+  const { isReady: isWasmReady, error: wasmError } =
+    useGoWasm('./nitrite.wasm');
+
+  const { expectedNonce, expectedPcr0 } = getExpectedMesaurements();
+
+  const attestationQuery = trpc.getAttestation.useQuery({
+    nonce: expectedNonce,
+  });
+
+  const { base64Cbor, publicKey } = attestationQuery.data ?? {};
 
   useEffect(() => {
     if (wasmError) setError(wasmError);
@@ -22,20 +33,7 @@ export function useAttestation(): {
 
   useEffect(() => {
     async function runAttestation() {
-      if (!isReady) return;
-
       try {
-        const { expectedNonce, expectedPcr0 } = getExpectedMesaurements();
-
-        const attestationQuery = await trpcClient.getAttestation.query({
-          nonce: expectedNonce,
-        });
-
-        const { publicKey, base64Cbor } = attestationQuery ?? {};
-
-        if (!publicKey) throw new Error('Missing public key');
-        if (!base64Cbor) throw new Error('Missing attestation data');
-
         // Validate the signature and decode the attestation document
         const { result: validationResult, error: validationError } = JSON.parse(
           window.validateAttestation(
@@ -74,7 +72,7 @@ export function useAttestation(): {
 
         const cryptoKey = await getEnclaveCryptoKey(publicKeyBuffer);
 
-        setPublicKey(cryptoKey);
+        setPublicCryptoKey(cryptoKey);
       } catch (e) {
         if (e instanceof Error) {
           setError(e);
@@ -83,9 +81,8 @@ export function useAttestation(): {
         throw e;
       }
     }
+    if (isWasmReady && base64Cbor && publicKey) runAttestation();
+  }, [base64Cbor, expectedNonce, expectedPcr0, isWasmReady, publicKey]);
 
-    runAttestation();
-  }, [isReady]);
-
-  return { publicKey, error };
+  return { publicKey: publicCryptoKey, error };
 }
