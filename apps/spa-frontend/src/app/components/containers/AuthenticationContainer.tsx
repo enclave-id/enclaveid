@@ -23,7 +23,7 @@ export function AuthenticationContainer({
         publicKey,
       );
 
-      const asd = await loginMutation.mutate({
+      await loginMutation.mutate({
         encryptedCredentials,
       });
 

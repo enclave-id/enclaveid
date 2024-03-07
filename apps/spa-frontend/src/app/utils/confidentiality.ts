@@ -32,7 +32,7 @@ export async function getEnclaveCryptoKey(
     publicKeyBuffer,
     {
       name: 'RSA-OAEP',
-      hash: 'SHA-256',
+      hash: { name: 'SHA-256' },
     },
     true,
     ['encrypt'],

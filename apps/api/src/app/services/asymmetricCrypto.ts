@@ -1,14 +1,14 @@
 import {
   createHash,
-  createPrivateKey,
   createPublicKey,
   generateKeyPair,
   privateDecrypt,
 } from 'crypto';
 import { writeFile, readFile } from 'fs/promises';
 import { mockPrivateKey, mockPublicKey } from './mocks';
+import { RSA_PKCS1_OAEP_PADDING } from 'node:constants';
 
-async function getPublicEncryptionKey() {
+export async function getPublicEncryptionKey() {
   const pem =
     process.env.NODE_ENV === 'development'
       ? mockPublicKey
@@ -23,7 +23,7 @@ async function getPrivateEncryptionKey() {
       ? mockPrivateKey
       : await readFile('privateKey.pem', { encoding: 'utf-8' });
 
-  return createPrivateKey(pem);
+  return pem;
 }
 
 export async function generateAsymmetricKeyPair() {
@@ -71,8 +71,17 @@ export async function getPublicKeyHashNode() {
 export async function asymmetricDecrypt(encryptedText: string) {
   const privateEncryptionKey = await getPrivateEncryptionKey();
 
-  return privateDecrypt(
-    privateEncryptionKey,
-    Buffer.from(encryptedText, 'base64'),
-  ).toString();
+  const encryptedBuffer = Buffer.from(encryptedText, 'base64');
+
+  const decryptedBuffer = privateDecrypt(
+    {
+      key: privateEncryptionKey,
+      padding: RSA_PKCS1_OAEP_PADDING,
+      oaepHash: 'sha256',
+      passphrase: '',
+    },
+    encryptedBuffer,
+  );
+
+  return decryptedBuffer.toString('utf-8');
 }
