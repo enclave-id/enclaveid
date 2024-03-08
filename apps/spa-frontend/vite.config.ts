@@ -19,11 +19,6 @@ export default defineConfig({
 
   plugins: [react(), nxViteTsPaths()],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
   build: {
     outDir: '../../dist/apps/spa-frontend',
     reportCompressedSize: true,

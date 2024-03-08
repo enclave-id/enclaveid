@@ -1,22 +1,22 @@
-import * as tpm from '../services/tpm';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { AppContext } from '../context';
 import { TRPCError } from '@trpc/server';
+import { asymmetricDecrypt } from '../services/crypto/asymmetricNode';
 
 export const authentication = router({
   login: publicProcedure
     .input(
       z.object({
         encryptedCredentials: z.string(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       const { encryptedCredentials } = opts.input;
       const { prisma, setJwtCookie } = opts.ctx as AppContext;
 
       const { email, password, sessionKey } = JSON.parse(
-        tpm.decrypt(encryptedCredentials)
+        await asymmetricDecrypt(encryptedCredentials),
       );
 
       const user = await prisma.user.findUnique({
@@ -44,13 +44,15 @@ export const authentication = router({
     .input(
       z.object({
         encryptedCredentials: z.string(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       const { encryptedCredentials } = opts.input;
       const { prisma } = opts.ctx as AppContext;
 
-      const { email, password } = JSON.parse(tpm.decrypt(encryptedCredentials));
+      const { email, password } = JSON.parse(
+        await asymmetricDecrypt(encryptedCredentials),
+      );
 
       const existingUser = await prisma.user.findUnique({
         where: {
@@ -69,38 +71,8 @@ export const authentication = router({
         data: {
           email,
           password,
+          confirmedAt: new Date(), // TODO remove this and send confirmation email
         },
-      });
-
-      // TODO send confirmation email
-
-      return user;
-    }),
-  confirmEmail: publicProcedure
-    .input(
-      z.object({
-        confirmationCode: z.string(),
-        email: z.string(),
-      })
-    )
-    .mutation(async (opts) => {
-      const { confirmationCode, email } = opts.input;
-      const { prisma } = opts.ctx as AppContext;
-
-      const user = await prisma.user.findUnique({
-        where: { confirmationCode, email },
-      });
-
-      if (!user) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid confirmation code',
-        });
-      }
-
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { confirmedAt: new Date() },
       });
 
       return user;

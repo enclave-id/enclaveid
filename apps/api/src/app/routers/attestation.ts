@@ -1,19 +1,21 @@
-import * as tpm from '../services/tpm';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
+import { getBase64Cbor } from '../services/attestation';
+import { getPublicEncryptionKey } from '../services/crypto/asymmetricNode';
 
 export const attestation = router({
   getAttestation: publicProcedure
     .input(
       z.object({
         nonce: z.string(),
-      })
+      }),
     )
     .query(async (opts) => {
-      const { nonce } = opts.input;
+      const publicKey = await getPublicEncryptionKey();
 
-      const jwt = await tpm.getAttestation(nonce);
-
-      return { jwt };
+      return {
+        publicKey: publicKey.export({ type: 'spki', format: 'pem' }) as string,
+        base64Cbor: await getBase64Cbor(opts.input.nonce),
+      };
     }),
 });

@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import { AppContext } from '../context';
 import { authenticatedProcedure, router } from '../trpc';
-import { encryptResponsePayload } from '../services/symmetricCrypto';
+import { encryptResponsePayload } from '../services/crypto/symmetricNode';
 
 export const confidential = router({
   ocean: authenticatedProcedure
     .input(
       z.object({
         nonce: z.string(),
-      })
+      }),
     )
     .query(async (opts) => {
       const {

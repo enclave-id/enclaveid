@@ -20,5 +20,5 @@ COPY --from=builder /nitriding-daemon/nitriding /usr/local/bin/nitriding
 
 EXPOSE 3000
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 

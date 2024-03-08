@@ -1,3 +1,5 @@
+import { LandingPage } from '../components/LandingPage';
+
 export function Landing() {
-  return <div></div>;
+  return <LandingPage />;
 }

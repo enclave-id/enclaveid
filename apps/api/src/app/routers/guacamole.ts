@@ -1,7 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { authenticatedProcedure, router } from '../trpc';
 import { AppContext } from '../context';
-import { provisionChrome } from '../services/kubernetes';
 
 export const guacamole = router({
   provisionChrome: authenticatedProcedure.mutation(async (opts) => {
@@ -9,17 +8,9 @@ export const guacamole = router({
       user: { id: userId },
     } = opts.ctx as AppContext;
 
-    try {
-      const podId = await provisionChrome(userId);
-
-      return { podId };
-    } catch (error) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: error.message,
-      });
-
-      return { podId: null };
-    }
+    throw new TRPCError({
+      code: 'NOT_IMPLEMENTED',
+      message: 'Not implemented',
+    });
   }),
 });

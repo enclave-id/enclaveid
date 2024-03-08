@@ -13,9 +13,20 @@
     @apply absolute -bottom-[2px] left-0 w-full h-0.5 bg-greenBg;
     content: '';
   }
+  .landing-container {
+    @apply max-w-[1440px] w-full mx-auto xl:px-16 lg:px-12 md:px-8 sm:px-6 px-4;
+  }
 }
 
 .text-rotation {
   writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+
+.features-gradient-bg {
+  background: linear-gradient(180deg, #30a689 0%, #299379 100%);
+}
+
+.data-card-bg {
+  background: linear-gradient(180deg, #6abdaa 0%, #146f58 100%);
 }
