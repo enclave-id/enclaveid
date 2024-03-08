@@ -14,9 +14,11 @@ function LandingInformation() {
                     Zero Trust Infra
                   </h4>
                   <p className="text-passiveLinkColor -tracking-[0.02em] text-lg leading-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas in neque vel diam consequat feugiat. Suspendisse
-                    potenti. Nunc placerat ac elit in finibus.
+                    EnclaveID is built under the assumption that no one except
+                    the owner can be trusted with highly sensitive data, not
+                    even EnclaveID! For example, the web app is sourcemapped and
+                    deployed on IPFS so that we can't even change the code to
+                    steal your credentials if we wanted to.
                   </p>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -24,9 +26,10 @@ function LandingInformation() {
                     Confidential Computing
                   </h4>
                   <p className="text-passiveLinkColor -tracking-[0.02em] text-lg leading-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas in neque vel diam consequat feugiat. Suspendisse
-                    potenti. Nunc placerat ac elit in finibus.
+                    EnclaveID is built on Intel SGX and AWS Nitro, which allow
+                    to run the backend code in a secure and isolated
+                    environment. No one can see your data, not even if someone
+                    were to steal the physical server.
                   </p>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -34,9 +37,10 @@ function LandingInformation() {
                     100% Open Source
                   </h4>
                   <p className="text-passiveLinkColor -tracking-[0.02em] text-lg leading-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas in neque vel diam consequat feugiat. Suspendisse
-                    potenti. Nunc placerat ac elit in finibus.
+                    The core of EnclaveID is completely open source, which
+                    paired with the zero trust infra, allows both humans and
+                    machines to verify that the data is being handled for its
+                    intended purpose.
                   </p>
                 </div>
               </div>

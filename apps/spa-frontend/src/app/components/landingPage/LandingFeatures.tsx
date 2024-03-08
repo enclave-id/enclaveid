@@ -14,7 +14,7 @@ function LandingFeatures() {
                 potenti.
               </p>
             </div>
-            <div className="min-h-[200px]   w-full">
+            <div className="min-h-[200px] wobble-image  w-full">
               <img
                 src="/journeys.png"
                 alt="journeys"
@@ -35,7 +35,7 @@ function LandingFeatures() {
                 potenti.
               </p>
             </div>
-            <div className="min-h-[200px]  w-full">
+            <div className="min-h-[200px] wobble-image w-full">
               <img
                 src="/traits.png"
                 alt="traits"
@@ -56,7 +56,7 @@ function LandingFeatures() {
                 potenti.
               </p>
             </div>
-            <div className="min-h-[200px]  w-full">
+            <div className="min-h-[200px] wobble-image w-full">
               <img
                 src="/connections.png"
                 alt="connections"

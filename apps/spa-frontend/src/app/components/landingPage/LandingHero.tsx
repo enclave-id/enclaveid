@@ -27,7 +27,7 @@ function LandingHero() {
               </Link>
             </div>
           </div>
-          <div className="w-full min-h-[413px]">
+          <div className="w-full min-h-[413px] wobble-image">
             <img
               src="/hero.webp"
               alt="hero"

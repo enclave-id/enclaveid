@@ -24,10 +24,15 @@ function AuthenticationForm({
         {authenticationType === 'signup' && (
           <p className="description-text mb-[30px]">
             EnclaveID does not have an user agreement. By signing up, you agree
-            to your data being processed as described in the open source code.
-            The execution of the code and confidentiality of your data is
-            guaranteed by confidential computing technology built on AWS Nitro
-            Enclaves.
+            to your data being processed as described in the open source code.{' '}
+            <a
+              href="https://github.com/enclave-id/enclaveid"
+              className="underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Learn more
+            </a>
           </p>
         )}
         <div className="flex flex-col gap-5">
