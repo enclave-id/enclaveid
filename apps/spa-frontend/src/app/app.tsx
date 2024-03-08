@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { Landing } from './pages/landing';
 import { Toaster } from 'react-hot-toast';
 import { Authentication } from './pages/authentication';
+import { BreadcrumbProvider } from './context/BreadcrumbContext';
 
 const router = createBrowserRouter([
   {
@@ -21,9 +22,9 @@ const router = createBrowserRouter([
 
 export function App() {
   return (
-    <div>
+    <BreadcrumbProvider>
       <RouterProvider router={router} />;
       <Toaster position="bottom-right" reverseOrder={false} />
-    </div>
+    </BreadcrumbProvider>
   );
 }
