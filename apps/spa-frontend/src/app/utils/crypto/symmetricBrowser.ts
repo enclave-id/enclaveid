@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 function generateNonce(): Uint8Array {
   return window.crypto.getRandomValues(new Uint8Array(16));
 }
