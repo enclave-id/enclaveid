@@ -30,3 +30,14 @@
 .data-card-bg {
   background: linear-gradient(180deg, #6abdaa 0%, #146f58 100%);
 }
+
+.wobble-image {
+  perspective: 1000px; /* Adjust this value for more/less depth */
+}
+.wobble-image img {
+  transition: transform 0.5s; /* Smooth transition for the transform effect */
+  transform-origin: center; /* Ensures the transformation is centered */
+}
+.wobble-image:hover img {
+  transform: rotate3d(1, 1, 0, 5deg); /* This creates a more complex wobble effect */
+}

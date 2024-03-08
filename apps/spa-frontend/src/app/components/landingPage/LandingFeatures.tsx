@@ -5,7 +5,7 @@ function LandingFeatures() {
         <div className="lg:grid lg:grid-cols-3 gap-4 lg:gap-5 flex flex-wrap items-center justify-center">
           <article className="flex flex-col md:gap-12 gap-10 lg:gap-16 md:max-w-[424px] w-full">
             <div className="flex flex-col md:gap-6 gap-5 lg:gap-7">
-              <h4 className="text-center text-[#FFB45C] font-bold text-[28px] leading-9 -tracking-[0.02em]">
+              <h4 className="text-center text-white font-medium text-[28px] leading-9 -tracking-[0.02em]">
                 Life Journeys
               </h4>
               <p className="line-clamp-3 text-center text-lg leading-6 -tracking-[0.02em] text-white font-normal">
@@ -14,12 +14,20 @@ function LandingFeatures() {
                 potenti.
               </p>
             </div>
-            <div className="min-h-[200px] border border-[#DFDFDF] rounded-xl w-full"></div>
+            <div className="min-h-[200px] wobble-image  w-full">
+              <img
+                src="/journeys.png"
+                alt="journeys"
+                style={{
+                  clipPath: 'inset(0px 0px 30px 0px round 10px)',
+                }}
+              />
+            </div>
           </article>
           <article className="flex flex-col md:gap-12 gap-10 lg:gap-16 md:max-w-[424px] w-full">
             <div className="flex flex-col md:gap-6 gap-5 lg:gap-7">
-              <h4 className="text-center text-[#FFB45C] font-bold text-[28px] leading-9 -tracking-[0.02em]">
-                Personality and Morality
+              <h4 className="text-center text-white font-medium text-[28px] leading-9 -tracking-[0.02em]">
+                Personality and Interests
               </h4>
               <p className="line-clamp-3 text-center text-lg leading-6 -tracking-[0.02em] text-white font-normal">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -27,12 +35,20 @@ function LandingFeatures() {
                 potenti.
               </p>
             </div>
-            <div className="min-h-[200px] border border-[#DFDFDF] rounded-xl w-full"></div>
+            <div className="min-h-[200px] wobble-image w-full">
+              <img
+                src="/traits.png"
+                alt="traits"
+                style={{
+                  clipPath: 'inset(0px 0px 30px 0px round 10px)',
+                }}
+              />
+            </div>
           </article>
           <article className="flex flex-col md:gap-12 gap-10 lg:gap-16 md:max-w-[424px] w-full">
             <div className="flex flex-col md:gap-6 gap-5 lg:gap-7">
-              <h4 className="text-center text-[#FFB45C] font-bold text-[28px] leading-9 -tracking-[0.02em]">
-                Career and Interests
+              <h4 className="text-center text-white font-medium text-[28px] leading-9 -tracking-[0.02em]">
+                Create Deep Connections
               </h4>
               <p className="line-clamp-3 text-center text-lg leading-6 -tracking-[0.02em] text-white font-normal">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -40,7 +56,15 @@ function LandingFeatures() {
                 potenti.
               </p>
             </div>
-            <div className="min-h-[200px] border border-[#DFDFDF] rounded-xl w-full"></div>
+            <div className="min-h-[200px] wobble-image w-full">
+              <img
+                src="/connections.png"
+                alt="connections"
+                style={{
+                  clipPath: 'inset(0px 0px 30px 0px round 10px)',
+                }}
+              />
+            </div>
           </article>
         </div>
       </div>

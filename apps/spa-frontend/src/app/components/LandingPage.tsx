@@ -1,4 +1,3 @@
-import { LandingConnections } from './landingPage/LandingConnections';
 import { LandingFeatures } from './landingPage/LandingFeatures';
 import { LandingHero } from './landingPage/LandingHero';
 import { LandingInformation } from './landingPage/LandingInformation';
@@ -10,7 +9,7 @@ function LandingPage() {
       <LandingNavbar />
       <LandingHero />
       <LandingFeatures />
-      <LandingConnections />
+      {/* <LandingConnections /> */}
       <LandingInformation />
     </div>
   );

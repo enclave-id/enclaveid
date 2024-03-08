@@ -13,7 +13,15 @@ function LandingConnections() {
               placerat ac elit in finibus.
             </p>
           </div>
-          <div className="border border-[#DFDFDF] rounded-xl w-full min-h-[413px]"></div>
+          <div className="w-full min-h-[413px]">
+            <img
+              src="/connections.png"
+              alt="connections"
+              style={{
+                clipPath: 'inset(3px round 10px)',
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>
