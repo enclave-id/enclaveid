@@ -3,12 +3,17 @@ import { Logo } from './Logo';
 import { Input } from './Input';
 import { Button } from './Button';
 import { FormCardLayout } from './FormCardLayout';
+import { AuthenticationType } from './containers/AuthenticationContainer';
 
 export interface AuthenticationFormProps {
   handleSubmit?: (email: string, password: string) => void;
+  authenticationType?: AuthenticationType;
 }
 
-function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
+function AuthenticationForm({
+  handleSubmit,
+  authenticationType,
+}: AuthenticationFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,12 +21,16 @@ function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
     <div className="flex flex-col gap-10 max-w-[478px] w-full mx-auto">
       <Logo />
       <FormCardLayout>
-        <p className="description-text">
-          Your credentials will only be used for Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Fusce eget condimentum augue. Aenean
-          elementum commodo varius.
-        </p>
-        <div className="flex flex-col gap-5 mt-[30px]">
+        {authenticationType === 'signup' && (
+          <p className="description-text mb-[30px]">
+            EnclaveID does not have an user agreement. By signing up, you agree
+            to your data being processed as described in the open source code.
+            The execution of the code and confidentiality of your data is
+            guaranteed by confidential computing technology built on AWS Nitro
+            Enclaves.
+          </p>
+        )}
+        <div className="flex flex-col gap-5">
           <Input
             label="Email"
             placeholder="yourmail@gmail.com"
@@ -30,6 +39,7 @@ function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
             fullWidth
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <Input
             label="Password"
@@ -39,11 +49,12 @@ function AuthenticationForm({ handleSubmit }: AuthenticationFormProps) {
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <div className="mt-5">
           <Button
-            label="Sign Up"
+            label={authenticationType === 'signup' ? 'Sign Up' : 'Log In'}
             fullWidth
             onClick={() => {
               if (handleSubmit) handleSubmit(email, password);

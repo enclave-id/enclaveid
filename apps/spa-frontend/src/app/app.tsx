@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 import { Landing } from './pages/landing';
-import { E2eTest } from './pages/e2eTest';
 import { Toaster } from 'react-hot-toast';
+import { Authentication } from './pages/authentication';
 
 const router = createBrowserRouter([
   {
@@ -10,8 +10,12 @@ const router = createBrowserRouter([
     element: <Landing />,
   },
   {
-    path: '/e2eTest',
-    element: <E2eTest />,
+    path: '/login',
+    element: <Authentication authenticationType="login" />,
+  },
+  {
+    path: '/signup',
+    element: <Authentication authenticationType="signup" />,
   },
 ]);
 
