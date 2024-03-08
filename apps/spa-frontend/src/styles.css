@@ -41,3 +41,11 @@
 .wobble-image:hover img {
   transform: rotate3d(1, 1, 0, 5deg); /* This creates a more complex wobble effect */
 }
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hideScrollbar {
+  scrollbar-width: none; /* Firefox */
+}
