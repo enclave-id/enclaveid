@@ -4,7 +4,7 @@ import { authenticatedProcedure, router } from '../trpc';
 import { encryptResponsePayload } from '../services/crypto/symmetricNode';
 
 export const confidential = router({
-  ocean: authenticatedProcedure
+  getAllTraits: authenticatedProcedure
     .input(
       z.object({
         nonce: z.string(),

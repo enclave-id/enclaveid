@@ -8,84 +8,187 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(cuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   email            String    @unique
   password         String
   confirmationCode String    @default(cuid())
   confirmedAt      DateTime?
   session          Session?
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  userTraits  UserTraits?
-  chromePod   ChromePod?    @relation(fields: [chromePodId], references: [id])
-  chromePodId String?
-  TakeoutFile TakeoutFile[]
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?     @unique
+
+  chromePod   ChromePod? @relation(fields: [chromePodId], references: [id])
+  chromePodId String?    @unique
+
+  takeoutFiles TakeoutFile[]
 }
 
 model Session {
-  id         String @id @default(cuid())
-  sessionKey String
-  userId     String @unique
-  user       User   @relation(fields: [userId], references: [id])
-
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  sessionSecret String
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @unique
 }
 
+model ChromePod {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  chromePodK8sId String @unique
+  rdpUsername    String
+  rdpPassword    String
+
+  user User?
+}
+
+model TakeoutFile {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dataProvider DataProvider
+  filename     String
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+enum DataProvider {
+  GOOGLE
+  FACEBOOK
+}
+
+// PERSONALITY MODELS --------------------------------------------
+
 model UserTraits {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   bigFiveId String  @unique
   bigFive   BigFive @relation(fields: [bigFiveId], references: [id])
 
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  mbtiId String @unique
+  mbti   Mbti   @relation(fields: [mbtiId], references: [id])
 
+  sixteenPersonalityFactorId String                   @unique
+  sixteenPersonalityFactor   SixteenPersonalityFactor @relation(fields: [sixteenPersonalityFactorId], references: [id])
+
+  politcalCompassId String          @unique
+  politcalCompass   PolitcalCompass @relation(fields: [politcalCompassId], references: [id])
+
+  moralFoundationsId String           @unique
+  moralFoundations   MoralFoundations @relation(fields: [moralFoundationsId], references: [id])
+
+  riasecId String @unique
+  riasec   Riasec @relation(fields: [riasecId], references: [id])
+
+  user User?
+}
+
+model Riasec {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  realistic     Float
+  investigative Float
+  artistic      Float
+  social        Float
+  enterprising  Float
+  conventional  Float
+  summary       String
+
+  userTraits UserTraits?
+}
+
+model MoralFoundations {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  careHarm            Float
+  fairnessCheating    Float
+  loyaltyBetrayal     Float
+  authoritySubversion Float
+  sanctityDegradation Float
+  summary             String
+
+  userTraits UserTraits?
+}
+
+model PolitcalCompass {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  economicAxis Float
+  socialAxis   Float
+  summary      String
+
+  userTraits UserTraits?
 }
 
 model BigFive {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   openness          Float
   conscientiousness Float
   extraversion      Float
   agreeableness     Float
   neuroticism       Float
+  summary           String
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  userTraits UserTraits[]
+  userTraits UserTraits?
 }
 
-model ChromePod {
-  id String @id @default(cuid())
-
-  chromePodId String @unique
-
-  rdpUsername String
-  rdpPassword String
-
+model Mbti {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User[]
+
+  extraversion Boolean
+  sensing      Boolean
+  thinking     Boolean
+  judging      Boolean
+  summary      String
+
+  userTraits UserTraits?
 }
 
-model TakeoutFile {
-  id           String       @id @default(cuid())
-  dataProvider DataProvider
-  filename     String
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
+model SixteenPersonalityFactor {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
 
-enum DataProvider {
-  GOOGLE
-  FACEBOOK
+  warmth             Float
+  reasoning          Float
+  emotionalStability Float
+  dominance          Float
+  liveliness         Float
+  ruleConsciousness  Float
+  socialBoldness     Float
+  sensitivity        Float
+  vigilance          Float
+  abstractedness     Float
+  privateness        Float
+  apprehension       Float
+  opennessToChange   Float
+  selfReliance       Float
+  perfectionism      Float
+  tension            Float
+  summary            String
+
+  userTraits UserTraits?
 }
