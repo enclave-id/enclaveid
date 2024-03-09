@@ -1,25 +1,34 @@
-export const traitCard1 = [
-  {
-    label: 'Openness to Experiences',
-    value: 95,
-  },
-  {
-    label: 'Conscientiousness',
-    value: 30,
-  },
-  {
-    label: 'Extraversion',
-    value: 5,
-  },
-  {
-    label: 'Agreeableness',
-    value: 50,
-  },
-  {
-    label: 'Neuroticism',
-    value: 75,
-  },
-];
+export const traitCard1 = {
+  title: "Ocean",
+  data: [
+    {
+      label: "Openness to Experiences",
+      value: 95,
+      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      label: "Conscientiousness",
+      value: 30,
+      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      label: "Extraversion",
+      value: 5,
+      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      label: "Agreeableness",
+      value: 50,
+      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+    {
+      label: "Neuroticism",
+      value: 75,
+      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+    },
+  ],
+};
+
 
 export const traitCard2 = [
   {
