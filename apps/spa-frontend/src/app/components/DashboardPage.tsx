@@ -5,10 +5,10 @@ import { Tabs } from './Tabs';
 
 function DashboardPage() {
   return (
-    <div className="h-screen bg-white flex">
+    <div className="h-screen bg-white flex sm:flex-row flex-col">
       <Sidebar />
-      <div className="flex flex-1 flex-col overflow-y-auto px-6">
-        <div className="pt-[54px] pb-4">
+      <div className="flex flex-1 flex-col overflow-y-auto">
+        <div className="pt-[54px] pb-4 sm:block hidden px-6">
           <Breadcrumb />
         </div>
         <Tabs />
