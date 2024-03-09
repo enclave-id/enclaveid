@@ -8,7 +8,6 @@ import { DashboardPage } from './components/DashboardPage';
 import { PersonalityContent } from './components/PersonalityContent';
 import { TraitCardDetails } from './components/TraitCardDetails';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
