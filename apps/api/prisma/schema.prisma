@@ -74,23 +74,23 @@ model UserTraits {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  bigFiveId String  @unique
-  bigFive   BigFive @relation(fields: [bigFiveId], references: [id])
+  bigFiveId String?  @unique
+  bigFive   BigFive? @relation(fields: [bigFiveId], references: [id])
 
-  mbtiId String @unique
-  mbti   Mbti   @relation(fields: [mbtiId], references: [id])
+  mbtiId String? @unique
+  mbti   Mbti?   @relation(fields: [mbtiId], references: [id])
 
-  sixteenPersonalityFactorId String                   @unique
-  sixteenPersonalityFactor   SixteenPersonalityFactor @relation(fields: [sixteenPersonalityFactorId], references: [id])
+  sixteenPersonalityFactorId String?                   @unique
+  sixteenPersonalityFactor   SixteenPersonalityFactor? @relation(fields: [sixteenPersonalityFactorId], references: [id])
 
-  politcalCompassId String          @unique
-  politcalCompass   PolitcalCompass @relation(fields: [politcalCompassId], references: [id])
+  politcalCompassId String?          @unique
+  politcalCompass   PolitcalCompass? @relation(fields: [politcalCompassId], references: [id])
 
-  moralFoundationsId String           @unique
-  moralFoundations   MoralFoundations @relation(fields: [moralFoundationsId], references: [id])
+  moralFoundationsId String?           @unique
+  moralFoundations   MoralFoundations? @relation(fields: [moralFoundationsId], references: [id])
 
-  riasecId String @unique
-  riasec   Riasec @relation(fields: [riasecId], references: [id])
+  riasecId String? @unique
+  riasec   Riasec? @relation(fields: [riasecId], references: [id])
 
   user User?
 }
@@ -131,9 +131,9 @@ model PolitcalCompass {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  economicAxis Float
-  socialAxis   Float
-  summary      String
+  economic Float
+  social   Float
+  summary  String
 
   userTraits UserTraits?
 }
