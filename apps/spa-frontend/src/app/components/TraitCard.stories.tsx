@@ -1,14 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { TraitCard } from './TraitCard';
+import { traitCard1 } from './mock-data';
 
 export default {
   title: 'Components/TraitCard',
   component: TraitCard,
   argTypes: {
-    title: {
-      control: 'text',
-      defaultValue: 'Openness to Experiences',
-    },
     value: {
       control: 'range',
       defaultValue: 85,
@@ -21,8 +18,9 @@ export default {
 
 export const Default: StoryObj<typeof TraitCard> = {
   args: {
-    title: 'Openness to Experiences',
-    value: 85,
+    label: traitCard1.data[0].label,
+    value: traitCard1.data[0].value,
+    description: traitCard1.data[0].description
   },
   decorators: [
     (Story) => (
