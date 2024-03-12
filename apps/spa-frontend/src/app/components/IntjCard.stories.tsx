@@ -1,23 +1,32 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { IntjCard } from './IntjCard';
+import { withRouter } from 'storybook-addon-react-router-v6';
+import { BreadcrumbProvider } from '../context/BreadcrumbContext';
+import { intjCard } from './mock-data';
 
 export default {
   title: 'Components/IntjCard',
   component: IntjCard,
+  decorators: [withRouter],
 } as Meta<typeof IntjCard>;
 
 export const Default: StoryObj<typeof IntjCard> = {
   args: {
-    header: 'MBTI',
-    title: 'INTJ',
-    description:
-      'Introverted, Intuitive, Thinking, and Judging. It indicates a person who is energized by spending time alone, prioritizes ideas and concepts over facts and details, makes decisions based on logic and reason, and prefers to be organized and planned.',
+    header: intjCard.header,
+    label: intjCard.label,
+    description: intjCard.description,
+    data: {
+      title: intjCard.data.title,
+      content: intjCard.data.content,
+    },
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '538px' }}>
-        <Story />
-      </div>
+      <BreadcrumbProvider>
+        <div style={{ maxWidth: '538px' }}>
+          <Story />
+        </div>
+      </BreadcrumbProvider>
     ),
   ],
 };

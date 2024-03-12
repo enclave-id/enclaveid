@@ -1,19 +1,19 @@
-import { GradientLine } from "./GradientLine";
-import { Button } from "./Button";
-import { DashboardCardLayout } from "./DashboardCardLayout";
-import { useNavigate } from "react-router-dom";
+import { GradientLine } from './GradientLine';
+import { Button } from './Button';
+import { DashboardCardLayout } from './DashboardCardLayout';
+import { useNavigate } from 'react-router-dom';
 
-import { useState } from "react";
-import { Drawer } from "vaul";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { TraitCard } from "./TraitCard";
-import { SimilarProfileBadge } from "./SimilarProfileBadge";
-import { useBreadcrumb } from "../context/BreadcrumbContext";
+import { useState } from 'react';
+import { Drawer } from 'vaul';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { TraitCard } from './TraitCard';
+import { SimilarProfileBadge } from './SimilarProfileBadge';
+import { useBreadcrumb } from '../context/BreadcrumbContext';
 
 interface DataProps {
   label: string;
   value: number;
-  description: string
+  description: string;
 }
 export interface TraitCardProps {
   title: string;
@@ -29,11 +29,11 @@ function TraitCard1({ title, data }: TraitCardProps) {
     const screenWidth = window.innerWidth;
     if (screenWidth > 640) {
       setLink(title);
-      navigate(`/dashboard/personality/${title.toLocaleLowerCase()}`, {
+      navigate(`/dashboard/personality/trait/${title.toLocaleLowerCase()}`, {
         state: { title, data },
       });
     } else {
-      setIsDrawerOpen(true); // Drawer'ı aç
+      setIsDrawerOpen(true);
     }
   };
   return (

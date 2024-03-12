@@ -7,6 +7,7 @@ import { BreadcrumbProvider } from './context/BreadcrumbContext';
 import { DashboardPage } from './components/DashboardPage';
 import { PersonalityContent } from './components/PersonalityContent';
 import { TraitCardDetails } from './components/TraitCardDetails';
+import { IntjCardDetails } from './components/IntjCardDetails';
 
 const router = createBrowserRouter([
   {
@@ -22,18 +23,19 @@ const router = createBrowserRouter([
     element: <Authentication authenticationType="signup" />,
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     element: <DashboardPage />,
     children: [
       {
         index: true,
         element: <Navigate to="/dashboard/personality" replace />,
       },
-      { path: "personality", element: <PersonalityContent /> },
-      { path: "personality/:title", element: <TraitCardDetails /> },
-      { path: "politics", element: <div>politics content</div> },
-      { path: "career", element: <div>career content</div> },
-      { path: "non-latent", element: <div>non latent</div> },
+      { path: 'personality', element: <PersonalityContent /> },
+      { path: 'personality/trait/:title', element: <TraitCardDetails /> },
+      { path: 'personality/mbti/:title', element: <IntjCardDetails /> },
+      { path: 'politics', element: <div>politics content</div> },
+      { path: 'career', element: <div>career content</div> },
+      { path: 'non-latent', element: <div>non latent</div> },
     ],
   },
 ]);
