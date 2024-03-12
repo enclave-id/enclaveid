@@ -8,7 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
 import { useBreadcrumb } from '../context/BreadcrumbContext';
 
-interface IntjCardProps {
+export interface IntjCardProps {
   header: string;
   label: string;
   description: string;

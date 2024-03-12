@@ -7,7 +7,7 @@ import { BreadcrumbProvider } from './context/BreadcrumbContext';
 import { DashboardPage } from './components/DashboardPage';
 import { PersonalityContent } from './components/PersonalityContent';
 import { TraitCardDetails } from './components/TraitCardDetails';
-import IntjCardDetails from './components/IntjCardDetails';
+import { IntjCardDetails } from './components/IntjCardDetails';
 
 const router = createBrowserRouter([
   {
