@@ -18,8 +18,8 @@ model User {
   confirmedAt      DateTime?
   session          Session?
 
-  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
-  userTraitsId String?     @unique
+  userTraits   UserTraits @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String     @unique
 
   chromePod   ChromePod? @relation(fields: [chromePodId], references: [id])
   chromePodId String?    @unique
@@ -74,25 +74,15 @@ model UserTraits {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  bigFiveId String?  @unique
-  bigFive   BigFive? @relation(fields: [bigFiveId], references: [id])
+  bigFive                  BigFive[]
+  mbti                     Mbti[]
+  sixteenPersonalityFactor SixteenPersonalityFactor[]
+  politcalCompass          PolitcalCompass[]
+  moralFoundations         MoralFoundations[]
+  riasec                   Riasec[]
 
-  mbtiId String? @unique
-  mbti   Mbti?   @relation(fields: [mbtiId], references: [id])
-
-  sixteenPersonalityFactorId String?                   @unique
-  sixteenPersonalityFactor   SixteenPersonalityFactor? @relation(fields: [sixteenPersonalityFactorId], references: [id])
-
-  politcalCompassId String?          @unique
-  politcalCompass   PolitcalCompass? @relation(fields: [politcalCompassId], references: [id])
-
-  moralFoundationsId String?           @unique
-  moralFoundations   MoralFoundations? @relation(fields: [moralFoundationsId], references: [id])
-
-  riasecId String? @unique
-  riasec   Riasec? @relation(fields: [riasecId], references: [id])
-
-  user User?
+  userId String? @unique
+  user   User?
 }
 
 model Riasec {
@@ -106,9 +96,10 @@ model Riasec {
   social        Float
   enterprising  Float
   conventional  Float
-  summary       String
+  summary       String?
 
-  userTraits UserTraits?
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?
 }
 
 model MoralFoundations {
@@ -121,9 +112,10 @@ model MoralFoundations {
   loyaltyBetrayal     Float
   authoritySubversion Float
   sanctityDegradation Float
-  summary             String
+  summary             String?
 
-  userTraits UserTraits?
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?
 }
 
 model PolitcalCompass {
@@ -133,9 +125,10 @@ model PolitcalCompass {
 
   economic Float
   social   Float
-  summary  String
+  summary  String?
 
-  userTraits UserTraits?
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?
 }
 
 model BigFive {
@@ -148,9 +141,10 @@ model BigFive {
   extraversion      Float
   agreeableness     Float
   neuroticism       Float
-  summary           String
+  summary           String?
 
-  userTraits UserTraits?
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?
 }
 
 model Mbti {
@@ -162,9 +156,10 @@ model Mbti {
   sensing      Boolean
   thinking     Boolean
   judging      Boolean
-  summary      String
+  summary      String?
 
-  userTraits UserTraits?
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?
 }
 
 model SixteenPersonalityFactor {
@@ -188,7 +183,8 @@ model SixteenPersonalityFactor {
   selfReliance       Float
   perfectionism      Float
   tension            Float
-  summary            String
+  summary            String?
 
-  userTraits UserTraits?
+  userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
+  userTraitsId String?
 }
