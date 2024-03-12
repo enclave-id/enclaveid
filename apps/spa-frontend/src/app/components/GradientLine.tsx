@@ -13,6 +13,7 @@ interface GradientLineProps {
   title: string;
   variant?: 'primary' | 'secondary';
   index: number;
+  isDrawer?: boolean;
 }
 
 function GradientLine({
@@ -20,6 +21,7 @@ function GradientLine({
   title,
   variant = 'primary',
   index,
+  isDrawer = false,
 }: GradientLineProps) {
   const getLabel = (value: number): Label => {
     if (value <= 20) return Label.VeryLow;
@@ -45,14 +47,16 @@ function GradientLine({
   if (variant === 'secondary') {
     return (
       <div className="flex gap-[18px] items-center">
-        <span className="text-[#6C7A8A] font-medium leading-4 text-sm max-w-[142px] w-full text-right">
-          {title}
-        </span>
+        {!isDrawer && (
+          <span className="text-[#6C7A8A] font-medium leading-4 text-sm max-w-[142px] w-full text-right">
+            {title}
+          </span>
+        )}
         <div
           className={`h-2.5 rounded-full w-full bg-gradient-to-r ${barColor} relative`}
         >
           <Pin style={pinStyle} variant={variant} />
-          {index === 0 && (
+          {(isDrawer || index === 0) && (
             <div className="flex items-center justify-between absolute -top-8 w-full ">
               <span className="text-[#5799E6] text-sm font-medium leading-4">
                 Low

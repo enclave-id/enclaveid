@@ -69,7 +69,7 @@ function TraitCard1({ title, data }: TraitCardProps) {
           <Drawer.Overlay className="fixed inset-0 bg-black/40" />
           <Drawer.Content className="bg-zinc-100 flex flex-col rounded-t-xl max-h-[91%] mt-24 fixed bottom-0 left-0 right-0">
             <div className="bg-white rounded-t-xl flex-1 flex overflow-auto">
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 w-full">
                 <div className="flex items-center justify-between py-4 px-5">
                   <span className="opacity-0"></span>
                   <Drawer.Title className="text-passiveLinkColor text-lg leading-[21px] font-semibold">
