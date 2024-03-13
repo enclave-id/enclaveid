@@ -8,6 +8,7 @@ import { DashboardPage } from './components/DashboardPage';
 import { PersonalityContent } from './components/PersonalityContent';
 import { TraitCardDetails } from './components/TraitCardDetails';
 import { IntjCardDetails } from './components/IntjCardDetails';
+import { TraitCard2Details } from './components/TraitCard2Details';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: 'personality', element: <PersonalityContent /> },
       { path: 'personality/trait/:title', element: <TraitCardDetails /> },
       { path: 'personality/mbti/:title', element: <IntjCardDetails /> },
+      { path: 'personality/trait2/:title', element: <TraitCard2Details /> },
       { path: 'politics', element: <div>politics content</div> },
       { path: 'career', element: <div>career content</div> },
       { path: 'non-latent', element: <div>non latent</div> },

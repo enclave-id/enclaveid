@@ -38,66 +38,98 @@ export const traitCard2 = [
   {
     label: 'Warmth',
     value: 40,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Reasoning',
     value: 60,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Emotional Stability',
     value: 30,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Dominance',
     value: 80,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Liveliness',
     value: 25,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Rule-Consciousness',
     value: 55,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Social Boldness',
     value: 20,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Sensitivity',
     value: 80,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Vigilance',
     value: 50,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Abstractedness',
     value: 70,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Privateness',
     value: 95,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Apprehension',
     value: 30,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Openness to Change',
     value: 45,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Self-Reliance',
     value: 35,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Perfectionism',
     value: 65,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
   {
     label: 'Tension',
     value: 30,
+    description:
+      'Low relates to being impersonal, distant, cool, reserved, detached, formal, aloof. High relates to being warm, outgoing, attentive to others, kindly, easygoing, participating, likes people',
   },
 ];
 

@@ -1,5 +1,5 @@
-import classNames from "classnames";
-import { ReactNode } from "react";
+import classNames from 'classnames';
+import { ReactNode } from 'react';
 
 interface BaseProps {
   children: ReactNode;
@@ -33,7 +33,7 @@ function DashboardCardLayout({
       )}
       <article
         className={classNames(
-          isDrawer ? "" : "border border-[#E5E8EE] rounded-3xl bg-white"
+          isDrawer ? '' : 'border border-[#E5E8EE] rounded-3xl bg-white h-full',
         )}
       >
         {children}
