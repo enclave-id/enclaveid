@@ -1,16 +1,30 @@
-import classNames from "classnames";
+import classNames from 'classnames';
 
-import { useNavigate } from "react-router-dom";
-import { useBreadcrumb } from "../context/BreadcrumbContext";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useEffect } from 'react';
 
 function Breadcrumb() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { link, setLink } = useBreadcrumb();
 
   const handleDashboardClick = () => {
-    navigate("/dashboard");
-    setLink("");
+    navigate('/dashboard');
+    setLink('');
   };
+
+  useEffect(() => {
+    const pathSegments = location.pathname
+      .split('/')
+      .filter((path) => path.length > 0);
+
+    if (pathSegments.length === 2 && pathSegments[0] === 'dashboard') {
+      setLink('');
+    } else if (pathSegments.length > 2) {
+    }
+  }, [location, setLink]);
 
   return (
     <div className="flex gap-1.5 items-center text-[23px] leading-[27px] font-medium">
@@ -18,16 +32,16 @@ function Breadcrumb() {
         onClick={handleDashboardClick}
         className={classNames(
           link
-            ? "text-active-breadcrumb-title underline"
-            : "text-passiveLinkColor"
+            ? 'text-active-breadcrumb-title underline'
+            : 'text-passiveLinkColor',
         )}
       >
-        Traits Dashboard{" "}
-      </button>{" "}
+        Traits Dashboard{' '}
+      </button>{' '}
       {link && (
         <>
-          <span className="text-passiveLinkColor">{">"}</span>{" "}
-          <span className="text-passiveLinkColor">{link}</span>{" "}
+          <span className="text-passiveLinkColor">{'>'}</span>{' '}
+          <span className="text-passiveLinkColor">{link}</span>{' '}
         </>
       )}
     </div>
