@@ -1,9 +1,8 @@
-import { useLocation } from "react-router-dom";
-import { TraitCardProps } from "./TraitCard1";
-import { TraitCard } from "./TraitCard";
+import { useLocation } from 'react-router-dom';
+import { TraitCardProps } from './TraitCard1';
+import { TraitCard } from './TraitCard';
 
-
-function TraitCardDetails () {
+function TraitCardDetails() {
   const location = useLocation();
   const { data } = location.state as TraitCardProps;
   return (
@@ -15,6 +14,6 @@ function TraitCardDetails () {
       </div>
     </div>
   );
-};
+}
 
-export  {TraitCardDetails};
+export { TraitCardDetails };

@@ -10,6 +10,8 @@ import { TraitCardDetails } from './components/TraitCardDetails';
 import { IntjCardDetails } from './components/IntjCardDetails';
 import { TraitCard2Details } from './components/TraitCard2Details';
 import { PoliticsContent } from './components/PoliticsContent';
+import { CompassDetails } from './components/CompassDetails';
+import { MFTDetails } from './components/MFTDetails';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,8 @@ const router = createBrowserRouter([
       { path: 'personality/mbti/:title', element: <IntjCardDetails /> },
       { path: 'personality/trait2/:title', element: <TraitCard2Details /> },
       { path: 'politics', element: <PoliticsContent /> },
+      { path: 'politics/compass', element: <CompassDetails /> },
+      { path: 'politics/mft', element: <MFTDetails /> },
       { path: 'career', element: <div>career content</div> },
       { path: 'non-latent', element: <div>non latent</div> },
     ],

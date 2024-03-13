@@ -6,6 +6,14 @@ interface CirclePositions {
   purity: { cx: number; cy: number };
 }
 
+interface Props {
+  harm: number;
+  fairness: number;
+  authority: number;
+  ingroup: number;
+  purity: number;
+}
+
 const lines = {
   harm: {
     x1: '134.16',
@@ -56,7 +64,7 @@ function calculateCirclePositions(props) {
   return positions as CirclePositions;
 }
 
-function MFTChart({ harm, fairness, authority, ingroup, purity }) {
+function MFTChart({ harm, fairness, authority, ingroup, purity }: Props) {
   const circlePositions = calculateCirclePositions({
     harm,
     fairness,

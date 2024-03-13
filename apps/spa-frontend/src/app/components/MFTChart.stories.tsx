@@ -34,8 +34,10 @@ export default {
   },
 } as Meta<typeof MFTChart>;
 
+const { description, ...circles } = MFTChartData;
+
 export const Default: StoryObj<typeof MFTChart> = {
-  args: MFTChartData,
+  args: circles,
   decorators: [
     (Story) => (
       <div style={{ margin: '20px' }}>
