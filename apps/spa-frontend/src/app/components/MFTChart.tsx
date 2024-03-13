@@ -39,29 +39,24 @@ const lines = {
   },
 };
 
+function calculateCirclePositions(props) {
+  const positions = Object.keys(lines).reduce((acc, lineKey) => {
+    const line = lines[lineKey];
+    const prop = props[lineKey];
+    const x1 = parseFloat(line.x1);
+    const y1 = parseFloat(line.y1);
+    const x2 = parseFloat(line.x2);
+    const y2 = parseFloat(line.y2);
+    const cx = x1 + prop * (x2 - x1);
+    const cy = y1 + prop * (y2 - y1);
+    acc[lineKey] = { cx, cy };
+    return acc;
+  }, {});
+
+  return positions as CirclePositions;
+}
+
 function MFTChart({ harm, fairness, authority, ingroup, purity }) {
-  function calculateCirclePositions(props) {
-    const positions = {};
-
-    for (const lineKey in lines) {
-      if (lines.hasOwnProperty(lineKey)) {
-        const line = lines[lineKey];
-        const prop = props[lineKey];
-        const x1 = parseFloat(line.x1);
-        const y1 = parseFloat(line.y1);
-        const x2 = parseFloat(line.x2);
-        const y2 = parseFloat(line.y2);
-
-        const cx = x1 + prop * (x2 - x1);
-        const cy = y1 + prop * (y2 - y1);
-
-        positions[lineKey] = { cx, cy };
-      }
-    }
-
-    return positions as CirclePositions;
-  }
-
   const circlePositions = calculateCirclePositions({
     harm,
     fairness,
