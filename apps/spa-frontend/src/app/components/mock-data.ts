@@ -172,3 +172,11 @@ export const intjCard = {
     `,
   },
 };
+
+export const MFTChartData = {
+  harm: 0.2,
+  fairness: 0.8,
+  authority: 0.3,
+  ingroup: 0.6,
+  purity: 0.2,
+};
