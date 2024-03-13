@@ -1,0 +1,46 @@
+import { Meta, StoryObj } from '@storybook/react';
+import { MFTChart } from './MFTChart';
+import { MFTChartData } from './mock-data';
+
+export default {
+  title: 'Components/MFTChart',
+  component: MFTChart,
+  argTypes: {
+    harm: {
+      control: 'number',
+      defaultValue: MFTChartData.harm,
+      description: 'Harm value (0 to 1 scale)',
+    },
+    fairness: {
+      control: 'number',
+      defaultValue: MFTChartData.fairness,
+      description: 'Fairness value (0 to 1 scale)',
+    },
+    authority: {
+      control: 'number',
+      defaultValue: MFTChartData.authority,
+      description: 'Authority value (0 to 1 scale)',
+    },
+    ingroup: {
+      control: 'number',
+      defaultValue: MFTChartData.ingroup,
+      description: 'Ingroup value (0 to 1 scale)',
+    },
+    purity: {
+      control: 'number',
+      defaultValue: MFTChartData.purity,
+      description: 'Purity value (0 to 1 scale)',
+    },
+  },
+} as Meta<typeof MFTChart>;
+
+export const Default: StoryObj<typeof MFTChart> = {
+  args: MFTChartData,
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
