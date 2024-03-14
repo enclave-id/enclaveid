@@ -15,13 +15,22 @@ export default {
       defaultValue: 0,
       description: 'Y axis coordinate',
     },
+    description: {
+      control: 'text',
+      description: 'Optional description of the chart',
+    },
+    showDescription: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Toggles the visibility of the description',
+    },
   },
 } as Meta<typeof CompassChart>;
 
 export const Default: StoryObj<typeof CompassChart> = {
   args: {
-    x: 0,
-    y: 0,
+    x: 2,
+    y: 4,
   },
   decorators: [
     (Story) => (

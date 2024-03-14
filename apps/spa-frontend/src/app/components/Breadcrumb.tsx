@@ -11,7 +11,7 @@ function Breadcrumb() {
   const { link, setLink } = useBreadcrumb();
 
   const handleDashboardClick = () => {
-    navigate('/dashboard');
+    navigate(-1);
     setLink('');
   };
 
