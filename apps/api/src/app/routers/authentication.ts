@@ -32,8 +32,8 @@ export const authentication = router({
 
       await prisma.session.upsert({
         where: { userId: user.id },
-        update: { sessionKey },
-        create: { userId: user.id, sessionKey },
+        update: { sessionSecret: sessionKey },
+        create: { userId: user.id, sessionSecret: sessionKey },
       });
 
       setJwtCookie(user);
@@ -72,6 +72,9 @@ export const authentication = router({
           email,
           password,
           confirmedAt: new Date(), // TODO remove this and send confirmation email
+          userTraits: {
+            create: {},
+          },
         },
       });
 

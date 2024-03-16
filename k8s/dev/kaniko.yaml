@@ -14,6 +14,7 @@ spec:
           '--dockerfile=/workspace/${DOCKERFILE_PATH}',
           '--context=dir://${BUILD_CONTEXT}',
           '--destination=${DESTINATION_IMAGE}',
+          '--reproducible',
         ]
       volumeMounts:
         - name: build-context-storage
