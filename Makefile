@@ -1,4 +1,3 @@
-# Define variables
 NAMESPACE := default
 REGISTRY := registry.container-registry.svc.cluster.local:5000
 APPS_DIR := apps
