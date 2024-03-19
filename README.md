@@ -6,6 +6,8 @@ Monorepo with the core services. Ideally we move the data pipeline in here as we
 
 ![alt text](docs/architecture.svg)
 
+The deployment happens in two steps. At first the API pod is deployed, which bootstraps the CA and stores it in AKV. Once this is complete, every other pod follows suit by using the CA in AKV in their Envoy sidecars.
+
 ## Build and deploy
 
 Because the attestation logic is tightly bound to the infrastructure, we need to match development and production build + deployment environments as closely as possible.
