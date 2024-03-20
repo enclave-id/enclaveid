@@ -10,9 +10,6 @@ function LandingPage() {
     <div className="min-h-screen bg-white">
       <LandingNavbar />
       <LandingHero />
-      <div className="flex items-center justify-center relative z-20 -mt-[275px]">
-        <img src="./hero.png" alt="" />
-      </div>
       <LandingFeatures />
       <LandingConnections />
       <LandingInformation />

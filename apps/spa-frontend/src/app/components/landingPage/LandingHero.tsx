@@ -1,19 +1,17 @@
-import { Link } from 'react-router-dom';
 import { Button } from '../Button';
 
 function LandingHero() {
-  let x = true;
-  if (x) {
-    return (
-      <section className="h-[calc(100vh-88px)] bg-[#32433F] overflow-hidden relative">
-        <div className="pt-[104px] pb-14 flex flex-col items-center justify-center gap-10 max-w-[830px] mx-auto relative z-10">
+  return (
+    <>
+      <section className="md:h-[calc(100vh-88px)] bg-[#32433F] overflow-hidden relative h-full sm:h-[calc(100dvh-80px)]">
+        <div className="md:pt-20 pt-10 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[830px] mx-auto relative z-10">
           <div className="flex flex-col gap-6">
-            <h1 className="text-white text-[86px] leading-[77px] tracking-[-0.03em] text-center">
+            <h1 className="text-white md:text-[86px] text-5xl md:leading-[77px] md:tracking-[-0.03em] text-center">
               Discover what your{' '}
               <span className="font-semibold text-greenBg">data says</span>{' '}
               about you
             </h1>
-            <p className="text-[#D6D9D9]/80 text-xl tracking-[-0.02em] leading-7 text-center">
+            <p className="text-[#D6D9D9]/80 text-lg md:text-xl md:tracking-[-0.02em] md:leading-7 text-center">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
               in neque vel diam consequat feugiat. Suspendisse potenti. Nunc
               placerat ac elit in finibus.
@@ -24,10 +22,10 @@ function LandingHero() {
           </div>
         </div>
         <div className="w-full h-full flex items-center justify-center relative z-10">
-          <div className="max-w-[1174px] w-full h-full bg-[#364743] rounded-[40px]"></div>
-          <div className="max-w-[1274px] w-full h-full bg-[#3D514C] rounded-[40px] top-10 absolute"></div>
+          <div className="max-w-[1174px] w-full h-64 sm:h-full bg-[#364743] rounded-[40px] "></div>
+          <div className="max-w-[1274px] w-full h-64 sm:h-full bg-[#3D514C] rounded-[40px] top-10 absolute "></div>
         </div>
-        <div className="absolute bottom-0 left-0">
+        <div className="absolute bottom-0 left-0 sm:block hidden">
           <svg
             width="734"
             height="775"
@@ -59,7 +57,7 @@ function LandingHero() {
             </defs>
           </svg>
         </div>
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 right-0 sm:block hidden">
           <svg
             width="859"
             height="729"
@@ -92,46 +90,10 @@ function LandingHero() {
           </svg>
         </div>
       </section>
-    );
-  }
-  return (
-    <section className="bg-white lg:pt-8 md:pt-7 pt-4 pb-14 md:pb-[72px] lg:pb-[84px]">
-      <div className="landing-container">
-        <div className="flex lg:flex-row flex-col items-center md:gap-8 sm:gap-6 gap-4 lg:gap-10">
-          <div className="lg:max-w-[624px] lg:text-left text-center w-full flex flex-col gap-9">
-            <h1 className="text-passiveLinkColor font-medium text-3xl md:text-4xl lg:text-[46px] lg:leading-[60px] lg:-tracking-[0.02em]">
-              Unleash the true power of your data
-            </h1>
-            <p className="text-passiveLinkColor md:text-xl text-lg lg:text-[22px] lg:-tracking-[0.02em] lg:leading-7">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-              in neque vel diam consequat feugiat. Suspendisse potenti. Nunc
-              placerat ac elit in finibus.
-            </p>
-            <div className="flex items-center lg:justify-start justify-center gap-3.5">
-              <Link to="/login">
-                <button className="py-3 px-7 outline outline-1 outline-[#E5E8EE] rounded-full text-passiveLinkColor text-[22px] leading-[26px] -tracking-[0.02em]">
-                  Log In
-                </button>
-              </Link>
-              <Link to="/signup">
-                <button className="py-3 px-7 bg-greenBg text-white text-[22px] leading-[26px] -tracking-[0.02em] rounded-full">
-                  Sign Up
-                </button>
-              </Link>
-            </div>
-          </div>
-          <div className="w-full min-h-[413px] wobble-image">
-            <img
-              src="/hero.webp"
-              alt="hero"
-              style={{
-                clipPath: 'inset(0px 0px 100px 0px round 10px)',
-              }}
-            />
-          </div>
-        </div>
+      <div className="flex items-center justify-center relative z-20 md:-mt-[310px] sm:-mt-[230px] -mt-[180px]">
+        <img src="./hero.png" alt="" />
       </div>
-    </section>
+    </>
   );
 }
 
