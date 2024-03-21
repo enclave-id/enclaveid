@@ -52,6 +52,8 @@ Running `make` at the project root will spin up a Kaniko pod for each applicatio
 
 ![alt text](docs/production.svg)
 
+https://learn.microsoft.com/en-us/azure/aks/deploy-confidential-containers-default-policy
+
 ## Verification
 
 In order to verify the integrity of the images in the registry you can rerun the Kaniko builds as they are specified in the CI.
