@@ -21,7 +21,7 @@ export const confidential = router({
 
     const bigFive = user?.userTraits?.bigFive;
 
-    return await encryptResponsePayload(userId, bigFive);
+    return await encryptResponsePayload(userId, bigFive as any);
   }),
 
   createbigFive: authenticatedProcedure

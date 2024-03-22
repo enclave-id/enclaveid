@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${APP_NAME}-build
+  namespace: ${NAMESPACE}
+  labels:
+    category: kaniko-build
+spec:
+  containers:
+    - name: kaniko
+      image: ${KANIKO_IMAGE}
+      args:
+        [
+          '--dockerfile=/workspace/${DOCKERFILE_PATH}',
+          '--context=dir://${BUILD_CONTEXT}',
+          '--destination=${DESTINATION_IMAGE}',
+          '--reproducible',
+        ]
+      volumeMounts:
+        - name: build-context-storage
+          mountPath: /workspace
+  restartPolicy: Never
+  volumes:
+    - name: build-context-storage
+      persistentVolumeClaim:
+        claimName: build-context-claim
