@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import '../utils/attestation/wasm_exec.js';
+import '../utils/wasm_exec.js';
 
+// Load a Go WASM binary from a URL
 export function useGoWasm(wasmURL: string) {
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<Error | null>(null);

@@ -2,8 +2,8 @@ import React, { ReactElement, useCallback } from 'react';
 import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
-import { useAttestation } from '../../hooks/useAttestation';
 import toast from 'react-hot-toast';
+import { useAwsNitroAttestation } from '../../hooks/useAwsNitroAttestation';
 
 export type AuthenticationType = 'login' | 'signup';
 
@@ -16,7 +16,7 @@ export function AuthenticationContainer({
 }) {
   const loginMutation = trpc.login.useMutation();
 
-  const { publicKey, error } = useAttestation();
+  const { publicKey, error } = useAwsNitroAttestation();
 
   const handleSubmit = useCallback(
     process.env.NODE_ENV === 'prodcution'

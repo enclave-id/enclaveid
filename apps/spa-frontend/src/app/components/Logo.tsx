@@ -51,8 +51,8 @@ function Logo({ withoutIcon, noText = false, isSmall = false }: LogoProps) {
               y2="37"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#2FA68A" />
-              <stop offset="1" stop-color="#38CBA8" />
+              <stop stopColor="#2FA68A" />
+              <stop offset="1" stopColor="#38CBA8" />
             </linearGradient>
           </defs>
         </svg>

@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
   decodeAttestation,
-  getPublicKeyHashBrowser,
-} from '../utils/attestation/attestation';
+  getExpectedMesaurements,
+} from '../utils/attestation/awsNitro';
 import { trpc } from '../utils/trpc';
 import { useGoWasm } from './useGoWasm';
-import { getExpectedMesaurements } from '../utils/attestation/measurements';
 import {
   getEnclaveCryptoKey,
+  getPublicKeyHashBrowser,
   parsePublicKey,
 } from '../utils/crypto/asymmetricBrowser';
 import toast from 'react-hot-toast';
 
-export function useAttestation(): {
+export function useAwsNitroAttestation(): {
   publicKey: CryptoKey | null;
   error: Error | null;
 } {
