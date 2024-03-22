@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useElementWidth } from '../hooks/useElementWidth';
 
 const MAX_COMPASS_VALUE = 5;
@@ -5,9 +6,16 @@ const MAX_COMPASS_VALUE = 5;
 interface CompassChartProps {
   x: number;
   y: number;
+  description?: string;
+  showDescription?: boolean;
 }
 
-function CompassChart({ x, y }: CompassChartProps) {
+function CompassChart({
+  x,
+  y,
+  description,
+  showDescription = false,
+}: CompassChartProps) {
   const [compassRef, compassWidth] = useElementWidth();
 
   const unitToPixels = compassWidth / 10;
@@ -15,7 +23,7 @@ function CompassChart({ x, y }: CompassChartProps) {
   const posX = compassWidth / 2 + x * unitToPixels;
   const posY = compassWidth / 2 - y * unitToPixels;
 
-  let label = 'Unaligned';
+  let label = '';
   if (y > 0) {
     label = 'Authoritarian';
   } else if (y < 0) {
@@ -31,15 +39,37 @@ function CompassChart({ x, y }: CompassChartProps) {
   }
 
   return (
-    <div className="flex flex-col gap-11">
-      <h2 className="text-[#6D4190] text-xl leading-6">
-        {label}{' '}
-        <span className="text-[#6C7A8A]">
-          ({x > 0 ? '+' : ''}
-          {x};{y > 0 ? '+' : ''}
-          {y})
-        </span>
-      </h2>
+    <div
+      className={classNames(
+        'flex flex-col items-center justify-center',
+        showDescription ? 'gap-12' : 'gap-11',
+      )}
+    >
+      {showDescription ? (
+        <div className="flex flex-col gap-7">
+          <h2 className="text-[#6D4190] text-xl leading-6 text-center">
+            {label}{' '}
+            <span className="text-[#6C7A8A]">
+              ({x > 0 ? '+' : ''}
+              {x};{y > 0 ? '+' : ''}
+              {y})
+            </span>
+          </h2>
+          <p className="max-w-[369px] md:max-w-full w-full text-passiveLinkColor leading-[22px]">
+            {description}
+          </p>
+        </div>
+      ) : (
+        <h2 className="text-[#6D4190] text-xl leading-6">
+          {label}{' '}
+          <span className="text-[#6C7A8A]">
+            ({x > 0 ? '+' : ''}
+            {x};{y > 0 ? '+' : ''}
+            {y})
+          </span>
+        </h2>
+      )}
+
       <div
         ref={compassRef as React.RefObject<HTMLDivElement>}
         className="max-w-max relative"

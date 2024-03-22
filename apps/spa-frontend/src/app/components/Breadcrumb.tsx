@@ -1,21 +1,43 @@
 import classNames from 'classnames';
 
-interface BreadcrumbProps {
-  link?: string;
-}
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useEffect } from 'react';
 
-function Breadcrumb({ link }: BreadcrumbProps) {
+function Breadcrumb() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { link, setLink } = useBreadcrumb();
+
+  const handleDashboardClick = () => {
+    navigate(-1);
+    setLink('');
+  };
+
+  useEffect(() => {
+    const pathSegments = location.pathname
+      .split('/')
+      .filter((path) => path.length > 0);
+
+    if (pathSegments.length === 2 && pathSegments[0] === 'dashboard') {
+      setLink('');
+    } else if (pathSegments.length > 2) {
+    }
+  }, [location, setLink]);
+
   return (
     <div className="flex gap-1.5 items-center text-[23px] leading-[27px] font-medium">
-      <span
+      <button
+        onClick={handleDashboardClick}
         className={classNames(
           link
             ? 'text-active-breadcrumb-title underline'
-            : 'text-passiveLinkColor'
+            : 'text-passiveLinkColor',
         )}
       >
         Traits Dashboard{' '}
-      </span>{' '}
+      </button>{' '}
       {link && (
         <>
           <span className="text-passiveLinkColor">{'>'}</span>{' '}

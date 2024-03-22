@@ -1,10 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { TraitCard2 } from './TraitCard2';
 import { traitCard2 } from './mock-data';
+import { withRouter } from 'storybook-addon-react-router-v6';
+import { BreadcrumbProvider } from '../context/BreadcrumbContext';
 
 export default {
   title: 'Components/TraitCard2',
   component: TraitCard2,
+  decorators: [withRouter],
   argTypes: {
     title: {
       control: 'text',
@@ -21,7 +24,9 @@ export const Default: StoryObj<typeof TraitCard2> = {
   decorators: [
     (Story) => (
       <div style={{ maxWidth: '538px' }}>
-        <Story />
+        <BreadcrumbProvider>
+          <Story />
+        </BreadcrumbProvider>
       </div>
     ),
   ],

@@ -11,9 +11,9 @@ export async function encryptResponsePayload(
   const sessionKey = await prisma.user
     .findUnique({
       where: { id: userId },
-      select: { session: { select: { sessionKey: true } } },
+      select: { session: { select: { sessionSecret: true } } },
     })
-    .then((user) => user?.session?.sessionKey);
+    .then((user) => user?.session?.sessionSecret);
 
   const nonce = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv('aes-256-ctr', sessionKey, nonce);
@@ -30,15 +30,13 @@ export async function decryptRequestPayload(
   userId: string,
   encryptedPayload: string,
   nonce: string,
-): Promise<{
-  payload: Record<string, unknown>;
-}> {
+): Promise<Record<string, unknown>> {
   const sessionKey = await prisma.user
     .findUnique({
       where: { id: userId },
-      select: { session: { select: { sessionKey: true } } },
+      select: { session: { select: { sessionSecret: true } } },
     })
-    .then((user) => user?.session?.sessionKey);
+    .then((user) => user?.session?.sessionSecret);
 
   const decipher = crypto.createDecipheriv(
     'aes-256-ctr',
@@ -48,7 +46,5 @@ export async function decryptRequestPayload(
   const payload =
     decipher.update(encryptedPayload, 'hex', 'utf8') + decipher.final('utf8');
 
-  return {
-    payload: JSON.parse(payload),
-  };
+  return JSON.parse(payload);
 }

@@ -1,21 +1,26 @@
-import { DashboardCardLayout } from './DashboardCardLayout';
-import { GradientLine } from './GradientLine';
+import classNames from "classnames";
+import { DashboardCardLayout } from "./DashboardCardLayout";
+import { GradientLine } from "./GradientLine";
 
 interface TraitCardProps {
-  title: string;
+  label: string;
   value: number;
+  description: string;
+  isDrawer?: boolean;
 }
 
-function TraitCard({ title, value }: TraitCardProps) {
+function TraitCard({ label, value, description, isDrawer = false }: TraitCardProps) {
   return (
-    <DashboardCardLayout>
-      <div className="flex flex-col gap-[27px] px-6 py-[26px]">
-        <GradientLine title={title} value={value} index={0} />
+    <DashboardCardLayout isDrawer={isDrawer}>
+      <div
+        className={classNames(
+          "flex flex-col gap-[27px]",
+          isDrawer ? "px-3 pb-[22px] border-b" : "px-6 py-[26px]"
+        )}
+      >
+        <GradientLine title={label} value={value} index={0} />
         <p className="text-[#6C7A8A] leading-[22px]">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+          {description}
         </p>
       </div>
     </DashboardCardLayout>

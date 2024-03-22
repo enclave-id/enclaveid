@@ -1,7 +1,9 @@
+import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 interface BaseProps {
   children: ReactNode;
+  isDrawer?: boolean;
 }
 
 interface WithTitleProps extends BaseProps {
@@ -20,6 +22,7 @@ function DashboardCardLayout({
   children,
   withTitle,
   title,
+  isDrawer,
 }: DashboardCardLayoutProps) {
   return (
     <div className="flex flex-col gap-2.5">
@@ -28,7 +31,11 @@ function DashboardCardLayout({
           {title}
         </h2>
       )}
-      <article className="border border-[#E5E8EE] rounded-3xl bg-white">
+      <article
+        className={classNames(
+          isDrawer ? '' : 'border border-[#E5E8EE] rounded-3xl bg-white h-full',
+        )}
+      >
         {children}
       </article>
     </div>

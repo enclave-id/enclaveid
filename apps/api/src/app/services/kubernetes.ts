@@ -57,10 +57,10 @@ export async function provisionChrome(userId: string): Promise<string> {
       chromePod: {
         connectOrCreate: {
           where: {
-            chromePodId: podId,
+            chromePodK8sId: podId,
           },
           create: {
-            chromePodId: podId,
+            chromePodK8sId: podId,
             rdpUsername: 'user',
             rdpPassword: 'password',
           },

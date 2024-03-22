@@ -1,27 +1,45 @@
+import { Logo } from '../Logo';
+
 function LandingConnections() {
   return (
-    <section className="bg-white lg:pt-8 pt-14 pb-14 md:pb-[72px] lg:pb-[84px]">
-      <div className="landing-container">
-        <div className="flex lg:flex-row flex-col items-center md:gap-8 sm:gap-6 gap-4 lg:gap-9">
-          <div className="lg:max-w-[624px] lg:text-left text-center w-full flex flex-col gap-9">
-            <h1 className="text-[#6C7A8A] font-medium text-3xl md:text-4xl lg:text-[46px] lg:leading-[60px] lg:-tracking-[0.02em]">
-              Create deep connections
-            </h1>
-            <p className="text-[#6C7A8A] md:text-xl text-lg lg:text-[28px] lg:-tracking-[0.02em] lg:leading-9">
+    <section className="max-w-[1440px] px-6 mx-auto py-20 lg:pt-[154px] lg:pb-[160px]">
+      <div className="rounded-3xl overflow-hidden flex lg:flex-row flex-col w-full">
+        <div className="bg-greenBg py-8 md:py-20 lg:py-[160px] flex flex-col md:pl-14 xl:pl-[88px] md:pr-14 px-6 md:gap-12 gap-10 lg:gap-16">
+          <div className="flex flex-col gap-6 xl:max-w-[422px]">
+            <div className="py-2 pl-2 pr-4 bg-white/10 max-w-max rounded-full flex items-center gap-1.5">
+              <div className="w-6 h-6 rounded-full border border-white overflow-hidden ">
+                <Logo noText={true} />
+              </div>
+              <h6 className="text-white text-[19px] leading-[22px] tracking-[-0.02em]">
+                Enclave<span className="font-semibold">ID</span>
+              </h6>
+            </div>
+            <div className="flex flex-col">
+              <h1 className="md:text-[54px] md:leading-[48px] text-4xl md:tracking-[-0.04em] text-white">
+                Create deep
+              </h1>
+              <h1 className="md:text-[70px] md:leading-[62px] text-5xl font-medium text-white md:tracking-[-0.04em]">
+                connections
+              </h1>
+            </div>
+            <p className="text-white/80 md:tracking-[-0.02em] md:text-base text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
               in neque vel diam consequat feugiat. Suspendisse potenti. Nunc
               placerat ac elit in finibus.
             </p>
           </div>
-          <div className="w-full min-h-[413px]">
-            <img
-              src="/connections.png"
-              alt="connections"
-              style={{
-                clipPath: 'inset(3px round 10px)',
-              }}
-            />
+          <div>
+            <button className="text-greenBg bg-white rounded-lg px-[38.5px] py-[18.5px] leading-3 font-medium tracking-[-0.02em]">
+              Join Us Now!
+            </button>
           </div>
+        </div>
+        <div className="bg-[#2F9C82] flex flex-1 items-end justify-end min-w-[600px]">
+          <img
+            src="/connection.png"
+            alt="Connection"
+            className="outline-2 outline-[#E5EAE8] rounded-tl-2xl overflow-hidden"
+          />
         </div>
       </div>
     </section>
