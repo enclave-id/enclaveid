@@ -4,7 +4,7 @@ import {
   AuthenticationType,
 } from '../components/containers/AuthenticationContainer';
 
-export function Authentication({
+export function AuthenticationPage({
   authenticationType,
 }: {
   authenticationType: AuthenticationType;

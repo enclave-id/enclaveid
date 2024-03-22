@@ -3,8 +3,8 @@ import { DashboardPage } from './DashboardPage';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import { BreadcrumbProvider } from '../context/BreadcrumbContext';
 import { Navigate } from 'react-router-dom';
-import { PersonalityContent } from "./PersonalityContent";
-import { TraitCardDetails } from "./TraitCardDetails";
+import { PersonalityContent } from '../components/PersonalityContent';
+import { TraitCardDetails } from '../components/TraitCardDetails';
 
 export default {
   title: 'Components/DashboardPage',
@@ -24,20 +24,21 @@ export const Default: StoryObj<typeof DashboardPage> = {
     layout: 'fullscreen',
     reactRouter: {
       routing: [
-        { path: "/", element: <Navigate to="/dashboard" replace /> },
+        { path: '/', element: <Navigate to="/dashboard" replace /> },
         {
-          path: "dashboard",
-          element:
+          path: 'dashboard',
+          element: (
             <BreadcrumbProvider>
               <DashboardPage />
-            </BreadcrumbProvider>,
+            </BreadcrumbProvider>
+          ),
           children: [
             { index: true, element: <Navigate to="personality" replace /> },
-            { path: "personality", element: <PersonalityContent /> },
-            { path: "personality/:title", element: <TraitCardDetails /> },
-            { path: "politics", element: <div>Politics Content</div> },
-            { path: "career", element: <div>Career Content</div> },
-            { path: "non-latent", element: <div>Non-Latent Content</div> },
+            { path: 'personality', element: <PersonalityContent /> },
+            { path: 'personality/:title', element: <TraitCardDetails /> },
+            { path: 'politics', element: <div>Politics Content</div> },
+            { path: 'career', element: <div>Career Content</div> },
+            { path: 'non-latent', element: <div>Non-Latent Content</div> },
           ],
         },
       ],

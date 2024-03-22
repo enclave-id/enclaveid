@@ -1,7 +1,7 @@
-import { Breadcrumb } from './Breadcrumb';
+import { Breadcrumb } from '../components/Breadcrumb';
 
-import { Sidebar } from './Sidebar';
-import { Tabs } from './Tabs';
+import { Sidebar } from '../components/Sidebar';
+import { Tabs } from '../components/Tabs';
 
 function DashboardPage() {
   return (

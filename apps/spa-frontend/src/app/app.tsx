@@ -1,10 +1,9 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
-import { Landing } from './pages/landing';
 import { Toaster } from 'react-hot-toast';
-import { Authentication } from './pages/authentication';
+import { AuthenticationPage } from './pages/AuthenticationPage';
 import { BreadcrumbProvider } from './context/BreadcrumbContext';
-import { DashboardPage } from './components/DashboardPage';
+import { DashboardPage } from './pages/DashboardPage';
 import { PersonalityContent } from './components/PersonalityContent';
 import { TraitCardDetails } from './components/TraitCardDetails';
 import { IntjCardDetails } from './components/IntjCardDetails';
@@ -12,19 +11,25 @@ import { TraitCard2Details } from './components/TraitCard2Details';
 import { PoliticsContent } from './components/PoliticsContent';
 import { CompassDetails } from './components/CompassDetails';
 import { MFTDetails } from './components/MFTDetails';
+import { LandingPage } from './pages/LandingPage';
+import { OnboardingPage } from './pages/OnboardingPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Landing />,
+    element: <LandingPage />,
   },
   {
     path: '/login',
-    element: <Authentication authenticationType="login" />,
+    element: <AuthenticationPage authenticationType="login" />,
   },
   {
     path: '/signup',
-    element: <Authentication authenticationType="signup" />,
+    element: <AuthenticationPage authenticationType="signup" />,
+  },
+  {
+    path: '/onboarding',
+    element: <OnboardingPage />,
   },
   {
     path: '/dashboard',

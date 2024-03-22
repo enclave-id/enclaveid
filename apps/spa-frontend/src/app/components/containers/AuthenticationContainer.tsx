@@ -3,7 +3,7 @@ import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
 import { useAzureAttestation } from '../../hooks/attestation/useAzureAttestation';
-
+import { useNavigate } from 'react-router-dom';
 export type AuthenticationType = 'login' | 'signup';
 
 export function AuthenticationContainer({
@@ -13,10 +13,13 @@ export function AuthenticationContainer({
   children: ReactElement<AuthenticationFormProps>;
   authenticationType: AuthenticationType;
 }) {
-  const loginMutation = trpc.login.useMutation();
-  const signupMutation = trpc.signup.useMutation();
+  const authMutation =
+    authenticationType === 'login'
+      ? trpc.login.useMutation()
+      : trpc.signup.useMutation();
 
   const { publicKey, error } = useAzureAttestation();
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (email: string, password: string) => {
@@ -28,15 +31,18 @@ export function AuthenticationContainer({
         publicKey,
       );
 
-      authenticationType === 'login'
-        ? await loginMutation.mutate({
-            encryptedCredentials,
-          })
-        : await signupMutation.mutate({
-            encryptedCredentials,
-          });
+      await authMutation.mutate({
+        encryptedCredentials,
+      });
+
+      if (authMutation.error) {
+        console.error(authMutation.error);
+      } else {
+        // TODO: we should use loaders/actions here
+        authenticationType === 'login' ? navigate('/dashboard') : navigate('/');
+      }
     },
-    [authenticationType, publicKey, signupMutation, loginMutation],
+    [publicKey, authMutation, authenticationType],
   );
 
   return React.cloneElement(children, { handleSubmit, authenticationType });
