@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import {
   decodeAttestation,
   getExpectedMesaurements,
-} from '../utils/attestation/awsNitro';
-import { trpc } from '../utils/trpc';
-import { useGoWasm } from './useGoWasm';
+} from '../../utils/attestation/awsNitro';
+import { trpc } from '../../utils/trpc';
+import { useGoWasm } from '../useGoWasm';
 import {
   getEnclaveCryptoKey,
   getPublicKeyHashBrowser,
   parsePublicKey,
-} from '../utils/crypto/asymmetricBrowser';
+} from '../../utils/crypto/asymmetricBrowser';
 import toast from 'react-hot-toast';
 
 export function useAwsNitroAttestation(): {
@@ -40,6 +40,7 @@ export function useAwsNitroAttestation(): {
       try {
         // Validate the signature and decode the attestation document
         const { result: validationResult, error: validationError } = JSON.parse(
+          // This one's coming from WASM
           window.validateAttestation(
             base64Cbor,
             process.env.NODE_ENV === 'development',

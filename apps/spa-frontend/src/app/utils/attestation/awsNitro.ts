@@ -26,10 +26,7 @@ export function getExpectedMesaurements() {
       expectedNonce: mockNonce,
     };
   } else {
-    return {
-      expectedPcr0: 'TODO',
-      expectedNonce: 'TODO',
-    };
+    throw new Error('Not implemented');
   }
 }
 

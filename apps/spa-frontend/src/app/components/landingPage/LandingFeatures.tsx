@@ -32,7 +32,7 @@ function LandingFeatures() {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <g clip-path="url(#clip0_773_100)">
+                      <g clipPath="url(#clip0_773_100)">
                         <path
                           d="M5.87393 5.53359C5.31666 5.53359 4.86328 5.98697 4.86328 6.5443C4.86328 7.10157 5.31666 7.55495 5.87393 7.55495C6.43126 7.55495 6.88464 7.10157 6.88464 6.5443C6.88464 5.98697 6.43126 5.53359 5.87393 5.53359Z"
                           fill="#2FA68A"
@@ -96,7 +96,7 @@ function LandingFeatures() {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <g clip-path="url(#clip0_773_116)">
+                        <g clipPath="url(#clip0_773_116)">
                           <path
                             d="M12.1267 12.8539C10.4153 12.8563 8.94067 14.0602 8.5957 15.7363H15.6581C15.3132 14.06 13.8384 12.8561 12.1267 12.8539Z"
                             fill="#2FA68A"

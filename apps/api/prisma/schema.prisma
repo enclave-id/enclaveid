@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgres://enclaveid:enclaveid@127.0.0.1:5433/enclaveid_api" //env("DATABASE_URL")
 }
 
 model User {
