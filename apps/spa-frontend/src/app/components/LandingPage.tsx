@@ -1,4 +1,6 @@
+import { LandingConnections } from './landingPage/LandingConnections';
 import { LandingFeatures } from './landingPage/LandingFeatures';
+import { LandingFooter } from './landingPage/LandingFooter';
 import { LandingHero } from './landingPage/LandingHero';
 import { LandingInformation } from './landingPage/LandingInformation';
 import { LandingNavbar } from './landingPage/LandingNavbar';
@@ -9,8 +11,9 @@ function LandingPage() {
       <LandingNavbar />
       <LandingHero />
       <LandingFeatures />
-      {/* <LandingConnections /> */}
+      <LandingConnections />
       <LandingInformation />
+      <LandingFooter />
     </div>
   );
 }
