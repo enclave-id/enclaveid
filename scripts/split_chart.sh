@@ -3,13 +3,9 @@
 set -e
 
 # Set the release name and namespace as needed
-RELEASE_NAME=my-release
-NAMESPACE=my-namespace
 YQ_EXECUTABLE=./yq_linux_amd64
 RENDERS_DIR=../dist
 
-# Render the entire chart and save the output
-helm template $RELEASE_NAME ../k8s/helm/ --namespace $NAMESPACE > $RENDERS_DIR/all-in-one.yaml
 
 # Define an array with the kinds relevant to Kata
 KATA_KINDS=("DaemonSet" "Deployment" "Job" "Pod" "ReplicaSet" "ReplicationController" "StatefulSet")

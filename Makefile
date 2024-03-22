@@ -38,8 +38,9 @@ $(APPS):
 	envsubst < $(KANIKO_TEMPLATE_FILE) | microk8s kubectl apply -f -
 
 deploy:
-	helm install $(RELEASE_NAME) ./k8s/helm --set \
-	bootstrap.args.api_image=$(REGISTRY)/api:$(API_IMAGE_TAG) 
+	helm template $(RELEASE_NAME) ./k8s/helm --set \
+	Values.image.tag=$(API_IMAGE_TAG) \
+	> ./dist/$(RELEASE_NAME).yaml
 
 clean:
 	microk8s kubectl delete pod -n $(NAMESPACE) --selector=category=kaniko-build
