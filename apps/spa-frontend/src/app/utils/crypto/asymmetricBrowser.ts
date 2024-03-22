@@ -40,3 +40,9 @@ export function asymmetricEncrypt(
       return Buffer.from(encrypted).toString('base64');
     });
 }
+
+export async function getPublicKeyHashBrowser(publicKeyBuffer: Buffer) {
+  const hashBuffer = await crypto.subtle.digest('SHA-256', publicKeyBuffer);
+
+  return Buffer.from(hashBuffer).toString('base64');
+}

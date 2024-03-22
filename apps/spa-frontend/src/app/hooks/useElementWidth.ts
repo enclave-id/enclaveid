@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 
+// Dynamically get the width of an element
 export function useElementWidth(): [React.RefObject<HTMLElement>, number] {
   const elementRef = useRef(null);
   const [width, setWidth] = useState(0);
