@@ -3,7 +3,7 @@ import { Button } from '../Button';
 function LandingHero() {
   return (
     <>
-      <section className="md:h-[calc(100vh-88px)] bg-[#32433F] overflow-hidden relative h-full sm:h-[calc(100dvh-80px)]">
+      <section className="bg-[#32433F] overflow-hidden relative h-full flex flex-col justify-between">
         <div className="md:pt-20 pt-10 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[830px] mx-auto relative z-10">
           <div className="flex flex-col gap-6">
             <h1 className="text-white md:text-[86px] text-5xl md:leading-[77px] md:tracking-[-0.03em] text-center">
@@ -21,11 +21,25 @@ function LandingHero() {
             <Button label="Join Us Now!" />
           </div>
         </div>
-        <div className="w-full h-full flex items-center justify-center relative z-10">
-          <div className="max-w-[1174px] w-full h-64 sm:h-full bg-[#364743] rounded-[40px] "></div>
-          <div className="max-w-[1274px] w-full h-64 sm:h-full bg-[#3D514C] rounded-[40px] top-10 absolute "></div>
+        <div className="relative z-10 flex items-center justify-center">
+          <svg
+            width="1328"
+            height="344"
+            viewBox="0 0 1328 344"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M79.0831 41.9664C77.9591 19.1305 96.1711 0 119.035 0H1208.97C1231.83 0 1250.04 19.1304 1248.92 41.9663L1216.69 696.773C1215.64 718.074 1198.07 734.807 1176.74 734.807H151.263C129.936 734.807 112.36 718.074 111.311 696.773L79.0831 41.9664Z"
+              fill="#364743"
+            />
+            <path
+              d="M2.78035 87.4429C1.65641 64.607 19.8684 45.4766 42.732 45.4766H1285.27C1308.13 45.4766 1326.35 64.607 1325.22 87.4429L1288.29 837.768C1287.24 859.069 1269.67 875.801 1248.34 875.801H79.6617C58.3346 875.801 40.7584 859.069 39.71 837.768L2.78035 87.4429Z"
+              fill="#3D514C"
+            />
+          </svg>
         </div>
-        <div className="absolute bottom-0 left-0 sm:block hidden">
+        <div className="absolute bottom-0 left-0 sm:block hidden pointer-events-none">
           <svg
             width="734"
             height="775"
@@ -57,7 +71,7 @@ function LandingHero() {
             </defs>
           </svg>
         </div>
-        <div className="absolute top-0 right-0 sm:block hidden">
+        <div className="absolute top-0 right-0 sm:block hidden pointer-events-none">
           <svg
             width="859"
             height="729"
@@ -90,7 +104,7 @@ function LandingHero() {
           </svg>
         </div>
       </section>
-      <div className="flex items-center justify-center relative z-20 md:-mt-[310px] sm:-mt-[230px] -mt-[180px]">
+      <div className="flex items-center justify-center relative z-20 md:-mt-[200px] -mt-[150px] lg:-mt-[260px]">
         <img src="./hero.png" alt="" />
       </div>
     </>
