@@ -189,3 +189,16 @@ export const compassChartData = {
   description:
     'The Libertarian Right quadrant on the political compass emphasizes minimal government intervention in both economic and personal affairs. It advocates for free-market capitalism, low taxes, and less regulation, along with strong support for individual liberties and personal choice. This ideology supports a small, limited government and is non-interventionist in foreign policy.',
 };
+
+export const radarChart = {
+  values: {
+    investigate: 1,
+    artistic: 2,
+    conventional: 3,
+    enterprising: 2,
+    social: 5,
+    realistic: 2,
+  },
+  description:
+    'People with that trait prominent like. to study and solve math or science problems; generally avoids leading, selling, or persuading people. Based on that and on your 2 next strongest traits (Artistic, Realistic), possible career paths for you might be Architecture or Industrial Design.',
+};
