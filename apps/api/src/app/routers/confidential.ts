@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { BigFive } from '@prisma/client';
 
 export const confidential = router({
-  getAllTraits: authenticatedProcedure.query(async (opts) => {
+  getPersonalityTraits: authenticatedProcedure.query(async (opts) => {
     const {
       prisma,
       user: { id: userId },
@@ -16,14 +16,40 @@ export const confidential = router({
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: { userTraits: { include: { bigFive: true } } },
+      include: {
+        userTraits: {
+          include: {
+            bigFive: {
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
+            },
+            sixteenPersonalityFactor: {
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
+            },
+            mbti: {
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
+            },
+          },
+        },
+      },
     });
 
-    const bigFive = user?.userTraits?.bigFive;
+    const result = {
+      bigfive: user?.userTraits?.bigFive[0],
+      sixteenPersonalityFactor: user?.userTraits?.sixteenPersonalityFactor[0],
+      mbti: user?.userTraits?.mbti[0],
+    };
 
-    return await encryptResponsePayload(userId, bigFive as any);
+    return await encryptResponsePayload(userId, result);
   }),
-
   createbigFive: authenticatedProcedure
     .input(
       z.object({
