@@ -478,3 +478,30 @@ export function GithubIcon() {
     </svg>
   );
 }
+
+export function LocationPinIcon() {
+  return (
+    <svg
+      width="15"
+      height="19"
+      viewBox="0 0 15 19"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.5 10.0554C8.84619 10.0554 9.9375 8.94975 9.9375 7.58582C9.9375 6.22189 8.84619 5.11621 7.5 5.11621C6.15381 5.11621 5.0625 6.22189 5.0625 7.58582C5.0625 8.94975 6.15381 10.0554 7.5 10.0554Z"
+        stroke="#D2D6DE"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.5 1C5.77609 1 4.12279 1.69384 2.90381 2.92889C1.68482 4.16393 1 5.83902 1 7.58564C1 9.14314 1.32662 10.1623 2.21875 11.2901L7.5 17.4641L12.7812 11.2901C13.6734 10.1623 14 9.14314 14 7.58564C14 5.83902 13.3152 4.16393 12.0962 2.92889C10.8772 1.69384 9.22391 1 7.5 1Z"
+        stroke="#D2D6DE"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
