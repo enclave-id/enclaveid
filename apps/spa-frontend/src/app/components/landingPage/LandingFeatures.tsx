@@ -20,8 +20,8 @@ function LandingFeatures() {
               <Button label="Join Us Now!" />
             </div>
           </div>
-          <div className="flex gap-6 w-full xl:flex-row flex-col items-center xl:items-stretch">
-            <div className="flex xl:max-w-[521px] max-w-[679px] bg-[#F9FAFB] border border-[#E0E9F1] rounded-2xl overflow-hidden gap-2 flex-col w-full shrink-0">
+          <div className="flex gap-6 w-full xl:flex-row flex-col items-center">
+            <div className="flex xl:max-w-[521px] max-w-[679px] bg-[#F9FAFB] border border-[#E0E9F1] rounded-2xl overflow-hidden gap-2 flex-col w-full shrink-0 max-h-[608px]">
               <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
                 <div className="flex flex-col gap-4">
                   <div className="w-12 h-12 rounded-lg bg-greenBg/10 flex items-center justify-center">
