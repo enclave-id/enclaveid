@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from './Button';
-import RadarChart, { RadarChartProps } from './RadarChart';
+
 import { useBreadcrumb } from '../context/BreadcrumbContext';
 import { useState } from 'react';
 import { radarChart } from './mock-data';
 import { Drawer } from 'vaul';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
+import { RadarChart, RadarChartProps } from './RadarChart';
 
 export const findHighestValues = (props: RadarChartProps): string[] => {
   const highestKeys: string[] = [];
@@ -100,7 +101,7 @@ function CareerContent() {
                   <p className="text-[#7A818A] leading-[22px] font-normal">
                     {radarChart.description}
                   </p>
-                  <div className="gap-9 flex flex-col items-center justify-center overflow-y-auto">
+                  <div className="gap-9 flex flex-col items-center justify-center overflow-y-auto overflow-x-hidden">
                     <RadarChart values={radarChart.values} />
 
                     <div className="mt-3 mb-8">

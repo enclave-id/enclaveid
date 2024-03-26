@@ -4,7 +4,7 @@ export interface RadarChartProps {
   values: { [key: string]: number };
 }
 
-const RadarChart = ({ values }: RadarChartProps) => {
+function RadarChart({ values }: RadarChartProps) {
   const size = 350;
   const cx = size / 2;
   const cy = 195.5;
@@ -174,6 +174,6 @@ const RadarChart = ({ values }: RadarChartProps) => {
       />
     </svg>
   );
-};
+}
 
-export default RadarChart;
+export { RadarChart };

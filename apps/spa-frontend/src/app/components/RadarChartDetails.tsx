@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
-import RadarChart from './RadarChart';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
 import { findHighestValues } from './CareerContent';
+import { RadarChart } from './RadarChart';
 
 function RadarChartDetails() {
   const location = useLocation();
