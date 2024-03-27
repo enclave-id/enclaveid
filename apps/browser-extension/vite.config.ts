@@ -18,7 +18,7 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(), nxViteTsPaths(), webExtension()],
+  plugins: [react(), webExtension(), nxViteTsPaths()],
 
   // Uncomment this if you are using workers.
   // worker: {

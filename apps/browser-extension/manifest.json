@@ -5,5 +5,5 @@
   "background": {
     "service_worker": "src/app/background/test.ts"
   },
-  "options_page": "src/index.html"
+  "options_page": "index.html"
 }
