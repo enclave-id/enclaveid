@@ -18,21 +18,21 @@ function MFTDetails() {
   const { description, circles } = location.state as Props;
 
   return (
-    <div className="flex flex-col gap-7 max-w-4xl">
-      <h2 className="text-passiveLinkColor text-lg leadig-[22px] font-medium">
-        Your Results
-      </h2>
-      <div className="-mt-1 flex flex-col gap-5">
-        <p className="text-passiveLinkColor leading-[22px]">{description}</p>
-        <div className="md:max-w-[369px] max-w-full w-full py-[13px] bg-[#F3F5F7] rounded-xl text-passiveLinkColor text-[32px] leading-[38px] text-center flex items-center justify-center">
-          Moderate
-        </div>
-      </div>
-      <div className="gap-9 flex flex-col overflow-y-auto">
-        <MFTChart {...circles} />
-        <div className="mt-3 mb-8 max-w-max">
+    <div className="flex divide-y xl:divide-x xl:divide-y-0 border border-[#E5E8EE] rounded-3xl py-7 px-6 xl:flex-row flex-col">
+      <div className="xl:max-w-[499px] pr-6 xl:pb-0 pb-10">
+        <h2 className="text-passiveLinkColor text-lg leadig-[22px] font-medium">
+          Your Results
+        </h2>
+        <div className="flex flex-col gap-8 w-full mt-7">
+          <p className="text-passiveLinkColor leading-[22px]">{description}</p>
+          <div className="w-full py-[13px] bg-[#F3F5F7] rounded-xl text-passiveLinkColor text-[32px] leading-[38px] text-center flex items-center justify-center">
+            Moderate
+          </div>
           <SimilarProfileBadge peopleCount={253} />
         </div>
+      </div>
+      <div className="gap-9 flex flex-col overflow-y-auto items-center justify-center shrink-0 xl:max-w-[545px] w-full xl:pt-0 pt-10">
+        <MFTChart {...circles} />
       </div>
     </div>
   );
