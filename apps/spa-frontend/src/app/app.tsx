@@ -13,6 +13,8 @@ import { CompassDetails } from './components/CompassDetails';
 import { MFTDetails } from './components/MFTDetails';
 import { LandingPage } from './pages/LandingPage';
 import { OnboardingPage } from './pages/OnboardingPage';
+import { CareerContent } from './components/CareerContent';
+import { RadarChartDetails } from './components/RadarChartDetails';
 
 const router = createBrowserRouter([
   {
@@ -46,7 +48,8 @@ const router = createBrowserRouter([
       { path: 'politics', element: <PoliticsContent /> },
       { path: 'politics/compass', element: <CompassDetails /> },
       { path: 'politics/mft', element: <MFTDetails /> },
-      { path: 'career', element: <div>career content</div> },
+      { path: 'career', element: <CareerContent /> },
+      { path: 'career/radar', element: <RadarChartDetails /> },
       { path: 'non-latent', element: <div>non latent</div> },
     ],
   },
