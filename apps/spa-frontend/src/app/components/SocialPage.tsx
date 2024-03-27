@@ -1,9 +1,8 @@
 import { Breadcrumb } from './Breadcrumb';
-
 import { Sidebar } from './Sidebar';
-import { Tabs } from './Tabs';
+import { SocialCard } from './SocialCard';
 
-function DashboardPage() {
+function SocialPage() {
   return (
     <div className="h-screen bg-white flex sm:flex-row flex-col">
       <Sidebar />
@@ -11,10 +10,12 @@ function DashboardPage() {
         <div className="pt-[54px] pb-4 sm:block hidden px-6">
           <Breadcrumb />
         </div>
-        <Tabs />
+        <div className="grid grid-cols-1 lg:grid-cols-2 px-6 gap-x-5 gap-y-4">
+          <SocialCard />
+        </div>
       </div>
     </div>
   );
 }
 
-export { DashboardPage };
+export { SocialPage };

@@ -26,11 +26,16 @@ function Sidebar() {
               icon={<HomeIcon />}
               text="Trait Dashboard"
               active={true}
+              href="/dashboard"
             />
             <SidebarItem icon={<ChartBarIcon />} text="Charts" />
           </SidebarSection>
           <SidebarSection title={'Social'}>
-            <SidebarItem icon={<UsersIcon />} text="Explore Social" />
+            <SidebarItem
+              icon={<UsersIcon />}
+              text="Explore Social"
+              href="/socials"
+            />
             <SimilarProfileBadge peopleCount={1123} />
           </SidebarSection>
         </div>

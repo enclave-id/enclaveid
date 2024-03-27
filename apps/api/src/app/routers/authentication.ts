@@ -70,7 +70,7 @@ export const authentication = router({
       const user = await prisma.user.create({
         data: {
           email,
-          password,
+          password, 
           confirmedAt: new Date(), // TODO remove this and send confirmation email
           userTraits: {
             create: {},

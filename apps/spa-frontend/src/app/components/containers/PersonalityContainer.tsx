@@ -4,14 +4,11 @@ import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
 import { useAzureAttestation } from '../../hooks/attestation/useAzureAttestation';
 import { useNavigate } from 'react-router-dom';
-export type AuthenticationType = 'login' | 'signup';
 
-export function AuthenticationContainer({
+export function PersonalityContainer({
   children,
-  authenticationType,
 }: {
   children: ReactElement<AuthenticationFormProps>;
-  authenticationType: AuthenticationType;
 }) {
   const authMutation =
     authenticationType === 'login'

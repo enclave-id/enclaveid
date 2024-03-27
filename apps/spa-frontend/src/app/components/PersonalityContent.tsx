@@ -3,7 +3,9 @@ import { TraitCard1 } from './TraitCard1';
 import { TraitCard2 } from './TraitCard2';
 import { intjCard, traitCard1, traitCard2 } from './mock-data';
 
-function PersonalityContent() {
+export interface PersonalityContentProps {}
+
+function PersonalityContent(props: PersonalityContentProps) {
   return (
     <div className="pt-3.5 pb-9">
       <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-10 gap-16 lg:gap-5">
