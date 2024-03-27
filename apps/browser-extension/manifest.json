@@ -1,0 +1,9 @@
+{
+  "name": "Example Extension",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "src/app/background/test.ts"
+  },
+  "options_page": "src/index.html"
+}

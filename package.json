@@ -5,6 +5,7 @@
   "scripts": {
     "fleek-build": "pnpm exec nx run api:prisma-generate && pnpm exec nx run spa-frontend:build --configuration=production "
   },
+  "type": "module",
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.24.0",
@@ -24,7 +25,6 @@
     "@nx/web": "18.0.7",
     "@nx/webpack": "18.0.7",
     "@nx/workspace": "18.0.7",
-    "@nxrocks/nx-spring-boot": "^9.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@storybook/addon-actions": "^7.6.17",
     "@storybook/addon-essentials": "7.6.17",
@@ -80,6 +80,7 @@
     "typescript": "~5.3.3",
     "url-loader": "^4.1.1",
     "vite": "^5.1.5",
+    "vite-plugin-web-extension": "^4.1.3",
     "vitest": "~1.3.1",
     "webextension-polyfill": "^0.10.0"
   },
@@ -121,7 +122,6 @@
     "storybook-addon-react-router-v6": "^2.0.11",
     "tslib": "^2.6.2",
     "vaul": "^0.9.0",
-    "vite-plugin-web-extension": "^4.1.3",
     "zod": "^3.22.4"
   }
 }
