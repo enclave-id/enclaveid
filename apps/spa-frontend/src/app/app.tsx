@@ -16,6 +16,7 @@ import { OnboardingPage } from './pages/OnboardingPage';
 import { SocialPage } from './components/SocialPage';
 import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
+import { ChatPage } from './components/ChatUI/ChatPage';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: '/socials',
     element: <SocialPage />,
+  },
+  {
+    path: '/chat',
+    element: <ChatPage />,
   },
 ]);
 
