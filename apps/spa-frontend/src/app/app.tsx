@@ -13,6 +13,7 @@ import { CompassDetails } from './components/CompassDetails';
 import { MFTDetails } from './components/MFTDetails';
 import { LandingPage } from './pages/LandingPage';
 import { OnboardingPage } from './pages/OnboardingPage';
+import { SocialPage } from './components/SocialPage';
 import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       { path: 'career/radar', element: <RadarChartDetails /> },
       { path: 'non-latent', element: <div>non latent</div> },
     ],
+  },
+  {
+    path: '/socials',
+    element: <SocialPage />,
   },
 ]);
 
