@@ -15,13 +15,10 @@ function getSessionKey(): Uint8Array {
   }
 }
 
-export async function symmetricEncrypt(
-  variables: Record<string, unknown>,
-): Promise<{
+export async function symmetricEncrypt(data: string): Promise<{
   encryptedPayload: string;
   nonce: string;
 }> {
-  const data = JSON.stringify(variables);
   const encodedData = new TextEncoder().encode(data);
 
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -48,7 +45,7 @@ export async function symmetricEncrypt(
 export async function symmetricDecrypt(
   encryptedPyload: string,
   nonce: string,
-): Promise<Record<string, unknown>> {
+): Promise<string> {
   const cryptoKey = await window.crypto.subtle.importKey(
     'raw',
     getSessionKey(),
@@ -63,6 +60,5 @@ export async function symmetricDecrypt(
     Buffer.from(encryptedPyload, 'base64'),
   );
 
-  const data = new TextDecoder().decode(decryptedPayload);
-  return JSON.parse(data);
+  return new TextDecoder().decode(decryptedPayload);
 }

@@ -15,8 +15,8 @@ export function AuthenticationContainer({
 }) {
   const authMutation =
     authenticationType === 'login'
-      ? trpc.login.useMutation()
-      : trpc.signup.useMutation();
+      ? trpc.public.login.useMutation()
+      : trpc.public.signup.useMutation();
 
   const { publicKey, error } = useAzureAttestation();
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export function AuthenticationContainer({
         authenticationType === 'login' ? navigate('/dashboard') : navigate('/');
       }
     },
-    [publicKey, authMutation, authenticationType],
+    [publicKey, authMutation, authenticationType, navigate],
   );
 
   return React.cloneElement(children, { handleSubmit, authenticationType });

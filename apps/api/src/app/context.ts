@@ -26,6 +26,7 @@ export function createAppContext({
 
   return {
     setJwtCookie: (user: UserCookie) => setJwtCookie(user, reply),
+    logger: req.log,
     user,
     prisma,
   };

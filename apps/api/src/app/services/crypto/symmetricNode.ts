@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 export async function encryptResponsePayload(
   userId: string,
-  payload: Record<string, unknown>,
+  payload: unknown,
 ): Promise<{
   encryptedPayload: string;
   nonce: string;
@@ -30,7 +30,7 @@ export async function decryptRequestPayload(
   userId: string,
   encryptedPayload: string,
   nonce: string,
-): Promise<Record<string, unknown>> {
+): Promise<string> {
   const sessionKey = await prisma.user
     .findUnique({
       where: { id: userId },
@@ -43,8 +43,7 @@ export async function decryptRequestPayload(
     sessionKey,
     Buffer.from(nonce, 'hex'),
   );
-  const payload =
-    decipher.update(encryptedPayload, 'hex', 'utf8') + decipher.final('utf8');
-
-  return JSON.parse(payload);
+  return (
+    decipher.update(encryptedPayload, 'hex', 'utf8') + decipher.final('utf8')
+  );
 }
