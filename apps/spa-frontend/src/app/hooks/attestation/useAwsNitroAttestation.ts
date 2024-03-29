@@ -25,7 +25,7 @@ export function useAwsNitroAttestation(): {
 
   const { expectedNonce, expectedPcr0 } = getExpectedMesaurements();
 
-  const attestationQuery = trpc.getAttestation.useQuery({
+  const attestationQuery = trpc.public.getAttestation.useQuery({
     nonce: expectedNonce,
   });
 

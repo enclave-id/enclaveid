@@ -22,6 +22,8 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
     });
   }
 
+  init.credentials = 'include';
+
   const response = await fetch(input, init);
 
   if (input.toString().includes(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`)) {

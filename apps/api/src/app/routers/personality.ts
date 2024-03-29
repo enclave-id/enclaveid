@@ -1,6 +1,5 @@
 import { AppContext } from '../context';
 import { authenticatedProcedure, router } from '../trpc';
-import { encryptResponsePayload } from '../services/crypto/symmetricNode';
 import { z } from 'zod';
 
 export const confidential = router({
@@ -38,13 +37,11 @@ export const confidential = router({
       },
     });
 
-    const result = {
+    return {
       bigfive: user?.userTraits?.bigFive[0],
       sixteenPersonalityFactor: user?.userTraits?.sixteenPersonalityFactor[0],
       mbti: user?.userTraits?.mbti[0],
     };
-
-    return await encryptResponsePayload(userId, result);
   }),
   createbigFive: authenticatedProcedure
     .input(

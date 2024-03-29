@@ -1,7 +1,7 @@
 import { authentication } from './routers/authentication';
 import { attestation } from './routers/attestation';
 import { mergeRouters, router } from './trpc';
-import { confidential } from './routers/confidential';
+import { confidential } from './routers/personality';
 import { fileUpload } from './routers/fileUpload';
 import { pingPong } from './routers/pingPong';
 import {
