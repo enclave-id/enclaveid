@@ -3,10 +3,11 @@ import { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { createAppContext } from '../context';
 import { appRouter } from '../router';
+import { TRPC_PREFIX } from '@enclaveid/shared';
 
 export default fp(async (fastify: FastifyInstance) => {
   fastify.register(fastifyTRPCPlugin, {
-    prefix: '/trpc',
+    prefix: TRPC_PREFIX,
     trpcOptions: { router: appRouter, createContext: createAppContext },
   });
 });

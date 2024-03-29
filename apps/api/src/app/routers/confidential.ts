@@ -1,11 +1,7 @@
 import { AppContext } from '../context';
 import { authenticatedProcedure, router } from '../trpc';
-import {
-  decryptRequestPayload,
-  encryptResponsePayload,
-} from '../services/crypto/symmetricNode';
+import { encryptResponsePayload } from '../services/crypto/symmetricNode';
 import { z } from 'zod';
-import { BigFive } from '@prisma/client';
 
 export const confidential = router({
   getPersonalityTraits: authenticatedProcedure.query(async (opts) => {
@@ -65,31 +61,31 @@ export const confidential = router({
 
       const { encryptedPayload, nonce } = opts.input;
 
-      const {
-        openness,
-        conscientiousness,
-        extraversion,
-        agreeableness,
-        neuroticism,
-      } = (await decryptRequestPayload(
-        userId,
-        encryptedPayload,
-        nonce,
-      )) as BigFive;
+      // const {
+      //   openness,
+      //   conscientiousness,
+      //   extraversion,
+      //   agreeableness,
+      //   neuroticism,
+      // } = (await decryptRequestPayload(
+      //   userId,
+      //   encryptedPayload,
+      //   nonce,
+      // )) as BigFive;
 
       const { id: userTraitsId } = await prisma.userTraits.findUnique({
         where: { userId: userId },
       });
 
-      await prisma.bigFive.create({
-        data: {
-          userTraitsId,
-          openness,
-          conscientiousness,
-          extraversion,
-          agreeableness,
-          neuroticism,
-        },
-      });
+      // await prisma.bigFive.create({
+      //   data: {
+      //     userTraitsId,
+      //     openness,
+      //     conscientiousness,
+      //     extraversion,
+      //     agreeableness,
+      //     neuroticism,
+      //   },
+      // });
     }),
 });
