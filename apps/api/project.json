@@ -44,7 +44,9 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "api:build:development",
+          "port": 9229,
+          "inspect": true
         },
         "production": {
           "buildTarget": "api:build:production"

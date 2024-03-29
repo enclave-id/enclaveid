@@ -22,19 +22,17 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
     });
   }
 
+  // Pass the httponly cookies
   init.credentials = 'include';
 
   const response = await fetch(input, init);
 
   if (input.toString().includes(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`)) {
-    const text = await response.text();
-    const payload = JSON.parse(text);
-    const decryptedPayload = await symmetricDecrypt(
-      payload.encryptedPayload,
-      payload.nonce,
-    );
+    const { encryptedPayload, nonce } = await response.json();
 
-    return new Response(decryptedPayload, {
+    const decryptedPayload = await symmetricDecrypt(encryptedPayload, nonce);
+
+    return new Response(JSON.parse(decryptedPayload), {
       status: response.status,
       statusText: response.statusText,
       headers: response.headers,

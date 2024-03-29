@@ -21,7 +21,7 @@ CREATE TABLE "Session" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "sessionSecret" TEXT NOT NULL,
+    "sessionSecret" BYTEA NOT NULL,
     "userId" TEXT,
 
     CONSTRAINT "Session_pkey" PRIMARY KEY ("id")

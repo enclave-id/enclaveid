@@ -25,9 +25,13 @@ export default fp(async (fastify: FastifyInstance) => {
   });
 
   fastify.addHook('onSend', async (request, reply, payload) => {
-    if (request.url.startsWith(`${TRPC_PREFIX}/.${TRPC_PRIVATE_NAMESPACE}`)) {
+    if (
+      request.url.startsWith(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`) &&
+      ['POST', 'GET'].includes(request.method)
+    ) {
       const userId = request.user.id;
 
+      // TODO
       const newPayload = await encryptResponsePayload(userId, payload);
 
       return JSON.stringify(newPayload);
