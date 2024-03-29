@@ -45,7 +45,7 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
 export const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: 'http://localhost:3000/trpc',
+      url: import.meta.env.VITE_API_URL + TRPC_PREFIX,
       fetch: customFetch,
       // You can pass any HTTP headers you wish here
       // async headers() {
