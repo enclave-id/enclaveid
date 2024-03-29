@@ -2,15 +2,14 @@
 
 set -e
 
-# Set the release name and namespace as needed
-YQ_EXECUTABLE=./yq_linux_amd64
-RENDERS_DIR=../dist
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
+YQ_EXECUTABLE="$SCRIPT_DIR/yq_linux_amd64"
+RENDERS_DIR="$SCRIPT_DIR/../renders"
 
 # Define an array with the kinds relevant to Kata
 KATA_KINDS=("DaemonSet" "Deployment" "Job" "Pod" "ReplicaSet" "ReplicationController" "StatefulSet")
 
-# Initialize empty strings for the yq expressions
 KATA_KINDS_EXPRESSION=""
 NOT_KATA_KINDS_EXPRESSION=""
 
@@ -24,8 +23,14 @@ for kind in "${KATA_KINDS[@]}"; do
     NOT_KATA_KINDS_EXPRESSION+=".kind != \"$kind\""
 done
 
+# Read stdin into a temporary file
+TMP_FILE=$(mktemp)
+cat - > "$TMP_FILE"
+
 # Use `yq` to extract resources relevant to Kata configurations
-$YQ_EXECUTABLE eval "select($KATA_KINDS_EXPRESSION)" $RENDERS_DIR/all-in-one.yaml > $RENDERS_DIR/kata-configs.yaml
+$YQ_EXECUTABLE eval "select($KATA_KINDS_EXPRESSION)" "$TMP_FILE" > "$RENDERS_DIR/kata-configs.yaml"
 
 # Filter and save other Kubernetes resources
-$YQ_EXECUTABLE eval "select($NOT_KATA_KINDS_EXPRESSION)" $RENDERS_DIR/all-in-one.yaml > $RENDERS_DIR/k8s-configs.yaml
+$YQ_EXECUTABLE eval "select($NOT_KATA_KINDS_EXPRESSION)" "$TMP_FILE" > "$RENDERS_DIR/k8s-configs.yaml"
+
+rm "$TMP_FILE"

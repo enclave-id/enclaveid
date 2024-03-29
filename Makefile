@@ -37,10 +37,19 @@ $(APPS):
 	KANIKO_IMAGE=$(KANIKO_IMAGE) \
 	envsubst < $(KANIKO_TEMPLATE_FILE) | microk8s kubectl apply -f -
 
-deploy:
-	helm template $(RELEASE_NAME) ./k8s/helm --set \
-	Values.image.tag=$(API_IMAGE_TAG) \
-	> ./dist/$(RELEASE_NAME).yaml
+helm-chart:
+	@if [ "$(DEPLOYMENT)" = "microk8s" ]; then \
+		ENABLE_CONFIDENTIALITY=false; \
+	elif [ "$(DEPLOYMENT)" = "aks" ]; then \
+		ENABLE_CONFIDENTIALITY=true; \
+	else \
+		echo "Invalid DEPLOYMENT option. Please use 'microk8s' or 'aks'."; \
+		exit 1; \
+	fi; \
+	helm template $(RELEASE_NAME) ./k8s/helm \
+	--set Values.image.tag=$(API_IMAGE_TAG) \
+	--set Values.enable_confidentiality=$$ENABLE_CONFIDENTIALITY \
+	| k8s/scripts/split_chart.sh
 
 clean:
 	microk8s kubectl delete pod -n $(NAMESPACE) --selector=category=kaniko-build
