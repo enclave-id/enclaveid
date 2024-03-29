@@ -30,7 +30,7 @@ export function AuthenticationContainer({
         {
           email,
           password,
-          sessionKey: Buffer.from(getSessionKey()).toString('utf-8'),
+          b64SessionKey: Buffer.from(getSessionKey()).toString('base64'),
         },
         publicKey,
       );

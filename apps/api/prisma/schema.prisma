@@ -32,7 +32,7 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessionSecret String
+  sessionSecret Bytes
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @unique

@@ -9,7 +9,7 @@ export function getSessionKey(): Uint8Array {
   if (key) {
     return new Uint8Array(JSON.parse(key));
   } else {
-    const key = window.crypto.getRandomValues(new Uint8Array(16));
+    const key = window.crypto.getRandomValues(new Uint8Array(32));
     sessionStorage.setItem('sessionKey', JSON.stringify(Array.from(key)));
     return key;
   }
@@ -43,7 +43,7 @@ export async function symmetricEncrypt(data: string): Promise<{
 }
 
 export async function symmetricDecrypt(
-  encryptedPyload: string,
+  encryptedPayload: string,
   nonce: string,
 ): Promise<string> {
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -57,7 +57,7 @@ export async function symmetricDecrypt(
   const decryptedPayload = await window.crypto.subtle.decrypt(
     { name: 'AES-CTR', counter: Buffer.from(nonce, 'base64'), length: 64 },
     cryptoKey,
-    Buffer.from(encryptedPyload, 'base64'),
+    Buffer.from(encryptedPayload, 'base64'),
   );
 
   return new TextDecoder().decode(decryptedPayload);

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { trpc } from '../../utils/trpc';
 import { PersonalityContentProps } from '../PersonalityContent';
 
@@ -9,7 +9,9 @@ export function PersonalityContainer({
 }) {
   const personalityQuery = trpc.private.getPersonalityTraits.useQuery();
 
-  console.log(personalityQuery.data);
+  useEffect(() => {
+    console.log(personalityQuery.data);
+  }, [personalityQuery.data]);
 
   // const { bigfive, sixteenPersonalityFactor, mbti } =
   //   personalityQuery.data ?? {};

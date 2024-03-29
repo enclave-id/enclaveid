@@ -18,11 +18,12 @@ export async function encryptResponsePayload(
   const nonce = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv('aes-256-ctr', sessionKey, nonce);
   const encryptedPayload =
-    cipher.update(JSON.stringify(payload), 'utf8', 'hex') + cipher.final('hex');
+    cipher.update(JSON.stringify(payload), 'utf8', 'base64') +
+    cipher.final('base64');
 
   return {
     encryptedPayload,
-    nonce: nonce.toString('hex'),
+    nonce: nonce.toString('base64'),
   };
 }
 
