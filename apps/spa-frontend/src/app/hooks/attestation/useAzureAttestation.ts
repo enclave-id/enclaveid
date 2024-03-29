@@ -14,7 +14,7 @@ export function useAzureAttestation(): {
   );
   const [error, setError] = useState<Error | null>(null);
 
-  const attestationQuery = trpc.getAttestation.useQuery({
+  const attestationQuery = trpc.public.getAttestation.useQuery({
     nonce: 'TODO',
   });
 

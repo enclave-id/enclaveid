@@ -21,7 +21,7 @@ export interface TraitCardProps {
 }
 
 function TraitCard1({ title, data }: TraitCardProps) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { setLink } = useBreadcrumb();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 

@@ -4,7 +4,7 @@ function generateNonce(): Uint8Array {
   return window.crypto.getRandomValues(new Uint8Array(16));
 }
 
-function getSessionKey(): Uint8Array {
+export function getSessionKey(): Uint8Array {
   const key = sessionStorage.getItem('sessionKey');
   if (key) {
     return new Uint8Array(JSON.parse(key));

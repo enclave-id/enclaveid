@@ -1,9 +1,14 @@
+import { BigFive, Mbti } from '@prisma/client';
 import { IntjCard } from './IntjCard';
 import { TraitCard1 } from './TraitCard1';
-import { TraitCard2 } from './TraitCard2';
 import { intjCard, traitCard1, traitCard2 } from './mock-data';
+import { SixteenPFCard, SixteenPFCardProps } from './SixteenPFCard';
 
-export interface PersonalityContentProps {}
+export interface PersonalityContentProps {
+  bigFive?: BigFive;
+  sixteenPersonalityFactor?: SixteenPFCardProps;
+  mbti?: Mbti;
+}
 
 function PersonalityContent(props: PersonalityContentProps) {
   return (
@@ -13,7 +18,7 @@ function PersonalityContent(props: PersonalityContentProps) {
           <TraitCard1 {...traitCard1} />
           <IntjCard {...intjCard} />
         </div>
-        <TraitCard2 title={'16FP'} data={traitCard2} />
+        <SixteenPFCard title={'16FP'} data={traitCard2} />
       </div>
     </div>
   );

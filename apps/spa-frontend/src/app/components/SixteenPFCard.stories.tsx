@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { TraitCard2 } from './TraitCard2';
 import { traitCard2 } from './mock-data';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import { BreadcrumbProvider } from '../context/BreadcrumbContext';
+import { SixteenPFCard } from './SixteenPFCard';
 
 export default {
-  title: 'Components/TraitCard2',
-  component: TraitCard2,
+  title: 'Components/SixteenPFCard',
+  component: SixteenPFCard,
   decorators: [withRouter],
   argTypes: {
     title: {
@@ -14,9 +14,9 @@ export default {
       defaultValue: 'Personality Traits',
     },
   },
-} as Meta<typeof TraitCard2>;
+} as Meta<typeof SixteenPFCard>;
 
-export const Default: StoryObj<typeof TraitCard2> = {
+export const Default: StoryObj<typeof SixteenPFCard> = {
   args: {
     title: '16FP',
     data: traitCard2,

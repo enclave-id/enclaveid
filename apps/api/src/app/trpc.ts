@@ -12,7 +12,7 @@ export const authenticatedProcedure = t.procedure.use((opts) => {
   const { user } = opts.ctx as AppContext;
 
   if (!user.id) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not authenticated' });
   }
 
   return opts.next(opts);

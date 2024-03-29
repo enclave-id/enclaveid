@@ -13,13 +13,13 @@ interface DataProps {
   value: number;
   description: string;
 }
-export interface TraitCard2Props {
+export interface SixteenPFCardProps {
   title: string;
   data: DataProps[];
 }
 
-function TraitCard2({ title, data }: TraitCard2Props) {
-  let navigate = useNavigate();
+function SixteenPFCard({ title, data }: SixteenPFCardProps) {
+  const navigate = useNavigate();
   const { setLink } = useBreadcrumb();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -120,4 +120,4 @@ function TraitCard2({ title, data }: TraitCard2Props) {
   );
 }
 
-export { TraitCard2 };
+export { SixteenPFCard };
