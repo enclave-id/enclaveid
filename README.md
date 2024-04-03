@@ -22,6 +22,13 @@ We distinguish 3 different environments in the development cycle:
 
 ## Build and deploy
 
+To install the requirements:
+
+```
+sudo dnf -y install skopeo jq
+sudo snap install yq
+```
+
 We build the images using Kaniko with the `--reproducible` flag, so that they can be verified.
 
 Once the images are built, their immutable SHA is set in the source code for attestation purposes.
@@ -46,7 +53,9 @@ microk8s enable dns registry dashboard storage helm helm3 metrics-server
 microk8s dashboard-proxy
 ```
 
-Running `make` at the project root will spin up a Kaniko pod for each application that has a `Dockerfile.dev`. The built images will be stored in the local microk8s registry.
+Running `make` at the project root will spin up a Kaniko pod for each application that has a `Dockerfile`. The built images will be stored in the local microk8s registry.
+
+To deploy the images, run `make helm-chart DEPLOYMENT=microk8s`. This will disable the attestation verification code, since the kata UVM is not running.
 
 ### Prod (AKS)
 
