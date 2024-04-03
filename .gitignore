@@ -44,7 +44,3 @@ Thumbs.db
 
 # .env files
 .env*
-
-# k8s
-k8s/renders/*
-!k8s/renders/.gitkeep
