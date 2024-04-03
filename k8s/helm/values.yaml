@@ -4,7 +4,13 @@
 
 replicaCount: 1
 
+# These are set when running make helm-chart
 image:
+  repository:
+  tag:
+  pullPolicy: IfNotPresent
+
+initImage:
   repository:
   tag:
   pullPolicy: IfNotPresent

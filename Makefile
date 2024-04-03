@@ -10,7 +10,6 @@ KANIKO_PV_FILE := ./k8s/build/dev/kaniko-pv.yaml
 KANIKO_PVC_FILE := ./k8s/build/dev/kaniko-pvc.yaml
 KANIKO_IMAGE := gcr.io/kaniko-project/executor:v1.21.1
 
-# Helm chart
 RELEASE_NAME := $(ENV)-$(VERSION)
 
 # Find all applications with a Dockerfile
