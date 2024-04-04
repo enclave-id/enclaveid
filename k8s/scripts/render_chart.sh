@@ -5,10 +5,14 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
 REGISTRY="${REGISTRY:-docker://localhost:32000}"
 
-AZURE_SERVICE_ACCOUNT_NAME="${AZURE_SERVICE_ACCOUNT_NAME:-workload-identity-sa}"
-
+AZURE_SERVICE_ACCOUNT_NAME="${AZURE_SERVICE_ACCOUNT_NAME:-}"
 AZURE_RESOURCE_GROUP="${AZURE_RESOURCE_GROUP:-}"
 AZURE_USER_ASSIGNED_IDENTITY_NAME="${AZURE_USER_ASSIGNED_IDENTITY_NAME:-}"
+
+# The name given to the mHSM or AKV resource to store the keys
+AZURE_KV_STORE_NAME="enclaveid"
+
+# TODO fix the split logic
 
 if [ "${DEPLOYMENT}" = "microk8s" ]; then
   ENABLE_CONFIDENTIALITY=false
@@ -27,8 +31,9 @@ fi
 helm template "${RELEASE_NAME}" "$SCRIPT_DIR"/../helm \
   --set image.repository="${REGISTRY}"/api \
   --set image.tag="${API_IMAGE_DIGEST}" \
-  --set seserviceAccount.name="${AZURE_SERVICE_ACCOUNT_NAME}" \
+  --set serviceAccount.name="${AZURE_SERVICE_ACCOUNT_NAME}" \
   --set serviceAccount.annotations."azure\.workload\.identity/client-id"="${AZURE_USER_ASSIGNED_CLIENT_ID}" \
+  --set kv_store_name="${AZURE_KV_STORE_NAME}" \
   --set managed_identity="${AZURE_MANAGED_IDENTITY}" \
   --set enable_confidentiality=${ENABLE_CONFIDENTIALITY} |
   ENV="${ENV}" "$SCRIPT_DIR"/split_chart.sh

@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "anyOf": [
     {
-      "authority": "https://sharedeus2.eus2.attest.azure.net",
+      "authority": "TBD",
       "allOf": [
         {
           "claim": "x-ms-attestation-type",
