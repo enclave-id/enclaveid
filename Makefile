@@ -43,7 +43,7 @@ helm-chart:
 	RELEASE_NAME=$(RELEASE_NAME) \
 	REGISTRY=$(REGISTRY) \
 	ENV=$(ENV) \
-	./k8s/scripts/render_chart.sh 
+  ./k8s/scripts/render_chart.sh
 
 clean-kaniko:
 	microk8s kubectl delete pod -n $(NAMESPACE) --selector=category=kaniko-build

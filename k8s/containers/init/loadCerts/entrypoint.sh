@@ -1,11 +1,10 @@
-# 0. Get master secret from AKV 
+# 0. Get master secret from AKV
 
 ## network
 
 # We need to check that the master secret and the CA match
-# as an attacker might have tampered with the CA since MS doesnt 
+# as an attacker might have tampered with the CA since MS doesnt
 # provide a way to set confidentiality policies on CA certs for now
-
 CA_MD5=$(echo $CA_CERT | openssl x509 -noout -modulus -in /dev/stdin | openssl md5)
 SECRET_MD5=$(echo $MASTER_SECRET | openssl rsa -noout -modulus -in /dev/stdin | openssl md5)
 

@@ -7,8 +7,8 @@ prompt = no
 C = US
 ST = California
 L = San Francisco
-O = My Company
-CN = My Company CA
+O = EnclaveID
+CN = EnclaveID CA
 
 [ v3_ca ]
 subjectKeyIdentifier=hash

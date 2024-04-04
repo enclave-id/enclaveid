@@ -1,44 +1,24 @@
 on:
   push:
     tags:
-      - '*'
+      - 'prod'
 
 name: Deploy prod
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      ec2_host: ${{ steps.set_ip.outputs.ec2_host }}
     steps:
-    - name: Start EC2 Instance
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
-    - run: |
-        aws ec2 start-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }}
-        aws ec2 wait instance-running --instance-ids ${{ secrets.EC2_INSTANCE_ID }}
-      shell: bash
+      - uses: actions/checkout@v4
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Run Makefile Target
+#         env:
+#           MY_SECRET: ${{ secrets.MY_SECRET }}
+#         run: make helm-chart DEPLOYMENT=aks
 
-    - name: Fetch EC2 Instance Public IP
-      id: set_ip
-      run: |
-        IP=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
-        echo "::set-output name=ec2_host::$IP"
-      shell: bash
-
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ steps.set_ip.outputs.ec2_host }}
-        username: ec2-user
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          git clone https://github.com/enclave-id/enclaveid
-          cd enclaveid
-          git checkout ${{ github.sha }}
-          ./deploy.sh
-
-    
-    
+# AZURE_SERVICE_ACCOUNT_NAME ?= workload-identity-sa
+# AZURE_RESOURCE_GROUP ?= DefaultResourceGroup-EUS
+# AZURE_USER_ASSIGNED_IDENTITY_NAME ?= cluster-identity
