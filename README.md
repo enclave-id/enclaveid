@@ -7,6 +7,7 @@ Monorepo with the core services. Ideally we move the data pipeline in here as we
 ![alt text](docs/architecture.svg)
 
 First, there are two types of initContainers that run in this sequence:
+
 - `init_secrets`
 - `init_envoy`
 
@@ -29,10 +30,11 @@ We distinguish 3 different environments in the development cycle:
 - `NODE_ENV==="production"` + aks: actual production, with confidentiality.
 
 K8s fodler structure:
+
 - `build/`: kaniko configs for build stage
 - `containers/`: auxiliary containers (initContainers, sidecars)
 - `helm/`: helm chart for deployment
-- `renders/`: helm chart renders 
+- `renders/`: helm chart renders
 - `scripts/`: auxiliary scripts to customize the renders
 
 ## Build and deploy
@@ -78,7 +80,7 @@ TODO: add intructions for deployment
 
 ![alt text](docs/production.svg)
 
-https://learn.microsoft.com/en-us/azure/aks/deploy-confidential-containers-default-policy
+https://github.com/microsoft/confidential-container-demos/tree/main/kafka
 
 In production, a GitHub action invokes `make all` to build the images with Kaniko, which pulls the sources from the GitHub repo and pushes the artefacts to MCR.
 
@@ -95,3 +97,85 @@ In order to verify the integrity of the images in the registry you can rerun the
 You can then pull the images from the registry and verify that the files' SHAs are matching.
 
 (provide script that does this easily)
+k8s/scripts/verify.sh
+
+---
+
+## Deploying to AKS in prod
+
+We have two resource groups in azure:
+
+- enclaveid-dev: standard keystore
+- enclaveid-prod: aks cluster + MHSM keystore
+
+Reference: https://learn.microsoft.com/en-us/azure/aks/deploy-confidential-containers-default-policy
+
+Set some env vars:
+
+```bash
+AZURE_RESOURCE_GROUP=enclaveid-prod
+
+AZURE_CLUSTER_NAME=enclaveid-cluster
+AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5
+
+AZURE_REGION=eastus2
+AZURE_SUBSCRIPTION=$(az account show --query id --output tsv)
+AZURE_USER_ASSIGNED_IDENTITY_NAME=enclaveid-cluster-identity
+AZURE_FEDERATED_IDENTITY_CREDENTIAL_NAME=enclaveid-cluster-identity-credential
+
+MAA_ENDPOINT="sharedeus.eus.attest.azure.net"
+```
+
+Requirements setup:
+
+```bash
+# Install aks-preview extension
+az extension add --name aks-preview
+az extension update --name aks-preview
+
+# Install confcom extension
+az extension add --name confcom
+az extension update --name confcom
+
+# Register Kata CoCo feature flag
+az feature register --namespace "Microsoft.ContainerService" --name "KataCcIsolationPreview"
+
+# Verify registration status and refresh registration status in resource provider
+az feature show --namespace "Microsoft.ContainerService" --name "KataCcIsolationPreview"
+az provider register --namespace "Microsoft.ContainerService"
+```
+
+Deploy a new cluster (this starts billing the VMs):
+
+```bash
+# Create the cluster with one system node (need the same CVM type bc of kata)
+az aks create --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --kubernetes-version 1.29 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --node-count 1 --enable-oidc-issuer --enable-workload-identity --generate-ssh-keys
+
+# Get cluster credentials
+az aks get-credentials --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --overwrite-existing
+
+# Add a nodepool with 2 nodes for the enclaveid workloads (excluding ML)
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name nodepool2 --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 2 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation
+```
+
+Setup Federated Identity
+
+```bash
+# Get the OIDC issuer
+AKS_OIDC_ISSUER="$(az aks show -n "${AZURE_CLUSTER_NAME}" -g "${AZURE_RESOURCE_GROUP}" --query "oidcIssuerProfile.issuerUrl" -otsv)"
+
+# Create a managed identity for the cluster
+az identity create --name "${AZURE_USER_ASSIGNED_IDENTITY_NAME}" --resource-group "${AZURE_RESOURCE_GROUP}" --location "${AZURE_REGION}" --subscription "${AZURE_SUBSCRIPTION}"
+
+# With the setup complete, we can now use MANAGED_IDENTITY in the initContainer
+# and USER_ASSIGNED_CLIENT_ID in the ServiceAccount config
+```
+
+Deploy the Kata-agnostic portion of the Helm chart:
+
+```bash
+# Render the chart
+make helm-chart DEPLOYMENT=aks AZURE_RESOURCE_GROUP=$AZURE_RESOURCE_GROUP AZURE_USER_ASSIGNED_IDENTITY_NAME=$AZURE_USER_ASSIGNED_IDENTITY_NAME
+
+kubectl apply –f k8s/renders/k8s-configs.yaml
+```
