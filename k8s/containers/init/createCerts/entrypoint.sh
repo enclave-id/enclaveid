@@ -5,7 +5,7 @@ set -euo pipefail
 # See https://github.com/microsoft/confidential-container-demos/blob/main/kafka/setup-key.sh
 
 if [ $# -ne 4 ]; then
-  echo "Usage: $0 <KEY_NAME> <AZURE_AKV_RESOURCE_ENDPOINT> <MANAGED_IDENTITY> <MAA_ENDPOINT>"
+  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> <MANAGED_IDENTITY> <MAA_ENDPOINT>"
   exit 1
 fi
 
@@ -14,22 +14,18 @@ TMPFS_DIR="${TMPFS_DIR:-/tmp}"
 
 cd "$TMPFS_DIR"
 
-https="https://"
-http="http://"
 KEY_NAME=$1
-
-# if https://, http:// and trailing / exists, remove them from url
-AZURE_AKV_RESOURCE_ENDPOINT=${2#$https}
-AZURE_AKV_RESOURCE_ENDPOINT=${AZURE_AKV_RESOURCE_ENDPOINT#$http}
-AZURE_AKV_RESOURCE_ENDPOINT=${AZURE_AKV_RESOURCE_ENDPOINT%%/*}
-
+KV_STORE_NAME=$2
 MANAGED_IDENTITY=$3
-
 MAA_ENDPOINT=$4
 
-MAA_ENDPOINT=${MAA_ENDPOINT#$https}
-MAA_ENDPOINT=${MAA_ENDPOINT#$http}
-MAA_ENDPOINT=${MAA_ENDPOINT%%/*}
+AZURE_AKV_RESOURCE_ENDPOINT=""
+
+if [[ $ENABLE_CONFIDENTIALITY == "true" ]]; then
+  AZURE_AKV_RESOURCE_ENDPOINT="$KV_STORE_NAME.managedhsm.azure.net"
+else
+  AZURE_AKV_RESOURCE_ENDPOINT="$KV_STORE_NAME.vault.azure.net"
+fi
 
 key_vault_name=$(echo "$AZURE_AKV_RESOURCE_ENDPOINT" | cut -d. -f1)
 echo "Key vault name is ${key_vault_name}"
@@ -63,6 +59,11 @@ if [ "$ENABLE_CONFIDENTIALITY" = "true" ]; then
     ' "${policy_file_name}" >tmp.$$.json
 
     mv tmp.$$.json "${policy_file_name}"
+
+    # Update the policy file with the MAA endpoint
+    jq --arg equalsValue "${MAA_ENDPOINT}" '.anyOf[] |= (.authority = $equalsValue)' "${policy_file_name}" >tmp.$$.json
+
+    mv tmp.$$.json "${policy_file_name}"
   fi
 else
   echo "Warning: Confidentiality is disabled. Key will be released to any principal."
@@ -87,5 +88,5 @@ echo "......Released key to managed identity"
 # Generate CA from master secret
 openssl req -new -x509 -days 3650 -key master-secret.pem -out ca-cert.pem -config /ca.cnf
 # Upload CA to AKV
-az keyvault secret set --vault-name $AKV_NAME --name $CA_CERT_NAME --file your-ca-cert.pem
+az keyvault secret set --vault-name "$KV_STORE_NAME" --name $CA_CERT_NAME --file your-ca-cert.pem
 echo "......Uploaded CA to AKV"

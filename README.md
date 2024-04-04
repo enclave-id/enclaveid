@@ -119,6 +119,7 @@ AZURE_CLUSTER_NAME=enclaveid-cluster
 AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5
 
 AZURE_REGION=eastus2
+AZURE_SERVICE_ACCOUNT_NAME=enclaveid-cluster-identity-sa
 AZURE_SUBSCRIPTION=$(az account show --query id --output tsv)
 AZURE_USER_ASSIGNED_IDENTITY_NAME=enclaveid-cluster-identity
 AZURE_FEDERATED_IDENTITY_CREDENTIAL_NAME=enclaveid-cluster-identity-credential
@@ -179,3 +180,15 @@ make helm-chart DEPLOYMENT=aks AZURE_RESOURCE_GROUP=$AZURE_RESOURCE_GROUP AZURE_
 
 kubectl apply –f k8s/renders/k8s-configs.yaml
 ```
+
+Create the federated identity credential between the managed identity, service account issuer, and subject:
+
+```bash
+az identity federated-credential create --name ${AZURE_FEDERATED_IDENTITY_CREDENTIAL_NAME} --identity-name ${AZURE_USER_ASSIGNED_IDENTITY_NAME} --resource-group ${AZURE_RESOURCE_GROUP} --issuer ${AKS_OIDC_ISSUER} --subject system:serviceaccount:default:${AZURE_SERVICE_ACCOUNT_NAME}
+```
+
+Set up the KV with the right roles:
+```bash
+
+```
+
