@@ -20,6 +20,12 @@ spec:
       labels:
         {{- include "enclaveid.selectorLabels" . | nindent 8 }}
     spec:
+      volumes:
+        # This volume mount is used to share a tmpfs volume between the 
+        # init container and the main container, to avoid writing certs to disk unencrypted
+        - name: shared-tmp
+          emptyDir:
+            medium: Memory  
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -28,13 +34,25 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        - name: init
+        - name: {{ .Chart.Name }}-initSecrets
           image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.initImage.pullPolicy }}
           securityContext:
-            {{- toYaml .Values.initSecurityContext | nindent 12 }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: shared-tmp
+              mountPath: /tmp
+          env:
+            - name: CERTS_DIR
+              value: "/tmp"
+            - name: CERTS_FILE
+              value: "/tmp/certs.tar"
+            - name: CERTS_SECRET
+              value: "{{ .Values.certsSecret }}"
+            - name: CERTS_SECRET_KEY
+              value: "{{ .Values.certsSecretKey }}"
           resources:
-            {{- toYaml .Values.initResources | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -53,6 +71,9 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - mountPath: /tmp
+              name: shared-tmp
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

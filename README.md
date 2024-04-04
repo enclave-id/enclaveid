@@ -28,6 +28,13 @@ We distinguish 3 different environments in the development cycle:
 - `NODE_ENV==="production"` + microk8s: for development and testing of all features, excluding confidentiality.
 - `NODE_ENV==="production"` + aks: actual production, with confidentiality.
 
+K8s fodler structure:
+- `build/`: kaniko configs for build stage
+- `containers/`: auxiliary containers (initContainers, sidecars)
+- `helm/`: helm chart for deployment
+- `renders/`: helm chart renders 
+- `scripts/`: auxiliary scripts to customize the renders
+
 ## Build and deploy
 
 To install the requirements:

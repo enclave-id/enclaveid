@@ -13,7 +13,7 @@ else
     exit 1
 fi
 
-# We use the distro's helm version rather than microk8s
+# We use the distro's helm rather than microk8s
 helm template "${RELEASE_NAME}" "$SCRIPT_DIR"/../helm \
     --set image.repository="${REGISTRY}"/api \
     --set image.tag="${API_IMAGE_DIGEST}" \
