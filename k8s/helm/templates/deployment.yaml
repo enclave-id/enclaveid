@@ -21,6 +21,7 @@ spec:
         {{- include "enclaveid.selectorLabels" . | nindent 8 }}
     spec:
       volumes:
+        # TODO: Template this volume mount because it cannot be shared across pods
         # This volume mount is used to share a tmpfs volume between the
         # init container and the main container, to avoid writing certs to disk unencrypted
         - name: shared-tmp
@@ -34,13 +35,18 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        - name: createSecrets
+        - name: create-secrets
           image: "{{ .Values.initImages.createSecrets.repository }}:{{ .Values.initImages.createSecrets.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.initImages.createSecrets.pullPolicy }}
-          args:
-            {{- range $key, $value := .Values.initImages.createSecrets.arguments }}
-            - "{{ $value }}"
-            {{- end }}
+          args: [
+            "{{ .Values.initImages.createSecrets.arguments.keyName }}",
+            "{{ .Values.initImages.createSecrets.arguments.kvStoreName }}",
+            "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
+            "{{ .Values.initImages.createSecrets.arguments.enableConfidentiality }}",
+            "{{ .Values.initImages.createSecrets.arguments.maaEndpoint }}",
+            "{{ .Values.initImages.createSecrets.arguments.workloadMeasurement }}"
+          ]
+          # TODO: Template this volume mount because it cannot be shared across pods
           volumeMounts:
             - mountPath: /tmp
               name: shared-tmp
@@ -48,8 +54,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.images.api.repository }}:{{ .Values.images.api.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.images.api.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
@@ -62,6 +68,7 @@ spec:
             httpGet:
               path: /
               port: http
+          # TODO: Template this volume mount because it cannot be shared across pods
           volumeMounts:
             - mountPath: /tmp
               name: shared-tmp
