@@ -101,6 +101,21 @@ k8s/scripts/verify.sh
 
 ---
 
+## Deploying to microk8s
+
+Prerequisites:
+
+- Run `az login` on host
+- Create service principal: `az ad sp create-for-rbac --name enclaveid-dev`
+- Create keyvault
+- Assign role to keyvault
+
+Deployment:
+
+- Create a .env file in `/createSecrets` with the service principal credentials
+- `make build DEPLOYMENT=aks`
+- `make helm-chart DEPLOYMENT=microk8s`
+
 ## Deploying to AKS in prod
 
 We have two resource groups in azure:
@@ -188,7 +203,13 @@ az identity federated-credential create --name ${AZURE_FEDERATED_IDENTITY_CREDEN
 ```
 
 Set up the KV with the right roles:
+
 ```bash
 
 ```
 
+Deploy the Kata portion of the Helm chart:
+
+```bash
+kubectl apply –f k8s/renders/kata-configs.yaml
+```

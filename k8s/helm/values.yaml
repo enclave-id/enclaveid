@@ -5,15 +5,30 @@
 replicaCount: 1
 
 # These are set when running make helm-chart
-image:
-  repository:
-  tag:
-  pullPolicy: IfNotPresent
+images:
+  api:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
 
-initImage:
-  repository:
-  tag:
-  pullPolicy: IfNotPresent
+initImages:
+  createSecrets:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+    arguments:
+      # Preserve the order of the arguments
+      - keyName:
+      - kvStoreName:
+      - managedIdentity:
+      - enableConfidentiality:
+      - maaEndpoint:
+      - workloadMeasurement:
+  loadSecrets:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+    arguments: {}
 
 imagePullSecrets: []
 nameOverride: ''

@@ -8,17 +8,21 @@ metadata:
 spec:
   containers:
     - name: kaniko
-      image: ${KANIKO_IMAGE}
+      image: gcr.io/kaniko-project/executor:v1.21.1
       args:
         [
           '--dockerfile=/workspace/${DOCKERFILE_PATH}',
-          '--context=dir://${BUILD_CONTEXT}',
+          '--context=dir:///',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
         ]
       volumeMounts:
         - name: build-context-storage
           mountPath: /workspace
+      resources:
+        limits:
+          cpu: '4'
+          memory: '16Gi'
   restartPolicy: Never
   volumes:
     - name: build-context-storage

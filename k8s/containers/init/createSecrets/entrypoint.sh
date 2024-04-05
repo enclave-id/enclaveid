@@ -4,67 +4,74 @@ set -euo pipefail
 
 # See https://github.com/microsoft/confidential-container-demos/blob/main/kafka/setup-key.sh
 
-if [ $# -ne 4 ]; then
-  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> <MANAGED_IDENTITY> <MAA_ENDPOINT>"
+if [ $# -lt 3 ] || [ $# -gt 6 ]; then
+  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> <MANAGED_IDENTITY> [ENABLE_CONFIDENTIALITY] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
   exit 1
 fi
-
-ENABLE_CONFIDENTIALITY="${ENABLE_CONFIDENTIALITY:-false}"
-TMPFS_DIR="${TMPFS_DIR:-/tmp}"
-
-cd "$TMPFS_DIR"
 
 KEY_NAME=$1
 KV_STORE_NAME=$2
 MANAGED_IDENTITY=$3
-MAA_ENDPOINT=$4
+ENABLE_CONFIDENTIALITY=$4
+MAA_ENDPOINT=$5
+WORKLOAD_MEASUREMENT=$6
+
+# TODO: pass as argument?
+TMPFS_DIR="/tmp"
+cd "$TMPFS_DIR"
 
 AZURE_AKV_RESOURCE_ENDPOINT=""
+AZURE_KV_TYPE=""
 
-if [[ $ENABLE_CONFIDENTIALITY == "true" ]]; then
+if [ "$ENABLE_CONFIDENTIALITY" != "true" ]; then
+  # Load /.env file
+  set -o allexport
+  if [ -f /.env ]; then
+    source /.env
+  fi
+  set +o allexport
+
+  if [ -z "$AZURE_CLIENT_ID" ] || [ -z "$AZURE_CLIENT_SECRET" ] || [ -z "$AZURE_TENANT_ID" ]; then
+    echo "Azure service principal credentials are not set. Please set them in the /.env file."
+    exit 1
+  fi
+
+  # Login the service principal for development
+  az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+fi
+
+if [ "$ENABLE_CONFIDENTIALITY" = "true" ]; then
   AZURE_AKV_RESOURCE_ENDPOINT="$KV_STORE_NAME.managedhsm.azure.net"
+  AZURE_KV_TYPE="managedHSM"
 else
   AZURE_AKV_RESOURCE_ENDPOINT="$KV_STORE_NAME.vault.azure.net"
+  AZURE_KV_TYPE="vault"
 fi
 
 key_vault_name=$(echo "$AZURE_AKV_RESOURCE_ENDPOINT" | cut -d. -f1)
 echo "Key vault name is ${key_vault_name}"
 
-if [[ "$AZURE_AKV_RESOURCE_ENDPOINT" == *".vault.azure.net" ]]; then
-  if [[ $(az keyvault list -o json | grep "Microsoft.KeyVault/vaults/${key_vault_name}") ]] 2>/dev/null; then
-    echo "AKV endpoint OK"
-  else
-    echo "Azure akv resource endpoint doesn't exist. Please refer to documentation instructions to set it up first:"
-    exit 1
-  fi
-elif [[ "$AZURE_AKV_RESOURCE_ENDPOINT" == *".managedhsm.azure.net" ]]; then
-  if [[ $(az keyvault list -o json | grep "Microsoft.KeyVault/managedHSMs/${key_vault_name}") ]] 2>/dev/null; then
-    echo "AKV endpoint OK"
-  else
-    echo "Azure akv resource endpoint doesn't exist. Please refer to documentation instructions to set it up first:"
-    exit 1
-  fi
+if [[ $(az keyvault list -o json | grep "Microsoft.KeyVault/${AZURE_KV_TYPE}s/${key_vault_name}") ]] 2>/dev/null; then
+  echo "AKV endpoint OK"
+else
+  echo "Azure akv resource endpoint doesn't exist. Please refer to documentation instructions to set it up first:"
+  exit 1
 fi
 
 policy_file_name="/key-release-policy.json"
 
 if [ "$ENABLE_CONFIDENTIALITY" = "true" ]; then
-  if [[ -z "${WORKLOAD_MEASUREMENT}" ]]; then
-    echo "Error: Env WORKLOAD_MEASUREMENT is not set. Set this to condition releasing your key on your security policy matching the expected value."
-    exit 1
-  else
-    # Update the policy file with the workload measurement
-    jq --arg equalsValue "${WORKLOAD_MEASUREMENT}" '
+  # Update the policy file with the workload measurement
+  jq --arg equalsValue "${WORKLOAD_MEASUREMENT}" '
             .anyOf[] |= (.allOf |= map(if .claim == "x-ms-sevsnpvm-hostdata" then .equals = $equalsValue else . end))
     ' "${policy_file_name}" >tmp.$$.json
 
-    mv tmp.$$.json "${policy_file_name}"
+  mv tmp.$$.json "${policy_file_name}"
 
-    # Update the policy file with the MAA endpoint
-    jq --arg equalsValue "${MAA_ENDPOINT}" '.anyOf[] |= (.authority = $equalsValue)' "${policy_file_name}" >tmp.$$.json
+  # Update the policy file with the MAA endpoint
+  jq --arg equalsValue "${MAA_ENDPOINT}" '.anyOf[] |= (.authority = $equalsValue)' "${policy_file_name}" >tmp.$$.json
 
-    mv tmp.$$.json "${policy_file_name}"
-  fi
+  mv tmp.$$.json "${policy_file_name}"
 else
   echo "Warning: Confidentiality is disabled. Key will be released to any principal."
 fi
