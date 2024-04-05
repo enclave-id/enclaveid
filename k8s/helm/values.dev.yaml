@@ -1,0 +1,10 @@
+images:
+  api:
+    repository: registry.container-registry.svc.cluster.local:5000/api
+
+initImages:
+  createSecrets:
+    repository: registry.container-registry.svc.cluster.local:5000/create-secrets
+    arguments:
+      kvStoreName: enclaveid-dev
+      enableConfidentiality: false

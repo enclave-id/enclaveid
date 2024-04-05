@@ -14,5 +14,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.removeUnusedImports": "explicit"
+  },
+  "[makefile]": {
+      "editor.insertSpaces": false,
+      "editor.detectIndentation": false
   }
 }

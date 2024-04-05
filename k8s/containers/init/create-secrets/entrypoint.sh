@@ -4,8 +4,8 @@ set -euo pipefail
 
 # See https://github.com/microsoft/confidential-container-demos/blob/main/kafka/setup-key.sh
 
-if [ $# -lt 3 ] || [ $# -gt 6 ]; then
-  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> <MANAGED_IDENTITY> [ENABLE_CONFIDENTIALITY] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
+if [ $# != 2 ] && [ $# != 6 ]; then
+  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> [<MANAGED_IDENTITY>] [<ENABLE_CONFIDENTIALITY>] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
   exit 1
 fi
 
@@ -23,8 +23,8 @@ cd "$TMPFS_DIR"
 AZURE_AKV_RESOURCE_ENDPOINT=""
 AZURE_KV_TYPE=""
 
+# In the dev environment, we use the service principal instead of MANAGED_IDENTITY
 if [ "$ENABLE_CONFIDENTIALITY" != "true" ]; then
-  # Load /.env file
   set -o allexport
   if [ -f /.env ]; then
     source /.env
@@ -36,7 +36,6 @@ if [ "$ENABLE_CONFIDENTIALITY" != "true" ]; then
     exit 1
   fi
 
-  # Login the service principal for development
   az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
 fi
 

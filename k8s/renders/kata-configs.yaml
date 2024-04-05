@@ -21,12 +21,28 @@ spec:
         app.kubernetes.io/name: enclaveid
         app.kubernetes.io/instance: dev-0.0.0
     spec:
+      volumes:
+        # TODO: Template this volume mount because it cannot be shared across pods
+        # This volume mount is used to share a tmpfs volume between the
+        # init container and the main container, to avoid writing certs to disk unencrypted
+        - name: shared-tmp
+          emptyDir:
+            medium: Memory
       serviceAccountName: dev-0.0.0-enclaveid
       securityContext: {}
+      initContainers:
+        - name: create-secrets
+          image: "registry.container-registry.svc.cluster.local:5000/create-secrets:1.16.0"
+          imagePullPolicy: IfNotPresent
+          args: ["enclaveid-master-secret", "enclaveid-dev", "", "false", "", ""]
+          # TODO: Template this volume mount because it cannot be shared across pods
+          volumeMounts:
+            - mountPath: /tmp
+              name: shared-tmp
       containers:
         - name: enclaveid
           securityContext: {}
-          image: "registry.container-registry.svc.cluster.local:5000/api:sha256:455d5fcfb0e982824a0fe45bd3200bf6dd4ddd0c48bf8bde1491034aefa4422c"
+          image: "registry.container-registry.svc.cluster.local:5000/api:sha256:56152acd4fd589e24565bc53982ac1317f32f68908de1ceb31655b05b907409a"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -40,6 +56,10 @@ spec:
             httpGet:
               path: /
               port: http
+          # TODO: Template this volume mount because it cannot be shared across pods
+          volumeMounts:
+            - mountPath: /tmp
+              name: shared-tmp
           resources: {}
 ---
 # Source: enclaveid/charts/postgresql/templates/primary/statefulset.yaml
