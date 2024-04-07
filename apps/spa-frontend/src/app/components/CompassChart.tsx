@@ -8,6 +8,7 @@ interface CompassChartProps {
   y: number;
   description?: string;
   showDescription?: boolean;
+  compassChartAvailable?: boolean;
 }
 
 function CompassChart({
@@ -15,6 +16,7 @@ function CompassChart({
   y,
   description,
   showDescription = false,
+  compassChartAvailable,
 }: CompassChartProps) {
   const [compassRef, compassWidth] = useElementWidth();
 
@@ -41,8 +43,9 @@ function CompassChart({
   return (
     <div
       className={classNames(
-        'flex flex-col items-center justify-center',
+        'flex flex-col items-center justify-center relative',
         showDescription ? 'gap-12' : 'gap-11',
+        !compassChartAvailable && 'blur-sm',
       )}
     >
       {showDescription ? (
