@@ -1,25 +1,58 @@
 # EnclaveID
 
-Monorepo with the core services. Ideally we move the data pipeline in here as well.
-
 ## Architecture
 
-![alt text](docs/architecture.svg)
+The following diagram showcases how the cluster is set up to leverage AKS-CC to guarantee confidentiality.
 
-First, there are two types of initContainers that run in this sequence:
+We only show one example service in the diagram, but any other service would be configured in the same way.
 
-- `init_secrets`
-- `init_envoy`
+The components that belong to the trusted computing base (TCB) are highlighted in green (the Kata confidential pods running on AMD SEV-SNP capable nodes).
 
-`init_secrets` populates the secrets in akv (with the skr policy in prod)
+![alt text](docs/architecture.png)
 
-`init_envoy` downloads the CA cert and the secret key from AKV, verifies the CA derivation (since MS doesnt support skr for certs yet) and sets up the envoy sidecar with mTLS, only accepting connections within the cluster that have certificates issued by the same CA.
+At first, two types of initContainers will be run in this sequence:
 
-All disk operations in the initContainers are done on `tempfs`, which is in memory and so untamprable bc of SEV-SNP.
+- `create-secrets` (API only)
+- `load-secrets`
 
-The `remotefs` sidecar provided by MS (https://github.com/microsoft/confidential-sidecar-containers/tree/main/cmd/remotefs) mounts a r/w filesystem encrypted using the master secret in AKV.
+**(1)** `create-secrets` is in charge of creating the mHSM in Azure and initializing the master secret, upon which the confidentiality of the system relies, and uploading it to the mHSM.
 
-TODO: fix the arch doc. attestaation sidecar only necessary in APi for remote attestation with client.
+The mHSM is created with purge protection on, making it impossible for a malicious susbcription owner to delete and replace the vault and the master secret.
+
+At the moment, the mHSM security domain is be created with a set of private keys that will be thrown away as soon as the initContainer finishes its execution. This guarantees that no one can access the master secret, not even Microsoft or the subscription owner.
+
+The master secret will have an immutable secure key release (SKR) policy, which only allows the confidential pods to access it.
+
+Additionally, as we cannot attest the immutability of the allowed operations for the master secret in AKV, we deterministically derive another intermediate secret from the master secret, which will be the actual key used to encrypt the remote filesystem and issue TLS certificates.
+
+With this intermediate secret, we create and store a CA certificate in the mHSM.
+
+**(2)** In each pod, `load-secrets` downloads the master secret and the CA cert from the mHSM and stores them in an in-memory `tmpfs` volume shared with the rest of the pod, so that the other containers can access them without leaving the TCB.
+
+The container derives the intermediate secret in the same way the API did, and then asserts that the CA certificate is correctly derived from it, since Microsoft does not support SKR for AKV certificates yet.
+
+Once this verification is done, it self-issues a TLS certificate using the CA and stores it in the `tmpfs` volume alongside the other certs and keys.
+
+**(3,4)** The EncFS and Envoy sidecars pick up the CA cert and the intermediate secret from the `tmpfs` volume and set up mTLS and the remote filesystem (only accepting connections with certs isssued by the same 'secret' CA).
+
+The API pod also spins up a Remote Attestation sidecar, with which the web client can get a report that attests the integrity of the whole cluster.
+
+**(5)** The web client communicates with the API via a custom app-layer encryption protocol similar to aTLS. To this end, the attestation sidecar will also include a hash of its TLS certificate in the report, binding the certificate to the code integrity guarantees.
+
+In this way the end user does not need to manually check the certificate in their browser, as the client code will do it for them.
+
+The web client is source-mapped and hosted on IPFS, so that the frontend is immutable and auditable.
+
+This setup guarantees to the user that no uninted third party can access their raw private data. 
+
+## Verification
+
+In order to verify the integrity of the images in the registry you can rerun the Kaniko builds as they are specified in the CI. (assuming the source code is safe)
+
+You can then pull the images from the registry and verify that the files' SHAs are matching.
+
+(provide script that does this easily)
+k8s/scripts/verify.sh
 
 ## Development
 
@@ -90,14 +123,7 @@ TODO: add intructions for deployment
 
 For the fronted there is a `fleek-build` script specifid in `package.json`, which is picked up by Fleek when there are new pushes to master. This deploys the sourcemapped frontend to IPFS to make it auditable and immutable.
 
-## Verification
 
-In order to verify the integrity of the images in the registry you can rerun the Kaniko builds as they are specified in the CI. (assuming the source code is safe)
-
-You can then pull the images from the registry and verify that the files' SHAs are matching.
-
-(provide script that does this easily)
-k8s/scripts/verify.sh
 
 ---
 

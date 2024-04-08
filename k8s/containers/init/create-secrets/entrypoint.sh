@@ -41,6 +41,9 @@ if [ "$ENABLE_CONFIDENTIALITY" != "true" ]; then
   echo "......Logged in to Azure with dev credentials"
 fi
 
+# TODO: Create mHSM and throw away the secrets
+# TODO: Check that the retention period == key valdity period AND purge protection is enabled (which is immutable)
+
 if [ "$ENABLE_CONFIDENTIALITY" = "true" ]; then
   AZURE_AKV_RESOURCE_ENDPOINT="$KV_STORE_NAME.managedhsm.azure.net"
   AZURE_KV_TYPE="managedHSM"
