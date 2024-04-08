@@ -1,0 +1,84 @@
+# Source: enclaveid/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enclaveid-dev
+  labels:
+    helm.sh/chart: enclaveid-0.0.0
+    app.kubernetes.io/name: enclaveid
+    app.kubernetes.io/instance: enclaveid-dev
+    app.kubernetes.io/version: "dev-0.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: enclaveid
+      app.kubernetes.io/instance: enclaveid-dev
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: enclaveid
+        app.kubernetes.io/instance: enclaveid-dev
+    spec:
+      volumes:
+        # TODO: Template this volume mount because it cannot be shared across pods
+        # This volume mount is used to share a tmpfs volume between the
+        # init container and the main container, to avoid writing certs to disk unencrypted
+        - name: shared-tmp
+          emptyDir:
+            medium: Memory
+      serviceAccountName: enclaveid-dev
+      securityContext: {}
+      initContainers:
+        - name: create-secrets
+          image: "localhost:32000/create-secrets@sha256:d650e879914882d109d43f80aebf00f9823a42a995fd9ef2a5ed83fdb21116a2"
+          imagePullPolicy: IfNotPresent
+          args: ["enclaveid-master-secret", "enclaveid-dev", "false", "", "", ""]
+          # TODO: Template this volume mount because it cannot be shared across pods
+          volumeMounts:
+            - mountPath: /tmp
+              name: shared-tmp
+      containers:
+        - name: enclaveid
+          securityContext: {}
+          image: "localhost:32000/api@sha256:2828cab059198ab65fc194aa87fd9e3bca23fb89f2a2cd7f979b35fdb2fbd0a9"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          # TODO: Template this volume mount because it cannot be shared across pods
+          volumeMounts:
+            - mountPath: /tmp
+              name: shared-tmp
+          resources: {}
+---
+# Source: enclaveid/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "enclaveid-dev-test-connection"
+  labels:
+    helm.sh/chart: enclaveid-0.0.0
+    app.kubernetes.io/name: enclaveid
+    app.kubernetes.io/instance: enclaveid-dev
+    app.kubernetes.io/version: "dev-0.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['enclaveid-dev:80']
+  restartPolicy: Never

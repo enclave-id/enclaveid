@@ -13,9 +13,9 @@ export const authentication = router({
     )
     .mutation(async (opts) => {
       const { encryptedCredentials } = opts.input;
-      const { prisma, setJwtCookie } = opts.ctx as AppContext;
+      const { prisma, setJwtCookie, logger } = opts.ctx as AppContext;
 
-      const { email, password, sessionKey } = JSON.parse(
+      const { email, password, b64SessionKey } = JSON.parse(
         await asymmetricDecrypt(encryptedCredentials),
       );
 
@@ -30,15 +30,15 @@ export const authentication = router({
         });
       }
 
+      const sessionKey = Buffer.from(b64SessionKey, 'base64');
+
       await prisma.session.upsert({
         where: { userId: user.id },
         update: { sessionSecret: sessionKey },
         create: { userId: user.id, sessionSecret: sessionKey },
       });
 
-      setJwtCookie(user);
-
-      return user;
+      await setJwtCookie({ id: user.id });
     }),
   signup: publicProcedure
     .input(
@@ -67,17 +67,15 @@ export const authentication = router({
         });
       }
 
-      const user = await prisma.user.create({
+      await prisma.user.create({
         data: {
           email,
-          password, 
+          password,
           confirmedAt: new Date(), // TODO remove this and send confirmation email
           userTraits: {
             create: {},
           },
         },
       });
-
-      return user;
     }),
 });

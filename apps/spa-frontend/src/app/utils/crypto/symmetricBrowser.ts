@@ -4,24 +4,21 @@ function generateNonce(): Uint8Array {
   return window.crypto.getRandomValues(new Uint8Array(16));
 }
 
-function getSessionKey(): Uint8Array {
+export function getSessionKey(): Uint8Array {
   const key = sessionStorage.getItem('sessionKey');
   if (key) {
     return new Uint8Array(JSON.parse(key));
   } else {
-    const key = window.crypto.getRandomValues(new Uint8Array(16));
+    const key = window.crypto.getRandomValues(new Uint8Array(32));
     sessionStorage.setItem('sessionKey', JSON.stringify(Array.from(key)));
     return key;
   }
 }
 
-export async function symmetricEncrypt(
-  variables: Record<string, unknown>,
-): Promise<{
+export async function symmetricEncrypt(data: string): Promise<{
   encryptedPayload: string;
   nonce: string;
 }> {
-  const data = JSON.stringify(variables);
   const encodedData = new TextEncoder().encode(data);
 
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -46,9 +43,9 @@ export async function symmetricEncrypt(
 }
 
 export async function symmetricDecrypt(
-  encryptedPyload: string,
+  encryptedPayload: string,
   nonce: string,
-): Promise<Record<string, unknown>> {
+): Promise<string> {
   const cryptoKey = await window.crypto.subtle.importKey(
     'raw',
     getSessionKey(),
@@ -60,9 +57,8 @@ export async function symmetricDecrypt(
   const decryptedPayload = await window.crypto.subtle.decrypt(
     { name: 'AES-CTR', counter: Buffer.from(nonce, 'base64'), length: 64 },
     cryptoKey,
-    Buffer.from(encryptedPyload, 'base64'),
+    Buffer.from(encryptedPayload, 'base64'),
   );
 
-  const data = new TextDecoder().decode(decryptedPayload);
-  return JSON.parse(data);
+  return new TextDecoder().decode(decryptedPayload);
 }

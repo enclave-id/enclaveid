@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "anyOf": [
+    {
+      "authority": null,
+      "allOf": [
+        {
+          "claim": "x-ms-attestation-type",
+          "equals": "sevsnpvm"
+        },
+        {
+          "claim": "x-ms-compliance-status",
+          "equals": "azure-signed-katacc-uvm"
+        },
+        {
+          "claim": "x-ms-sevsnpvm-is-debuggable",
+          "equals": "false"
+        },
+        {
+          "claim": "x-ms-sevsnpvm-hostdata",
+          "equals": null
+        }
+      ]
+    }
+  ]
+}
+
+
+az keyvault key create --id https://enclaveid-prod-2.managedhsm.azure.net/keys/tests --kty RSA-HSM --size 3072 --immutable --policy

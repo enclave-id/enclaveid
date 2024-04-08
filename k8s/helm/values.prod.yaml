@@ -1,0 +1,15 @@
+images:
+  api:
+    repository: mcr.microsoft.com/api
+
+initImages:
+  createSecrets:
+    repository: mcr.microsoft.com/create-secrets
+    arguments:
+      kvStoreName: enclaveid-prod
+      enableConfidentiality: true
+      maaEndpoint: sharedeus.eus.attest.azure.net
+
+serviceAccount:
+  create: true
+  name: #TODO

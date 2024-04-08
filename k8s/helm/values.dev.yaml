@@ -1,0 +1,10 @@
+images:
+  api:
+    repository: localhost:32000/api
+
+initImages:
+  createSecrets:
+    repository: localhost:32000/create-secrets
+    arguments:
+      kvStoreName: enclaveid-dev
+      enableConfidentiality: false

@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://enclaveid:enclaveid@127.0.0.1:5433/enclaveid_api" //env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -32,7 +32,7 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessionSecret String
+  sessionSecret Bytes
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @unique

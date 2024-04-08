@@ -2,8 +2,11 @@ import React, { ReactElement, useCallback } from 'react';
 import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
-import { useAzureAttestation } from '../../hooks/attestation/useAzureAttestation';
 import { useNavigate } from 'react-router-dom';
+import { useAwsNitroAttestation } from '../../hooks/attestation/useAwsNitroAttestation';
+import { getSessionKey } from '../../utils/crypto/symmetricBrowser';
+import { Buffer } from 'buffer';
+
 export type AuthenticationType = 'login' | 'signup';
 
 export function AuthenticationContainer({
@@ -15,10 +18,10 @@ export function AuthenticationContainer({
 }) {
   const authMutation =
     authenticationType === 'login'
-      ? trpc.login.useMutation()
-      : trpc.signup.useMutation();
+      ? trpc.public.login.useMutation()
+      : trpc.public.signup.useMutation();
 
-  const { publicKey, error } = useAzureAttestation();
+  const { publicKey, error } = useAwsNitroAttestation();
   const navigate = useNavigate();
 
   const handleSubmit = useCallback(
@@ -27,6 +30,7 @@ export function AuthenticationContainer({
         {
           email,
           password,
+          b64SessionKey: Buffer.from(getSessionKey()).toString('base64'),
         },
         publicKey,
       );
@@ -42,7 +46,7 @@ export function AuthenticationContainer({
         authenticationType === 'login' ? navigate('/dashboard') : navigate('/');
       }
     },
-    [publicKey, authMutation, authenticationType],
+    [publicKey, authMutation, authenticationType, navigate],
   );
 
   return React.cloneElement(children, { handleSubmit, authenticationType });

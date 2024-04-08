@@ -4,11 +4,30 @@
 
 replicaCount: 1
 
-image:
-  repository: enclaveid
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ''
+# These are set when running make helm-chart
+images:
+  api:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+
+initImages:
+  createSecrets:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+    arguments:
+      keyName: enclaveid-master-secret
+      kvStoreName:
+      managedIdentity:
+      enableConfidentiality:
+      maaEndpoint:
+      workloadMeasurement:
+  loadSecrets:
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
+    arguments: {}
 
 imagePullSecrets: []
 nameOverride: ''

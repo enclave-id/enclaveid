@@ -1,46 +1,32 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { trpc } from '../../utils/trpc';
-import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
-import { AuthenticationFormProps } from '../AuthenticationForm';
-import { useAzureAttestation } from '../../hooks/attestation/useAzureAttestation';
-import { useNavigate } from 'react-router-dom';
+import { PersonalityContentProps } from '../PersonalityContent';
 
 export function PersonalityContainer({
   children,
 }: {
-  children: ReactElement<AuthenticationFormProps>;
+  children: ReactElement<PersonalityContentProps>;
 }) {
-  const authMutation =
-    authenticationType === 'login'
-      ? trpc.login.useMutation()
-      : trpc.signup.useMutation();
+  const personalityQuery = trpc.private.getPersonalityTraits.useQuery();
 
-  const { publicKey, error } = useAzureAttestation();
-  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(personalityQuery.data);
+  }, [personalityQuery.data]);
 
-  const handleSubmit = useCallback(
-    async (email: string, password: string) => {
-      const encryptedCredentials = await asymmetricEncrypt(
-        {
-          email,
-          password,
-        },
-        publicKey,
-      );
+  // const { bigfive, sixteenPersonalityFactor, mbti } =
+  //   personalityQuery.data ?? {};
 
-      await authMutation.mutate({
-        encryptedCredentials,
-      });
+  // const sixteenPFDataArray = getDisjointSetShallow(
+  //   sixteenPersonalityFactor,
+  //   userTraitsShared,
+  // );
 
-      if (authMutation.error) {
-        console.error(authMutation.error);
-      } else {
-        // TODO: we should use loaders/actions here
-        authenticationType === 'login' ? navigate('/dashboard') : navigate('/');
-      }
-    },
-    [publicKey, authMutation, authenticationType],
-  );
-
-  return React.cloneElement(children, { handleSubmit, authenticationType });
+  return React.cloneElement(children, {
+    // bigFive: bigfive,
+    // sixteenPersonalityFactor: {
+    //   title: '16FP',
+    //   data: sixteenPersonalityFactor,
+    // },
+    // mbti,
+  });
 }

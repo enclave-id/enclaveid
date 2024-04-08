@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "cloc": "cloc --vcs git --exclude-list-file=.clocignore",
     "fleek-build": "pnpm exec nx run api:prisma-generate && pnpm exec nx run spa-frontend:build --configuration=production "
   },
   "private": true,
@@ -109,6 +110,7 @@
     "fastify": "~4.26.2",
     "fastify-plugin": "~4.5.1",
     "jszip": "^3.10.1",
+    "pino-pretty": "^11.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
