@@ -32,14 +32,16 @@ function MFTSection() {
         <h2 className="text-lg text-passiveLinkColor text-center leading-[22px]">
           MFT
         </h2>
-        <div className="border border-[#E5E8EE] flex flex-col gap-3 items-center justify-center rounded-3xl w-full pt-7 pb-3.5 px-3">
+        <div className="border border-[#E5E8EE] flex flex-col gap-3 items-center justify-center rounded-3xl w-full pt-7 pb-3.5 px-3 relative">
           <MFTChart {...MFTChartData} />
-          <Button
-            label="Dive Deeper"
-            variant="tertiary"
-            fullWidth
-            onClick={handleClick}
-          />
+          {MFTChartData.mftChartAvailable && (
+            <Button
+              label="Dive Deeper"
+              variant="tertiary"
+              fullWidth
+              onClick={handleClick}
+            />
+          )}
         </div>
       </div>
       <Drawer.Root
@@ -73,7 +75,7 @@ function MFTSection() {
                       Moderate
                     </div>
                   </div>
-                  <div className="gap-9 flex flex-col overflow-y-auto items-center">
+                  <div className="gap-9 flex flex-col overflow-y-auto items-center relative">
                     <MFTChart {...MFTChartData} />
                     <div className="mt-3 mb-8 w-full">
                       <SimilarProfileBadge peopleCount={253} />

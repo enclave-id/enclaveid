@@ -40,7 +40,13 @@ export const Default: StoryObj<typeof CompassChart> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ margin: '10px 0 0 20px' }}>
+      <div
+        style={{
+          margin: '10px 0 0 20px',
+          position: 'relative',
+          maxWidth: '536px',
+        }}
+      >
         <Story />
       </div>
     ),
