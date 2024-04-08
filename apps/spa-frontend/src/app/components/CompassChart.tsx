@@ -45,7 +45,7 @@ function CompassChart({
       className={classNames(
         'flex flex-col items-center justify-center relative',
         showDescription ? 'gap-12' : 'gap-11',
-        !compassChartAvailable && 'blur-sm',
+        !compassChartAvailable && 'blur-xs grayscale-[80%] pointer-events-none',
       )}
     >
       {showDescription ? (
