@@ -181,6 +181,7 @@ export const MFTChartData = {
   purity: 0.2,
   description:
     'One’s results of the Moral Foundations test are usually plotted against the values for the average Conservative, Libertarian and Left-Liberal individual. Your results, on average, are alike to a:',
+  mftChartAvailable: false,
 };
 
 export const compassChartData = {

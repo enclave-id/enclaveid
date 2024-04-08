@@ -31,6 +31,11 @@ export default {
       defaultValue: MFTChartData.purity,
       description: 'Purity value (0 to 1 scale)',
     },
+    mftChartAvailable: {
+      control: 'boolean',
+      defaultValue: true,
+      description: 'Toggles the availability state of the MFT chart',
+    },
   },
 } as Meta<typeof MFTChart>;
 
@@ -40,7 +45,7 @@ export const Default: StoryObj<typeof MFTChart> = {
   args: circles,
   decorators: [
     (Story) => (
-      <div style={{ margin: '20px' }}>
+      <div style={{ margin: '20px', position: 'relative', maxWidth: '536px' }}>
         <Story />
       </div>
     ),

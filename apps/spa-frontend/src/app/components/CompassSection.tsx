@@ -33,17 +33,13 @@ function CompassSection() {
         </h2>
         <div className="border border-[#E5E8EE] flex flex-col gap-10 items-center justify-center flex-1 rounded-3xl w-full pt-[30px] pb-3.5 px-3 relative">
           <CompassChart {...compassChartData} />
-          {compassChartData.compassChartAvailable ? (
+          {compassChartData.compassChartAvailable && (
             <Button
               label="Dive Deeper"
               variant="tertiary"
               fullWidth
               onClick={handleClick}
             />
-          ) : (
-            <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-greenBg font-semibold uppercase text-3xl whitespace-nowrap">
-              Coming Soon
-            </div>
           )}
         </div>
       </div>
