@@ -43,16 +43,35 @@ In this way the end user does not need to manually check the certificate in thei
 
 The web client is source-mapped and hosted on IPFS, so that the frontend is immutable and auditable.
 
-This setup guarantees to the user that no uninted third party can access their raw private data. 
+This setup guarantees to the user that no uninted third party can access their raw private data.
 
 ## Verification
 
-In order to verify the integrity of the images in the registry you can rerun the Kaniko builds as they are specified in the CI. (assuming the source code is safe)
+In order to independently verify the confidentiality of the system, the following assets need to be checked:
 
-You can then pull the images from the registry and verify that the files' SHAs are matching.
+- The Kata policy measurement
+- The image digests in the Kata policy
+- The frontend code on IPFS
 
-(provide script that does this easily)
-k8s/scripts/verify.sh
+You can run `./verify.sh` from the root of the repository to check each of them.
+
+**Kata policy measurement**
+
+`make helm-chart` will render the Helm chart into two separate files, one pertaining the Kata specific configuration and the other the rest of the cluster.
+
+`az confcom...` will take the Kata config and produce a policy measurment, which should match the one in the attestation report.
+
+**Image digests in the Kata policy**
+
+All container images are built with Kaniko using the `--reproducible` flag, so that the SHAs are deterministic.
+
+In the Helm chart, the images are referenced by their SHAs, binding the code to the attestation report.
+
+The script will build all images and check that the SHAs match the ones in the Kata spcific configuration rendered before.
+
+**Frontend code on IPFS**
+
+This one is easy: build the frontend from the repo release and compare the file hashes with the ones on IPFS.
 
 ## Development
 
@@ -62,7 +81,7 @@ We distinguish 3 different environments in the development cycle:
 - `NODE_ENV==="production"` + microk8s: for development and testing of all features, excluding confidentiality.
 - `NODE_ENV==="production"` + aks: actual production, with confidentiality.
 
-K8s fodler structure:
+K8s folder structure:
 
 - `build/`: kaniko configs for build stage
 - `containers/`: auxiliary containers (initContainers, sidecars)
@@ -70,7 +89,7 @@ K8s fodler structure:
 - `renders/`: helm chart renders
 - `scripts/`: auxiliary scripts to customize the renders
 
-## Build and deploy
+## Deploying to microk8s
 
 To install the requirements:
 
@@ -78,14 +97,6 @@ To install the requirements:
 sudo dnf -y install skopeo jq helm
 sudo snap install yq
 ```
-
-We build the images using Kaniko with the `--reproducible` flag, so that they can be verified.
-
-Once the images are built, their immutable SHA is set in the source code for attestation purposes.
-
-### Local (microk8s)
-
-![alt text](docs/development.svg)
 
 To setup the `microk8s` cluster for local development:
 
@@ -103,32 +114,6 @@ microk8s enable dns registry dashboard storage helm helm3 metrics-server
 microk8s dashboard-proxy
 ```
 
-Running `make` at the project root will spin up a Kaniko pod for each application that has a `Dockerfile`. The built images will be stored in the local microk8s registry.
-
-To render the chart with the newly built images, run `make helm-chart DEPLOYMENT=microk8s`. This will disable the attestation verification code, since the kata UVM is not running.
-
-TODO: add intructions for deployment
-
-### Prod (AKS)
-
-![alt text](docs/production.svg)
-
-https://github.com/microsoft/confidential-container-demos/tree/main/kafka
-
-In production, a GitHub action invokes `make all` to build the images with Kaniko, which pulls the sources from the GitHub repo and pushes the artefacts to MCR.
-
-Another action takes the image hashes from MCR and renders the Helm chart with `make helm-chart DEPLOYMENT=aks`. This will also set the `enable_confidentiality` feature flag, to use the UVM policy stuff.
-
-TODO: add intructions for deployment
-
-For the fronted there is a `fleek-build` script specifid in `package.json`, which is picked up by Fleek when there are new pushes to master. This deploys the sourcemapped frontend to IPFS to make it auditable and immutable.
-
-
-
----
-
-## Deploying to microk8s
-
 Prerequisites:
 
 - Run `az login` on host
@@ -138,16 +123,23 @@ Prerequisites:
 
 Deployment:
 
-- Create a .env file in `/createSecrets` with the service principal credentials
-- `make build DEPLOYMENT=aks`
-- `make helm-chart DEPLOYMENT=microk8s`
+Create a .env file in `/createSecrets` with the service principal credentials
+
+Running `make build` at the project root will spin up a Kaniko pod for each application that has a `Dockerfile`. The built images will be stored in the local microk8s registry.
+
+To render the chart with the newly built images, run `make helm-chart && kube...`. This will disable the attestation verification code by default, since the kata UVM is not running.
 
 ## Deploying to AKS in prod
 
-We have two resource groups in azure:
+For the fronted there is a `fleek-build` script specifid in `package.json`, which is picked up by Fleek when there are new pushes to master.
 
-- enclaveid-dev: standard keystore
-- enclaveid-prod: aks cluster + MHSM keystore
+In production, a GitHub action invokes `make all` to build the images with Kaniko, which pulls the sources from the GitHub repo and pushes the artefacts to MCR.
+
+Another action takes the image hashes from MCR and renders the Helm chart with `make helm-chart`. This will also set the `enable_confidentiality` feature flag, to use the UVM policy stuff.
+
+In order to deploy to AKS in production, there are a bunch of things to configure.
+
+Set up a resource group in Azure: `enclaveid-prod`
 
 Reference: https://learn.microsoft.com/en-us/azure/aks/deploy-confidential-containers-default-policy
 
