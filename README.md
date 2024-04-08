@@ -108,7 +108,7 @@ Prerequisites:
 - Run `az login` on host
 - Create service principal: `az ad sp create-for-rbac --name enclaveid-dev`
 - Create keyvault
-- Assign role to keyvault
+- Assign role to keyvault: `az keyvault set-policy --name enclaveid-dev --spn 1c79e8e8-67d1-4dd8-a15a-d2d34f5902ec --key-permissions all`
 
 Deployment:
 

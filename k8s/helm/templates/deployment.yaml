@@ -36,13 +36,13 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: create-secrets
-          image: "{{ .Values.initImages.createSecrets.repository }}:{{ .Values.initImages.createSecrets.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.initImages.createSecrets.repository }}@{{ .Values.initImages.createSecrets.tag }}"
           imagePullPolicy: {{ .Values.initImages.createSecrets.pullPolicy }}
           args: [
             "{{ .Values.initImages.createSecrets.arguments.keyName }}",
             "{{ .Values.initImages.createSecrets.arguments.kvStoreName }}",
-            "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
             "{{ .Values.initImages.createSecrets.arguments.enableConfidentiality }}",
+            "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
             "{{ .Values.initImages.createSecrets.arguments.maaEndpoint }}",
             "{{ .Values.initImages.createSecrets.arguments.workloadMeasurement }}"
           ]
@@ -54,7 +54,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.images.api.repository }}:{{ .Values.images.api.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.images.api.repository }}@{{ .Values.images.api.tag }}"
           imagePullPolicy: {{ .Values.images.api.pullPolicy }}
           ports:
             - name: http
