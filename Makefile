@@ -2,7 +2,7 @@ ENV ?= dev
 VERSION ?= 0.0.0
 RELEASE_NAME := $(ENV)-$(VERSION)
 
-KANIKO_NAMESPACE := default
+CLUSTER_NAMESPACE := default
 REGISTRY := registry.container-registry.svc.cluster.local:5000
 KANIKO_TEMPLATES_DIR := k8s/build/$(ENV)
 
@@ -39,7 +39,7 @@ $(APPS):
 	NAME=$@ \
 	DOCKERFILE_PATH=$(APPS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
-	NAMESPACE=$(KANIKO_NAMESPACE) \
+	NAMESPACE=$(CLUSTER_NAMESPACE) \
 	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
 	| kubectl apply -f -
 
@@ -49,7 +49,7 @@ $(INIT_CONTAINERS):
 	NAME=$@ \
 	DOCKERFILE_PATH=$(INIT_CONTAINERS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
-	NAMESPACE=$(KANIKO_NAMESPACE) \
+	NAMESPACE=$(CLUSTER_NAMESPACE) \
 	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
 	| kubectl apply -f -
 
@@ -59,14 +59,28 @@ $(SIDECARS):
 	NAME=$@ \
 	DOCKERFILE_PATH=$(SIDECARS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
-	NAMESPACE=$(KANIKO_NAMESPACE) \
+	NAMESPACE=$(CLUSTER_NAMESPACE) \
 	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
 	| kubectl apply -f -
-
-helm-chart:
-	RELEASE_NAME=$(RELEASE_NAME) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
 
 # Run this target to clean up kaniko pods
 .PHONY: clean-kaniko
 clean-kaniko:
-	microk8s kubectl delete pod -n $(KANIKO_NAMESPACE) --selector=category=kaniko-build
+	microk8s kubectl delete pod -n $(CLUSTER_NAMESPACE) --selector=category=kaniko-build
+
+.PHONY: update-app-version
+update-app-version:
+	@echo "Updating app version to $(RELEASE_NAME)"
+	@yq eval -i '.appVersion = "$(RELEASE_NAME)"' k8s/helm/Chart.yaml
+
+helm-chart: update-app-version
+	RELEASE_NAME=$(RELEASE_NAME) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
+
+.PHONY: deploy
+deploy:
+	kubectl apply -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml
+
+.PHONY: undeploy
+undeploy:
+	kubectl delete -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml
+

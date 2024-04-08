@@ -5,18 +5,18 @@ set -euo pipefail
 # See https://github.com/microsoft/confidential-container-demos/blob/main/kafka/setup-key.sh
 
 if [ $# != 2 ] && [ $# != 6 ]; then
-  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> [<MANAGED_IDENTITY>] [<ENABLE_CONFIDENTIALITY>] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
+  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> [<ENABLE_CONFIDENTIALITY>] [<MANAGED_IDENTITY>] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
   exit 1
 fi
 
 KEY_NAME=$1
 KV_STORE_NAME=$2
-MANAGED_IDENTITY=$3
-ENABLE_CONFIDENTIALITY=$4
+ENABLE_CONFIDENTIALITY=$3
+MANAGED_IDENTITY=$4
 MAA_ENDPOINT=$5
 WORKLOAD_MEASUREMENT=$6
 
-# TODO: pass as argument?
+# We tmpfs to store sensitive data since the disk is not yet encrypted by the sidecar
 TMPFS_DIR="/tmp"
 cd "$TMPFS_DIR"
 
@@ -37,6 +37,8 @@ if [ "$ENABLE_CONFIDENTIALITY" != "true" ]; then
   fi
 
   az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+
+  echo "......Logged in to Azure with dev credentials"
 fi
 
 if [ "$ENABLE_CONFIDENTIALITY" = "true" ]; then
@@ -77,12 +79,14 @@ fi
 
 # Create RSA key directly in Azure Key Vault
 if [ "$ENABLE_CONFIDENTIALITY" = "true" ]; then
+  echo "......Creating RSA key in ${AZURE_AKV_RESOURCE_ENDPOINT} with HSM"
   az keyvault key create --id https://$AZURE_AKV_RESOURCE_ENDPOINT/keys/${KEY_NAME} --ops \
     wrapKey unwrapKey encrypt decrypt --kty RSA-HSM --size 3072 --exportable \
     --policy ${policy_file_name}
 else
+  echo "......Creating RSA key in ${AZURE_AKV_RESOURCE_ENDPOINT} without HSM"
   az keyvault key create --id https://$AZURE_AKV_RESOURCE_ENDPOINT/keys/${KEY_NAME} --ops \
-    wrapKey unwrapKey encrypt decrypt --kty RSA-HSM --size 3072 --exportable
+    wrapKey unwrapKey encrypt decrypt --kty RSA --size 3072
 fi
 
 echo "......Created RSA key in ${AZURE_AKV_RESOURCE_ENDPOINT}"
