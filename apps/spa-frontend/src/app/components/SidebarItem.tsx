@@ -1,22 +1,20 @@
 import { ReactElement, cloneElement } from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface SidebarItemProps {
   icon: ReactElement;
   text: string;
-  active?: boolean;
   href?: string;
 }
 
-function SidebarItem({
-  icon,
-  text,
-  active = false,
-  href,
-}: SidebarItemProps): ReactElement {
+function SidebarItem({ icon, text, href }: SidebarItemProps): ReactElement {
+  const location = useLocation();
+
   const activeLinkClass = 'font-semibold text-greenBg';
   const passiveLinkClass = 'font-medium text-passiveLinkColor';
+
+  const active = location.pathname.startsWith(href);
 
   const iconWithClassName = cloneElement(icon, {
     className: classNames(

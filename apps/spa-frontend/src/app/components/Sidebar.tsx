@@ -25,7 +25,6 @@ function Sidebar() {
             <SidebarItem
               icon={<HomeIcon />}
               text="Trait Dashboard"
-              active={true}
               href="/dashboard"
             />
             <SidebarItem icon={<ChartBarIcon />} text="Charts" />
