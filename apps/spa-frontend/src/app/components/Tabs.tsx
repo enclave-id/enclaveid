@@ -16,7 +16,7 @@ function Tabs() {
   return (
     <div className="sm:px-6 px-0">
       {showTabs && (
-        <div className="flex overflow-auto border-b border-[#E5E8EE] hideScrollbar">
+        <div className="flex overflow-auto border-b border-[#E5E8EE] hideScrollbar pb-1">
           {tabs.map((tab, index) => (
             <NavLink
               to={tab.path}
@@ -26,7 +26,7 @@ function Tabs() {
                   'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative focus:outline-none shrink-0 whitespace-nowrap',
                   isActive
                     ? 'font-medium text-greenBg tabButtonSelected'
-                    : 'font-normal text-passiveLinkColor'
+                    : 'font-normal text-passiveLinkColor',
                 )
               }
             >
@@ -35,11 +35,7 @@ function Tabs() {
           ))}
         </div>
       )}
-      <div
-        className={classNames(
-          showTabs ? 'border-t border-gray-200' : 'lg:mt-[46px] mt-8'
-        )}
-      >
+      <div className={classNames(showTabs ? '' : 'lg:mt-[46px] mt-8')}>
         <Outlet />
       </div>
     </div>
