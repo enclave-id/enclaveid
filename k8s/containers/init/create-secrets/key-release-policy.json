@@ -24,6 +24,3 @@
     }
   ]
 }
-
-
-az keyvault key create --id https://enclaveid-prod-2.managedhsm.azure.net/keys/tests --kty RSA-HSM --size 3072 --immutable --policy
