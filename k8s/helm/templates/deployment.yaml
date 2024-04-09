@@ -21,10 +21,10 @@ spec:
         {{- include "enclaveid.selectorLabels" . | nindent 8 }}
     spec:
       volumes:
-        # TODO: Template this volume mount because it cannot be shared across pods
-        # This volume mount is used to share a tmpfs volume between the
-        # init container and the main container, to avoid writing certs to disk unencrypted
-        - name: shared-tmp
+        - name: unencrypted-shared-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-shared-pvc
+        - name: api-tmpfs
           emptyDir:
             medium: Memory
       {{- with .Values.imagePullSecrets }}
@@ -36,25 +36,26 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: create-secrets
-          image: "{{ .Values.initImages.createSecrets.repository }}:{{ .Values.initImages.createSecrets.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.initImages.createSecrets.repository }}@{{ .Values.initImages.createSecrets.tag }}"
           imagePullPolicy: {{ .Values.initImages.createSecrets.pullPolicy }}
           args: [
             "{{ .Values.initImages.createSecrets.arguments.keyName }}",
             "{{ .Values.initImages.createSecrets.arguments.kvStoreName }}",
-            "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
             "{{ .Values.initImages.createSecrets.arguments.enableConfidentiality }}",
+            "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
             "{{ .Values.initImages.createSecrets.arguments.maaEndpoint }}",
             "{{ .Values.initImages.createSecrets.arguments.workloadMeasurement }}"
           ]
-          # TODO: Template this volume mount because it cannot be shared across pods
           volumeMounts:
             - mountPath: /tmp
-              name: shared-tmp
+              name: api-tmpfs
+            - mountPath: /mnt/unencrypted-shared-storage
+              name: unencrypted-shared-storage
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.images.api.repository }}:{{ .Values.images.api.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.images.api.repository }}@{{ .Values.images.api.tag }}"
           imagePullPolicy: {{ .Values.images.api.pullPolicy }}
           ports:
             - name: http
@@ -68,12 +69,36 @@ spec:
             httpGet:
               path: /
               port: http
-          # TODO: Template this volume mount because it cannot be shared across pods
           volumeMounts:
             - mountPath: /tmp
-              name: shared-tmp
+              name: api-tmpfs
+            - mountPath: /mnt/unencrypted-shared-storage
+              name: unencrypted-shared-storage
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        # Add sidecars
+        {{- if .Values.sidecars }}
+        {{- range .Values.sidecars }}
+        - name: {{ .name }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}@{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          ports:
+            {{- range .ports }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+              protocol: {{ .protocol }}
+            {{- end }}
+          volumeMounts:
+            {{- range .volumeMounts }}
+            - mountPath: {{ .mountPath }}
+              name: {{ .name }}
+            {{- end }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+        {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

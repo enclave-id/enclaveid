@@ -15,8 +15,7 @@ KATA_WORKLOAD_MEASUREMENT=$(az confcom katapolicygen -y "${SCRIPT_DIR}/../render
 
 API_IMAGE_DIGEST=$(skopeo inspect "docker://${REGISTRY}/api:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
 
-# We use the distro's helm rather than microk8s
-helm template "${RELEASE_NAME}" "$SCRIPT_DIR"/../helm \
+helm template "enclaveid-${ENV}" "$SCRIPT_DIR"/../helm \
   --set images.api.tag="${API_IMAGE_DIGEST}" \
   --set serviceAccount.name="${AZURE_SERVICE_ACCOUNT_NAME}" \
   --set serviceAccount.annotations."azure\.workload\.identity/client-id"="${AZURE_USER_ASSIGNED_CLIENT_ID}" \

@@ -1,25 +1,79 @@
 # EnclaveID
 
-Monorepo with the core services. Ideally we move the data pipeline in here as well.
+Trello board: https://trello.com/b/jsbSDdMQ/enclaveid
 
 ## Architecture
 
-![alt text](docs/architecture.svg)
+The following diagram showcases how the cluster is set up to leverage AKS-CC to guarantee confidentiality.
 
-First, there are two types of initContainers that run in this sequence:
+We only show one example service in the diagram, but any other service would be configured in the same way.
 
-- `init_secrets`
-- `init_envoy`
+The components that belong to the trusted computing base (TCB) are highlighted in green (the Kata confidential pods running on AMD SEV-SNP capable nodes).
 
-`init_secrets` populates the secrets in akv (with the skr policy in prod)
+![alt text](docs/architecture.png)
 
-`init_envoy` downloads the CA cert and the secret key from AKV, verifies the CA derivation (since MS doesnt support skr for certs yet) and sets up the envoy sidecar with mTLS, only accepting connections within the cluster that have certificates issued by the same CA.
+At first, two types of initContainers will be run in this sequence:
 
-All disk operations in the initContainers are done on `tempfs`, which is in memory and so untamprable bc of SEV-SNP.
+- `create-secrets` (API only)
+- `load-secrets`
 
-The `remotefs` sidecar provided by MS (https://github.com/microsoft/confidential-sidecar-containers/tree/main/cmd/remotefs) mounts a r/w filesystem encrypted using the master secret in AKV.
+**(1)** `create-secrets` is in charge of creating the mHSM in Azure and initializing the master secret, upon which the confidentiality of the system relies, and uploading it to the mHSM.
 
-TODO: fix the arch doc. attestaation sidecar only necessary in APi for remote attestation with client.
+The mHSM is created with purge protection on, making it impossible for a malicious susbcription owner to delete and replace the vault and the master secret.
+
+At the moment, the mHSM security domain is be created with a set of private keys that will be thrown away as soon as the initContainer finishes its execution. This guarantees that no one can access the master secret, not even Microsoft or the subscription owner.
+
+The master secret will have an immutable secure key release (SKR) policy, which only allows the confidential pods to access it.
+
+Additionally, as we cannot attest the immutability of the allowed operations for the master secret in AKV, we deterministically derive another intermediate secret from the master secret, which will be the actual key used to encrypt the remote filesystem and issue TLS certificates.
+
+With this intermediate secret, we create and store a CA certificate in the mHSM.
+
+**(2)** In each pod, `load-secrets` downloads the master secret and the CA cert from the mHSM and stores them in an in-memory `tmpfs` volume shared with the rest of the pod, so that the other containers can access them without leaving the TCB.
+
+The container derives the intermediate secret in the same way the API did, and then asserts that the CA certificate is correctly derived from it, since Microsoft does not support SKR for AKV certificates yet.
+
+Once this verification is done, it self-issues a TLS certificate using the CA and stores it in the `tmpfs` volume alongside the other certs and keys.
+
+**(3,4)** The EncFS and Envoy sidecars pick up the CA cert and the intermediate secret from the `tmpfs` volume and set up mTLS and the remote filesystem (only accepting connections with certs isssued by the same 'secret' CA).
+
+The API pod also spins up a Remote Attestation sidecar, with which the web client can get a report that attests the integrity of the whole cluster.
+
+**(5)** The web client communicates with the API via a custom app-layer encryption protocol similar to aTLS. To this end, the attestation sidecar will also include a hash of its TLS certificate in the report, binding the certificate to the code integrity guarantees.
+
+In this way the end user does not need to manually check the certificate in their browser, as the client code will do it for them.
+
+The web client is source-mapped and hosted on IPFS, so that the frontend is immutable and auditable.
+
+This setup guarantees to the user that no uninted third party can access their raw private data.
+
+## Verification
+
+In order to independently verify the confidentiality of the system, the following assets need to be checked:
+
+- The Kata policy measurement
+- The image digests in the Kata policy
+- The frontend code on IPFS
+
+You can run `./verify.sh` from the root of the repository to check each of them.
+
+**Kata policy measurement**
+
+`make helm-chart` will render the Helm chart into two separate files, one pertaining the Kata specific configuration and the other the rest of the cluster.
+
+`az confcom...` will take the Kata config and produce a policy measurment, which should match the one in the attestation report.
+
+**Image digests in the Kata policy**
+
+All container images are built with Kaniko using the `--reproducible` flag, so that the SHAs are deterministic.
+
+In the Helm chart, the images are referenced by their SHAs, binding the code to the attestation report.
+
+The script will build all images and check that the SHAs match the ones in the Kata spcific configuration rendered before.
+
+**Frontend code on IPFS**
+
+This one is easy: build the frontend from the repo release and compare the file hashes with the ones on IPFS.
 
 ## Development
 
@@ -29,7 +83,7 @@ We distinguish 3 different environments in the development cycle:
 - `NODE_ENV==="production"` + microk8s: for development and testing of all features, excluding confidentiality.
 - `NODE_ENV==="production"` + aks: actual production, with confidentiality.
 
-K8s fodler structure:
+K8s folder structure:
 
 - `build/`: kaniko configs for build stage
 - `containers/`: auxiliary containers (initContainers, sidecars)
@@ -37,7 +91,7 @@ K8s fodler structure:
 - `renders/`: helm chart renders
 - `scripts/`: auxiliary scripts to customize the renders
 
-## Build and deploy
+## Deploying to microk8s
 
 To install the requirements:
 
@@ -45,14 +99,6 @@ To install the requirements:
 sudo dnf -y install skopeo jq helm
 sudo snap install yq
 ```
-
-We build the images using Kaniko with the `--reproducible` flag, so that they can be verified.
-
-Once the images are built, their immutable SHA is set in the source code for attestation purposes.
-
-### Local (microk8s)
-
-![alt text](docs/development.svg)
 
 To setup the `microk8s` cluster for local development:
 
@@ -70,58 +116,32 @@ microk8s enable dns registry dashboard storage helm helm3 metrics-server
 microk8s dashboard-proxy
 ```
 
-Running `make` at the project root will spin up a Kaniko pod for each application that has a `Dockerfile`. The built images will be stored in the local microk8s registry.
-
-To render the chart with the newly built images, run `make helm-chart DEPLOYMENT=microk8s`. This will disable the attestation verification code, since the kata UVM is not running.
-
-TODO: add intructions for deployment
-
-### Prod (AKS)
-
-![alt text](docs/production.svg)
-
-https://github.com/microsoft/confidential-container-demos/tree/main/kafka
-
-In production, a GitHub action invokes `make all` to build the images with Kaniko, which pulls the sources from the GitHub repo and pushes the artefacts to MCR.
-
-Another action takes the image hashes from MCR and renders the Helm chart with `make helm-chart DEPLOYMENT=aks`. This will also set the `enable_confidentiality` feature flag, to use the UVM policy stuff.
-
-TODO: add intructions for deployment
-
-For the fronted there is a `fleek-build` script specifid in `package.json`, which is picked up by Fleek when there are new pushes to master. This deploys the sourcemapped frontend to IPFS to make it auditable and immutable.
-
-## Verification
-
-In order to verify the integrity of the images in the registry you can rerun the Kaniko builds as they are specified in the CI. (assuming the source code is safe)
-
-You can then pull the images from the registry and verify that the files' SHAs are matching.
-
-(provide script that does this easily)
-k8s/scripts/verify.sh
-
----
-
-## Deploying to microk8s
-
 Prerequisites:
 
 - Run `az login` on host
 - Create service principal: `az ad sp create-for-rbac --name enclaveid-dev`
 - Create keyvault
-- Assign role to keyvault
+- Assign role to keyvault: `az keyvault set-policy --name enclaveid-dev --spn 1c79e8e8-67d1-4dd8-a15a-d2d34f5902ec --key-permissions all`
 
 Deployment:
 
-- Create a .env file in `/createSecrets` with the service principal credentials
-- `make build DEPLOYMENT=aks`
-- `make helm-chart DEPLOYMENT=microk8s`
+Create a .env file in `/createSecrets` with the service principal credentials
+
+Running `make build` at the project root will spin up a Kaniko pod for each application that has a `Dockerfile`. The built images will be stored in the local microk8s registry.
+
+To render the chart with the newly built images, run `make helm-chart && kube...`. This will disable the attestation verification code by default, since the kata UVM is not running.
 
 ## Deploying to AKS in prod
 
-We have two resource groups in azure:
+For the fronted there is a `fleek-build` script specifid in `package.json`, which is picked up by Fleek when there are new pushes to master.
 
-- enclaveid-dev: standard keystore
-- enclaveid-prod: aks cluster + MHSM keystore
+In production, a GitHub action invokes `make all` to build the images with Kaniko, which pulls the sources from the GitHub repo and pushes the artefacts to MCR.
+
+Another action takes the image hashes from MCR and renders the Helm chart with `make helm-chart`. This will also set the `enable_confidentiality` feature flag, to use the UVM policy stuff.
+
+In order to deploy to AKS in production, there are a bunch of things to configure.
+
+Set up a resource group in Azure: `enclaveid-prod`
 
 Reference: https://learn.microsoft.com/en-us/azure/aks/deploy-confidential-containers-default-policy
 
