@@ -202,3 +202,76 @@ export const radarChart = {
   description:
     'People with that trait prominent like. to study and solve math or science problems; generally avoids leading, selling, or persuading people. Based on that and on your 2 next strongest traits (Artistic, Realistic), possible career paths for you might be Architecture or Industrial Design.',
 };
+
+export const userData = [
+  {
+    name: 'Michael Brown',
+    gender: '(she/her)',
+    location: 'Philadelphia',
+    type: 'Ocean',
+    image: '/s1.png',
+  },
+  {
+    name: 'Jane Smith',
+    gender: '(they/them)',
+    location: 'Houston',
+    type: 'MBTI',
+    image: '/s2.png',
+  },
+  {
+    name: 'Sophia Robinson',
+    gender: '(she/her)',
+    location: 'San Diego',
+    type: '16FP',
+    image: '/s3.png',
+  },
+  {
+    name: 'Ethan Martinez',
+    gender: '(they/them)',
+    location: 'San Diego',
+    type: 'Compass',
+    image: '/s1.png',
+  },
+  {
+    name: 'Olivia Garcia',
+    gender: '(she/her)',
+    location: 'San Antonio',
+    type: 'MFT',
+    image: '/s2.png',
+  },
+  {
+    name: 'Ethan Martinez',
+    gender: '(she/her)',
+    location: 'San Antonio',
+    type: 'Riasec',
+    image: '/s3.png',
+  },
+  {
+    name: 'Olivia Garcia',
+    gender: '(he/him)',
+    location: 'Chicago',
+    type: 'Ocean',
+    image: '/s1.png',
+  },
+  {
+    name: 'Emma Wilson',
+    gender: '(he/him)',
+    location: 'Chicago',
+    type: 'MBTI',
+    image: '/s2.png',
+  },
+  {
+    name: 'Jane Smith',
+    gender: '(she/her)',
+    location: 'Houston',
+    type: '16FP',
+    image: '/s3.png',
+  },
+  {
+    name: 'Michael Brown',
+    gender: '(she/her)',
+    location: 'New York',
+    type: 'Compass',
+    image: '/s1.png',
+  },
+];
