@@ -10,7 +10,7 @@
     @apply text-[#6C7A8A] leading-[22.4px];
   }
   .tabButtonSelected::after {
-    @apply absolute -bottom-[2px] left-0 w-full h-0.5 bg-greenBg;
+    @apply absolute -bottom-1 left-0 w-full h-0.5 bg-greenBg z-50;
     content: '';
   }
   .landing-container {
@@ -39,7 +39,12 @@
   transform-origin: center; /* Ensures the transformation is centered */
 }
 .wobble-image:hover img {
-  transform: rotate3d(1, 1, 0, 5deg); /* This creates a more complex wobble effect */
+  transform: rotate3d(
+    1,
+    1,
+    0,
+    5deg
+  ); /* This creates a more complex wobble effect */
 }
 
 .hideScrollbar::-webkit-scrollbar {
