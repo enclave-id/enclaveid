@@ -1,0 +1,9 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 15.0.0
+- name: guacamole
+  repository: https://charts.beryju.io
+  version: 1.4.1
+digest: sha256:2fc52fca95751914627e97f2a8103b1051ea97af6a8c85ff1b069f2224fa76fe
+generated: "2024-04-10T14:15:09.115020923+02:00"
