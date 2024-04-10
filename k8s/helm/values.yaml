@@ -117,7 +117,7 @@ postgresql:
 guacamole:
   postgres:
     database: guacamole
-    hostname: postgres
+    hostname: enclaveid-postgresql
     password: guacamole
     port: '5432'
     user: guacamole
