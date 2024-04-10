@@ -38,7 +38,6 @@ export const Default: StoryObj<typeof DashboardPage> = {
             { path: 'personality/:title', element: <TraitCardDetails /> },
             { path: 'politics', element: <div>Politics Content</div> },
             { path: 'career', element: <div>Career Content</div> },
-            { path: 'non-latent', element: <div>Non-Latent Content</div> },
           ],
         },
       ],

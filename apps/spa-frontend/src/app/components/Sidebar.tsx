@@ -24,10 +24,10 @@ function Sidebar() {
           <SidebarSection title={'Data'}>
             <SidebarItem
               icon={<HomeIcon />}
-              text="Trait Dashboard"
+              text="Traits Dashboard"
               href="/dashboard"
             />
-            <SidebarItem icon={<ChartBarIcon />} text="Charts" />
+            <SidebarItem icon={<ChartBarIcon />} text="Life Journeys" />
           </SidebarSection>
           <SidebarSection title={'Social'}>
             <SidebarItem

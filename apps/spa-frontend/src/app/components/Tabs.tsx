@@ -5,7 +5,6 @@ const tabs = [
   { title: 'Personality', path: '/dashboard/personality' },
   { title: 'Politics', path: '/dashboard/politics' },
   { title: 'Career', path: '/dashboard/career' },
-  { title: 'Non-Latent', path: '/dashboard/non-latent' },
 ];
 
 function Tabs() {
