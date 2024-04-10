@@ -103,10 +103,21 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-# postgresql:
-#   initdbScripts:
-#     setup.sql: |
-#       CREATE USER myuser WITH ENCRYPTED PASSWORD 'mypassword';
-#       CREATE DATABASE mydatabase;
-#       GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;
-#   sidecars: []
+
+postgresql:
+  global:
+    postgresql:
+      architecture: standalone
+      auth:
+        username: enclaveid #TODO: change these
+        password: enclaveid
+        database: enclaveid
+  sidecars: [] # TODO add envoy mTLS sidecar
+
+guacamole:
+  postgres:
+    database: guacamole
+    hostname: enclaveid-postgresql
+    password: guacamole
+    port: '5432'
+    user: guacamole

@@ -15,11 +15,11 @@ KATA_WORKLOAD_MEASUREMENT=$(az confcom katapolicygen -y "${SCRIPT_DIR}/../render
 
 API_IMAGE_DIGEST=$(skopeo inspect "docker://${REGISTRY}/api:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
 
-helm template "enclaveid-${ENV}" "$SCRIPT_DIR"/../helm \
+helm template enclaveid "$SCRIPT_DIR"/../helm \
   --set images.api.tag="${API_IMAGE_DIGEST}" \
   --set serviceAccount.name="${AZURE_SERVICE_ACCOUNT_NAME}" \
   --set serviceAccount.annotations."azure\.workload\.identity/client-id"="${AZURE_USER_ASSIGNED_CLIENT_ID}" \
   --set initImages.createSecrets.arguments.managedIdentity="${AZURE_MANAGED_IDENTITY}" \
   --set initImages.createSecrets.arguments.workloadMeasurement="${KATA_WORKLOAD_MEASUREMENT}" \
   -f "${SCRIPT_DIR}/../helm/values.yaml" -f "${SCRIPT_DIR}/../helm/values.prod.yaml" |
-  ENV="${ENV}" "$SCRIPT_DIR"/split_chart.sh
+  "$SCRIPT_DIR"/split_chart.sh
