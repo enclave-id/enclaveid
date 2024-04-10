@@ -61,7 +61,6 @@ const reactRouter = createBrowserRouter([
       { path: 'politics/mft', element: <MFTDetails /> },
       { path: 'career', element: <CareerContent /> },
       { path: 'career/radar', element: <RadarChartDetails /> },
-      { path: 'non-latent', element: <div>non latent</div> },
     ],
   },
   {
