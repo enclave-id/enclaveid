@@ -9,7 +9,9 @@ type User = {
   image: string;
 };
 
-function svgToUrl(svgString: string): string {
+function getIdenticon(uniqueId: string): string {
+  const svgString = toSvg(uniqueId, 200);
+
   return (
     'data:image/svg+xml,' +
     encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22')
@@ -20,7 +22,7 @@ function SocialCard({ name, gender, location, image }: User) {
   return (
     <article className="p-6 flex items-center gap-4 border border-[#E5E8EE] rounded-3xl">
       <img
-        src={svgToUrl(toSvg(name, 200))}
+        src={getIdenticon(name)}
         alt=""
         className="w-[101px] h-[101px] rounded-full"
       />
