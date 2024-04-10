@@ -1,16 +1,25 @@
-import { authentication } from './routers/authentication';
-import { attestation } from './routers/attestation';
-import { mergeRouters, router } from './trpc';
-import { confidential } from './routers/personality';
-import { fileUpload } from './routers/fileUpload';
-import { pingPong } from './routers/pingPong';
 import {
   TRPC_PRIVATE_NAMESPACE,
   TRPC_PUBLIC_NAMESPACE,
 } from '@enclaveid/shared';
 
+import { authentication } from './routers/authentication';
+import { attestation } from './routers/attestation';
+import { mergeRouters, router } from './trpc';
+import { fileUpload } from './routers/fileUpload';
+import { pingPong } from './routers/pingPong';
+import { career } from './routers/dashboard/career';
+import { politics } from './routers/dashboard/politics';
+import { personality } from './routers/dashboard/personality';
+
 export const appRouter = router({
-  [TRPC_PRIVATE_NAMESPACE]: mergeRouters(confidential, fileUpload, pingPong),
+  [TRPC_PRIVATE_NAMESPACE]: mergeRouters(
+    personality,
+    career,
+    politics,
+    fileUpload,
+    pingPong,
+  ),
   [TRPC_PUBLIC_NAMESPACE]: mergeRouters(attestation, authentication),
 });
 

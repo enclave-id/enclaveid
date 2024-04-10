@@ -77,7 +77,7 @@ model UserTraits {
   bigFive                  BigFive[]
   mbti                     Mbti[]
   sixteenPersonalityFactor SixteenPersonalityFactor[]
-  politcalCompass          PolitcalCompass[]
+  politicalCompass         PoliticalCompass[]
   moralFoundations         MoralFoundations[]
   riasec                   Riasec[]
 
@@ -118,7 +118,7 @@ model MoralFoundations {
   userTraitsId String?
 }
 
-model PolitcalCompass {
+model PoliticalCompass {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

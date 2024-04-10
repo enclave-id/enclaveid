@@ -50,7 +50,7 @@ async function main() {
               summary: "This is a summary of the user's MBTI type.",
             },
           },
-          politcalCompass: {
+          politicalCompass: {
             create: {
               economic: 5,
               social: 5,

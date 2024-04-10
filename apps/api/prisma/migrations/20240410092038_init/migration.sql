@@ -95,7 +95,7 @@ CREATE TABLE "MoralFoundations" (
 );
 
 -- CreateTable
-CREATE TABLE "PolitcalCompass" (
+CREATE TABLE "PoliticalCompass" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE "PolitcalCompass" (
     "summary" TEXT,
     "userTraitsId" TEXT,
 
-    CONSTRAINT "PolitcalCompass_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "PoliticalCompass_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -202,7 +202,7 @@ ALTER TABLE "Riasec" ADD CONSTRAINT "Riasec_userTraitsId_fkey" FOREIGN KEY ("use
 ALTER TABLE "MoralFoundations" ADD CONSTRAINT "MoralFoundations_userTraitsId_fkey" FOREIGN KEY ("userTraitsId") REFERENCES "UserTraits"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PolitcalCompass" ADD CONSTRAINT "PolitcalCompass_userTraitsId_fkey" FOREIGN KEY ("userTraitsId") REFERENCES "UserTraits"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "PoliticalCompass" ADD CONSTRAINT "PoliticalCompass_userTraitsId_fkey" FOREIGN KEY ("userTraitsId") REFERENCES "UserTraits"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BigFive" ADD CONSTRAINT "BigFive_userTraitsId_fkey" FOREIGN KEY ("userTraitsId") REFERENCES "UserTraits"("id") ON DELETE SET NULL ON UPDATE CASCADE;
