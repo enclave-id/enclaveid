@@ -11,8 +11,8 @@ CREATE_SECRET_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/create-s
 echo "API image digest: ${API_IMAGE_DIGEST}"
 echo "Create secrets image digest: ${CREATE_SECRET_IMAGE_DIGEST}"
 
-helm template "enclaveid-${ENV}" "$SCRIPT_DIR"/../helm \
+helm template enclaveid "$SCRIPT_DIR"/../helm \
   --set images.api.tag="${API_IMAGE_DIGEST}" \
   --set initImages.createSecrets.tag="${CREATE_SECRET_IMAGE_DIGEST}" \
   -f "${SCRIPT_DIR}/../helm/values.yaml" -f "${SCRIPT_DIR}/../helm/values.dev.yaml" |
-  ENV="${ENV}" "$SCRIPT_DIR"/split_chart.sh
+  "$SCRIPT_DIR"/split_chart.sh
