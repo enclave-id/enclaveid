@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { UnavailableChart } from './UnavailableChart';
+import { UnavailabilityType, UnavailableChart } from './UnavailableChart';
 
 interface CirclePositions {
   harm: { cx: number; cy: number };
@@ -240,7 +240,9 @@ function MFTChart({
         />
       </svg>
 
-      {!mftChartAvailable && <UnavailableChart />}
+      {!mftChartAvailable && (
+        <UnavailableChart unavailability={UnavailabilityType.COMING_SOON} />
+      )}
     </>
   );
 }

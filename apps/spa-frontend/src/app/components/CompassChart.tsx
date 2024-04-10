@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useElementWidth } from '../hooks/useElementWidth';
-import { UnavailableChart } from './UnavailableChart';
+import { UnavailabilityType, UnavailableChart } from './UnavailableChart';
 
 const MAX_COMPASS_VALUE = 5;
 
@@ -130,7 +130,11 @@ function CompassChart({
           />
         </div>
       </div>
-      {!compassChartAvailable && <UnavailableChart />}
+      {!compassChartAvailable && (
+        <UnavailableChart
+          unavailability={UnavailabilityType.STILL_PROCESSING}
+        />
+      )}
     </>
   );
 }
