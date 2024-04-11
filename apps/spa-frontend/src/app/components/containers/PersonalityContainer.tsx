@@ -10,8 +10,9 @@ export function PersonalityContainer({
 }) {
   const personalityQuery = trpc.private.getPersonalityTraits.useQuery();
 
-  const { bigfive, sixteenPersonalityFactor, mbti } = personalityQuery.data;
   const { isLoading, error } = personalityQuery;
+  const { bigfive, sixteenPersonalityFactor, mbti } =
+    personalityQuery.data || {};
 
   // TODO: Fix types
   return React.cloneElement(children, {
