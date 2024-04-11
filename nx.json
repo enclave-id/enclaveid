@@ -75,7 +75,6 @@
     "sharedGlobals": []
   },
   "plugins": [
-    "@nxrocks/nx-spring-boot",
     {
       "plugin": "@nx/eslint/plugin",
       "options": {

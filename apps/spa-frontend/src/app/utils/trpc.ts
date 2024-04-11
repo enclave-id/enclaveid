@@ -1,7 +1,7 @@
 import type { AppRouter } from 'apps/api/src/app/router';
 
 import { createTRPCReact } from '@trpc/react-query';
-import { httpBatchLink } from '@trpc/client';
+import { createWSClient, httpBatchLink, wsLink, splitLink } from '@trpc/client';
 import { symmetricEncrypt, symmetricDecrypt } from './crypto/symmetricBrowser';
 import { TRPC_PREFIX, TRPC_PRIVATE_NAMESPACE } from '@enclaveid/shared';
 
@@ -42,17 +42,33 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
   }
 };
 
+const wsClient = createWSClient({
+  url:
+    (import.meta.env.DEV ? 'ws://' : 'wss://') +
+    import.meta.env.VITE_API_URL +
+    TRPC_PREFIX,
+});
+
 export const trpcClient = trpc.createClient({
   links: [
-    httpBatchLink({
-      url: import.meta.env.VITE_API_URL + TRPC_PREFIX,
-      fetch: customFetch,
-      // You can pass any HTTP headers you wish here
-      // async headers() {
-      //   return {
-      //     authorization: getAuthCookie(),
-      //   };
-      // },
+    splitLink({
+      condition: (op) => op.type === 'subscription',
+      true: wsLink({
+        client: wsClient,
+      }),
+      false: httpBatchLink({
+        url:
+          (import.meta.env.DEV ? 'http://' : 'https://') +
+          import.meta.env.VITE_API_URL +
+          TRPC_PREFIX,
+        fetch: customFetch,
+        // You can pass any HTTP headers you wish here
+        // async headers() {
+        //   return {
+        //     authorization: getAuthCookie(),
+        //   };
+        // },
+      }),
     }),
   ],
 });

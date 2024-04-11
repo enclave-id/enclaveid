@@ -1,16 +1,15 @@
-import { TRPCError } from '@trpc/server';
-import { authenticatedProcedure, router } from '../trpc';
-import { AppContext } from '../context';
+import { publicProcedure, router } from '../trpc';
+import { observable } from '@trpc/server/observable';
 
 export const guacamole = router({
-  provisionChrome: authenticatedProcedure.mutation(async (opts) => {
-    const {
-      user: { id: userId },
-    } = opts.ctx as AppContext;
-
-    throw new TRPCError({
-      code: 'NOT_IMPLEMENTED',
-      message: 'Not implemented',
+  randomNumber: publicProcedure.subscription(() => {
+    return observable<number>((emit) => {
+      const int = setInterval(() => {
+        emit.next(Math.random());
+      }, 500);
+      return () => {
+        clearInterval(int);
+      };
     });
   }),
 });

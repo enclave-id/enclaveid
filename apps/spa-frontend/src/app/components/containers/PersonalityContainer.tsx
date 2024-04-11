@@ -10,6 +10,12 @@ export function PersonalityContainer({
 }) {
   const personalityQuery = trpc.private.getPersonalityTraits.useQuery();
 
+  trpc.private.randomNumber.useSubscription(undefined, {
+    onData(n) {
+      console.log(n);
+    },
+  });
+
   const { isLoading, error } = personalityQuery;
   const { bigfive, sixteenPersonalityFactor, mbti } =
     personalityQuery.data || {};
