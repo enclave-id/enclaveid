@@ -6,5 +6,5 @@ initImages:
   createSecrets:
     repository: localhost:32000/create-secrets
     arguments:
-      kvStoreName: enclaveid-dev
-      enableConfidentiality: false
+      environment: microk8s
+

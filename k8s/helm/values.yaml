@@ -17,10 +17,10 @@ initImages:
     tag:
     pullPolicy: IfNotPresent
     arguments:
-      keyName: enclaveid-master-secret
-      kvStoreName:
+      environment:
+      keyName: master-secret
+      kvStoreName: enclaveid
       managedIdentity:
-      enableConfidentiality:
       maaEndpoint:
       workloadMeasurement:
   loadSecrets:

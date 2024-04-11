@@ -39,9 +39,9 @@ spec:
           image: "{{ .Values.initImages.createSecrets.repository }}@{{ .Values.initImages.createSecrets.tag }}"
           imagePullPolicy: {{ .Values.initImages.createSecrets.pullPolicy }}
           args: [
+            "{{ .Values.initImages.createSecrets.arguments.environment }}",
             "{{ .Values.initImages.createSecrets.arguments.keyName }}",
             "{{ .Values.initImages.createSecrets.arguments.kvStoreName }}",
-            "{{ .Values.initImages.createSecrets.arguments.enableConfidentiality }}",
             "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
             "{{ .Values.initImages.createSecrets.arguments.maaEndpoint }}",
             "{{ .Values.initImages.createSecrets.arguments.workloadMeasurement }}"
