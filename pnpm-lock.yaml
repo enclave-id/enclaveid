@@ -92,6 +92,9 @@ dependencies:
   jszip:
     specifier: ^3.10.1
     version: 3.10.1
+  pino:
+    specifier: ^8.20.0
+    version: 8.20.0
   pino-pretty:
     specifier: ^11.0.0
     version: 11.0.0

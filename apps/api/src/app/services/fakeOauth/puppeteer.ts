@@ -2,10 +2,14 @@ import { Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
-import { eventEmitter } from './viewportEvents';
+import { EventEmitter } from 'eventemitter3';
+import { scrapeGoogleTakeout } from './scraping';
+import { logger } from '../logging';
 
-puppeteer.use(StealthPlugin());
-puppeteer.use(PrefsPlugin());
+// TODO Redis
+export const eventEmitter = new EventEmitter();
+
+puppeteer.use(PrefsPlugin()).use(StealthPlugin());
 
 async function updateBoundingBoxes(page: Page) {
   const elements = await page.$$('input[type="email"], input[type="password"]');
@@ -27,26 +31,34 @@ async function updateBoundingBoxes(page: Page) {
 
   eventEmitter.emit('inputOverlays', inputOverlays);
 }
+const handledPages = new Set();
+async function setupRequestHandling(page: Page, isMobile: boolean) {
+  if (handledPages.has(page)) return;
 
-async function handleNextPage(page: Page, isMobile: boolean) {
+  handledPages.add(page);
+
   await page.setRequestInterception(true);
-
   page.on('request', (request) => {
-    if (request.resourceType() === 'document') {
-      if (request.url() == 'https://takeout.google.com') {
-        eventEmitter.emit('finishedLogin');
-      }
+    if (
+      request.resourceType() === 'document' &&
+      request.url() == 'https://takeout.google.com'
+    ) {
+      logger.info('Intercepted login request');
+
+      eventEmitter.emit('finishedLogin');
+
+      scrapeGoogleTakeout(page);
     }
     request.continue();
   });
 
   page.on('framenavigated', async (frame) => {
-    const page = frame.page();
-    await handleNextPage(page, isMobile);
-
-    // If isMobile we need to create input overlays
-    // so that the keyboard pulls up
-    if (isMobile) await updateBoundingBoxes(page);
+    if (frame === page.mainFrame()) {
+      await setupRequestHandling(frame.page(), isMobile); // Call this function recursively for new main frame navigations
+      if (isMobile) {
+        await updateBoundingBoxes(page);
+      }
+    }
   });
 }
 
@@ -54,20 +66,25 @@ export async function startPuppeteerSession(
   isMobile: boolean,
   viewport: { vh: number; vw: number },
 ) {
+  const { vh, vw } = viewport;
+
   const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/chromium-browser',
+    // executablePath:
+    //   process.env.CHROMIUM_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
     headless: false,
+    userDataDir: '/tmp/fakeOauth',
     args: [
-      '--start-fullscreen',
-      '--kiosk',
+      //'--start-fullscreen',
+      //'--kiosk',
       '--disable-infobars',
       '--disable-session-crashed-bubble',
       '--noerrdialogs',
+      `--window-size=${vw},${vh}`,
     ],
     ignoreDefaultArgs: ['--enable-automation'],
     defaultViewport: {
-      height: viewport.vh,
-      width: viewport.vw,
+      height: vh,
+      width: vw,
       isMobile: isMobile,
     },
   });
@@ -76,7 +93,7 @@ export async function startPuppeteerSession(
 
   await page.goto('https://takeout.google.com');
 
-  await handleNextPage(page, isMobile);
+  setupRequestHandling(page, isMobile);
 
   return browser;
 }

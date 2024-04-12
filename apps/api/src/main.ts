@@ -2,20 +2,13 @@ import Fastify from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import path from 'path';
 import staticFiles from '@fastify/static';
+import { logger } from './app/services/logging';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const server = Fastify({
-  logger: {
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-      },
-    },
-  },
+  logger: logger,
   maxParamLength: 5000,
 });
 

@@ -22,8 +22,11 @@ SIDECARS := $(shell find $(SIDECARS_DIR) -name Dockerfile | sed 's|/Dockerfile||
 print-targets:
 	@echo $(APPS) $(INIT_CONTAINERS) $(SIDECARS)
 
+chrome:
+  pnpx @puppeteer/browsers install chrome@116.0.5793.0
+
 .PHONY: build
-build: apply-pv apply-pvc $(INIT_CONTAINERS) $(APPS)
+build: chrome apply-pv apply-pvc $(INIT_CONTAINERS) $(APPS)
 
 .PHONY: apply-pv
 apply-pv:

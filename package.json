@@ -111,6 +111,7 @@
     "fastify-plugin": "~4.5.1",
     "jdenticon": "^3.2.0",
     "jszip": "^3.10.1",
+    "pino": "^8.20.0",
     "pino-pretty": "^11.0.0",
     "puppeteer": "^22.6.3",
     "puppeteer-extra": "^3.3.6",
