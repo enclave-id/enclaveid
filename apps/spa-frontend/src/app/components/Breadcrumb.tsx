@@ -36,7 +36,11 @@ function Breadcrumb() {
             : 'text-passiveLinkColor',
         )}
       >
-        Traits Dashboard{' '}
+        {location.pathname.startsWith('/dashboard')
+          ? 'Traits Dashboard'
+          : location.pathname.startsWith('/socials')
+            ? 'Explore Social'
+            : ''}
       </button>{' '}
       {link && (
         <>

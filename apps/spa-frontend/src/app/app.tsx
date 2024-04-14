@@ -18,7 +18,7 @@ import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
-
+import { ProfilePage } from './components/ProfilePage';
 
 const reactRouter = createBrowserRouter([
   {
@@ -67,6 +67,7 @@ const reactRouter = createBrowserRouter([
     path: '/socials',
     element: <SocialPage />,
   },
+  { path: '/socials/:title', element: <ProfilePage /> },
   {
     path: '/chat',
     element: <ChatPage />,

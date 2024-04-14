@@ -4,6 +4,7 @@ import { Sidebar } from './Sidebar';
 import { SocialCard } from './SocialCard';
 import { SocialFilter } from './SocialFilter';
 import { userData } from './mock-data';
+import { Outlet } from 'react-router-dom';
 function SocialPage() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,6 +15,7 @@ function SocialPage() {
       (user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.location.toLowerCase().includes(searchQuery.toLowerCase())),
   );
+
   return (
     <div className="h-screen bg-white flex sm:flex-row flex-col">
       <Sidebar />
@@ -32,6 +34,7 @@ function SocialPage() {
               <SocialCard key={index} {...user} />
             ))}
           </div>
+          <Outlet />
         </div>
       </div>
     </div>

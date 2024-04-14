@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { LocationPinIcon } from './Icons';
 import { toSvg } from 'jdenticon';
 
@@ -18,9 +19,19 @@ function getIdenticon(uniqueId: string): string {
   );
 }
 
-function SocialCard({ name, gender, location, image }: User) {
+function SocialCard({ name, gender, location }: User) {
+  const formattedLink = (name: string) => {
+    return name
+      .split(' ')
+      .map((word) => word.toLowerCase())
+      .join('-');
+  };
   return (
-    <article className="p-6 flex items-center gap-4 border border-[#E5E8EE] rounded-3xl">
+    <Link
+      to={`/socials/${formattedLink(name)}`}
+      state={{ name, gender, location }}
+      className="p-6 flex items-center gap-4 border border-[#E5E8EE] rounded-3xl"
+    >
       <img
         src={getIdenticon(name)}
         alt=""
@@ -40,7 +51,7 @@ function SocialCard({ name, gender, location, image }: User) {
           </h6>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
