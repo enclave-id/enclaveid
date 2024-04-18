@@ -26,6 +26,6 @@ dependencies:
   - name: guacamole
     version: 1.4.1
     repository: https://charts.beryju.io
-# - name: dagster
-#   version: 1.6.11
-#   repository: https://dagster-io.github.io/helm
+  # - name: dagster
+  #   version: 1.6.11
+  #   repository: https://dagster-io.github.io/helm

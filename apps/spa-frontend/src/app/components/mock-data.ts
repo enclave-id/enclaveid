@@ -212,6 +212,9 @@ export const userData = [
     location: 'Philadelphia',
     type: 'Ocean',
     image: '/s1.png',
+    intj: intjCard,
+    traitCard1: traitCard1,
+    traitCard2: traitCard2,
   },
   {
     name: 'Jane Smith',
