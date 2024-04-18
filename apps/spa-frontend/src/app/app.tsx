@@ -18,6 +18,7 @@ import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
+import { TestPage } from './pages/TestPage';
 import { ProfilePage } from './components/ProfilePage';
 
 const reactRouter = createBrowserRouter([
@@ -36,6 +37,10 @@ const reactRouter = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnboardingPage />,
+  },
+  {
+    path: '/test',
+    element: <TestPage />,
   },
   {
     path: '/dashboard',
