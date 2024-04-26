@@ -1,14 +1,34 @@
 import { useLocation } from 'react-router-dom';
-import { Breadcrumb } from './Breadcrumb';
-import { Sidebar } from './Sidebar';
-import { Tabs } from './Tabs';
-import { SocialCard } from './SocialCard';
-import { useEffect } from 'react';
+import { Breadcrumb } from '../components/Breadcrumb';
+import { Sidebar } from '../components/Sidebar';
+import { Tabs } from '../components/Tabs';
+import { SocialCard } from '../components/SocialCard';
+import { useEffect, useState } from 'react';
 import { useBreadcrumb } from '../context/BreadcrumbContext';
+
+const tabs = [
+  { title: 'Personality', path: '/socials/:title/personality' },
+  { title: 'Politics', path: '/socials/:title/politics' },
+  { title: 'Career', path: '/socials/:title/career' },
+];
 
 function ProfilePage() {
   const location = useLocation();
   const { setLink } = useBreadcrumb();
+  const [usernamePath, setUsernamePath] = useState('');
+
+  useEffect(() => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    const usernameSlug = pathSegments[pathSegments.length - 1];
+    const formattedName = formatUsernameFromPath(usernameSlug);
+    setLink(formattedName);
+    setUsernamePath(usernameSlug);
+  }, [location.pathname]);
+
+  const userTabs = tabs.map((tab) => ({
+    title: tab.title,
+    path: `/socials/${usernamePath}/${tab.title.toLowerCase()}`,
+  }));
 
   function formatUsernameFromPath(pathname: string): string {
     const usernameSlug = pathname.split('/').pop();
@@ -26,6 +46,7 @@ function ProfilePage() {
   useEffect(() => {
     setLink(formatUsernameFromPath(location.pathname));
   }, [location.pathname]);
+
   return (
     <div className="h-screen bg-white flex sm:flex-row flex-col">
       <Sidebar />
@@ -37,7 +58,7 @@ function ProfilePage() {
           <div className="px-4 mt-5 pb-2">
             <SocialCard {...location.state} />
           </div>
-          <Tabs />
+          <Tabs tabs={userTabs} />
         </div>
       </div>
     </div>

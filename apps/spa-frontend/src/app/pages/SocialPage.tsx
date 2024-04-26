@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Breadcrumb } from './Breadcrumb';
-import { Sidebar } from './Sidebar';
-import { SocialCard } from './SocialCard';
-import { SocialFilter } from './SocialFilter';
-import { userData } from './mock-data';
-import { Outlet } from 'react-router-dom';
+import { Breadcrumb } from '../components/Breadcrumb';
+import { Sidebar } from '../components/Sidebar';
+import { SocialCard } from '../components/SocialCard';
+import { SocialFilter } from '../components/SocialFilter';
+import { userData } from '../components/mock-data';
 function SocialPage() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,7 +33,6 @@ function SocialPage() {
               <SocialCard key={index} {...user} />
             ))}
           </div>
-          <Outlet />
         </div>
       </div>
     </div>

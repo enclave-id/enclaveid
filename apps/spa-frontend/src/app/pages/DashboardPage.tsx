@@ -3,6 +3,12 @@ import { Breadcrumb } from '../components/Breadcrumb';
 import { Sidebar } from '../components/Sidebar';
 import { Tabs } from '../components/Tabs';
 
+const tabs = [
+  { title: 'Personality', path: '/dashboard/personality' },
+  { title: 'Politics', path: '/dashboard/politics' },
+  { title: 'Career', path: '/dashboard/career' },
+];
+
 function DashboardPage() {
   return (
     <div className="h-screen bg-white flex sm:flex-row flex-col">
@@ -11,7 +17,7 @@ function DashboardPage() {
         <div className="pt-[54px] pb-4 sm:block hidden px-6">
           <Breadcrumb />
         </div>
-        <Tabs />
+        <Tabs tabs={tabs} />
       </div>
     </div>
   );
