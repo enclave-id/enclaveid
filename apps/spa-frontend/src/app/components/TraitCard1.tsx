@@ -4,11 +4,10 @@ import { DashboardCardLayout } from './DashboardCardLayout';
 import { useNavigate } from 'react-router-dom';
 
 import { useState } from 'react';
-import { Drawer } from 'vaul';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { TraitCard } from './TraitCard';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
 import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { CustomDrawer } from './CustomDrawer';
 
 interface DataProps {
   label: string;
@@ -60,38 +59,20 @@ function TraitCard1({ title, data }: TraitCardProps) {
           </div>
         </div>
       </DashboardCardLayout>
-      <Drawer.Root
-        shouldScaleBackground
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
+      <CustomDrawer
+        title={`${title.toUpperCase()} Traits`}
+        isOpen={isDrawerOpen}
+        setIsDrawerOpen={setIsDrawerOpen}
       >
-        <Drawer.Portal>
-          <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-          <Drawer.Content className="bg-zinc-100 flex flex-col rounded-t-xl max-h-[91%] mt-24 fixed bottom-0 left-0 right-0">
-            <div className="bg-white rounded-t-xl flex-1 flex overflow-auto">
-              <div className="flex flex-col gap-5 w-full">
-                <div className="flex items-center justify-between py-4 px-5">
-                  <span className="opacity-0"></span>
-                  <Drawer.Title className="text-passiveLinkColor text-lg leading-[21px] font-semibold">
-                    {title.toUpperCase()} Traits
-                  </Drawer.Title>
-                  <button onClick={() => setIsDrawerOpen(false)}>
-                    <ChevronDownIcon className="text-passiveLinkColor w-5 h-5" />
-                  </button>
-                </div>
-                <div className="gap-9 flex flex-col overflow-y-auto">
-                  {data.map((result, index) => (
-                    <TraitCard {...result} key={index} isDrawer={true} />
-                  ))}
-                  <div className="-mt-3 mb-8 px-4">
-                    <SimilarProfileBadge peopleCount={253} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Drawer.Content>
-        </Drawer.Portal>
-      </Drawer.Root>
+        <div className="gap-9 flex flex-col overflow-y-auto">
+          {data.map((result, index) => (
+            <TraitCard {...result} key={index} isDrawer={true} />
+          ))}
+          <div className="-mt-3 mb-8 px-4">
+            <SimilarProfileBadge peopleCount={253} />
+          </div>
+        </div>
+      </CustomDrawer>
     </>
   );
 }
