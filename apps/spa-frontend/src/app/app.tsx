@@ -19,8 +19,9 @@ import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
 import { TestPage } from './pages/TestPage';
-import { ProfilePage } from './pages/ProfilePage';
+import { SocialLayout } from './components/SocialLayout';
 import { SocialPage } from './pages/SocialPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 const reactRouter = createBrowserRouter([
   {
@@ -71,9 +72,18 @@ const reactRouter = createBrowserRouter([
   },
   {
     path: '/socials',
-    element: <SocialPage />,
+    element: <SocialLayout />,
+    children: [
+      {
+        index: true,
+        element: <SocialPage />,
+      },
+      {
+        path: '/socials/:profile',
+        element: <ProfilePage />,
+      },
+    ],
   },
-  { path: '/socials/:title', element: <ProfilePage /> },
   {
     path: '/chat',
     element: <ChatPage />,

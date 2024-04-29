@@ -1,6 +1,4 @@
 import { useLocation } from 'react-router-dom';
-import { Breadcrumb } from '../components/Breadcrumb';
-import { Sidebar } from '../components/Sidebar';
 import { Tabs } from '../components/Tabs';
 import { SocialCard } from '../components/SocialCard';
 import { useEffect, useState } from 'react';
@@ -48,19 +46,11 @@ function ProfilePage() {
   }, [location.pathname]);
 
   return (
-    <div className="h-screen bg-white flex sm:flex-row flex-col">
-      <Sidebar />
-      <div className="flex flex-1 flex-col overflow-y-auto">
-        <div className="pt-[54px] pb-4 sm:block hidden px-6">
-          <Breadcrumb />
-        </div>
-        <div>
-          <div className="px-4 mt-5 pb-2">
-            <SocialCard {...location.state} />
-          </div>
-          <Tabs tabs={userTabs} />
-        </div>
+    <div>
+      <div className="px-4 mt-5 pb-2">
+        <SocialCard {...location.state} />
       </div>
+      <Tabs tabs={userTabs} />
     </div>
   );
 }
