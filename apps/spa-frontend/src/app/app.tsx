@@ -82,6 +82,16 @@ const reactRouter = createBrowserRouter([
         path: '/socials/:profile',
         element: <ProfilePage />,
       },
+      {
+        path: '/socials/:profile/personality',
+        element: (
+          <PersonalityContainer>
+            <PersonalityContent />
+          </PersonalityContainer>
+        ),
+      },
+      { path: '/socials/:profile/politics', element: <PoliticsContent /> },
+      { path: '/socials/:profile/career', element: <CareerContent /> },
     ],
   },
   {
