@@ -1,3 +1,4 @@
+# In dev we save secrets to disk instead of AKV
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
