@@ -13,13 +13,15 @@ import { CompassDetails } from './components/CompassDetails';
 import { MFTDetails } from './components/MFTDetails';
 import { LandingPage } from './pages/LandingPage';
 import { OnboardingPage } from './pages/OnboardingPage';
-import { SocialPage } from './components/SocialPage';
+
 import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
 import { TestPage } from './pages/TestPage';
-import { ProfilePage } from './components/ProfilePage';
+import { SocialLayout } from './components/SocialLayout';
+import { SocialPage } from './pages/SocialPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 const reactRouter = createBrowserRouter([
   {
@@ -70,9 +72,28 @@ const reactRouter = createBrowserRouter([
   },
   {
     path: '/socials',
-    element: <SocialPage />,
+    element: <SocialLayout />,
+    children: [
+      {
+        index: true,
+        element: <SocialPage />,
+      },
+      {
+        path: '/socials/:profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: '/socials/:profile/personality',
+        element: (
+          <PersonalityContainer>
+            <PersonalityContent />
+          </PersonalityContainer>
+        ),
+      },
+      { path: '/socials/:profile/politics', element: <PoliticsContent /> },
+      { path: '/socials/:profile/career', element: <CareerContent /> },
+    ],
   },
-  { path: '/socials/:title', element: <ProfilePage /> },
   {
     path: '/chat',
     element: <ChatPage />,
