@@ -7,7 +7,6 @@ tmp
 
 # dependencies
 node_modules
-.venv
 
 # IDEs and editors
 /.idea
@@ -45,3 +44,7 @@ Thumbs.db
 
 # .env files
 .env*
+
+# Python
+.venv
+__pycache__
