@@ -181,6 +181,9 @@ devDependencies:
   '@nx/workspace':
     specifier: 18.0.7
     version: 18.0.7(@swc-node/register@1.9.0)(@swc/core@1.4.2)
+  '@nxlv/python':
+    specifier: ^18.0.1
+    version: 18.0.1(@swc-node/register@1.9.0)(@swc/core@1.4.2)
   '@nxrocks/nx-spring-boot':
     specifier: ^9.3.0
     version: 9.3.0(@nx/devkit@18.0.7)(@swc-node/register@1.9.0)(@swc/core@1.4.2)(nx@18.0.7)
@@ -2759,6 +2762,10 @@ packages:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     dev: true
 
+  /@iarna/toml@2.2.5:
+    resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
+    dev: true
+
   /@isaacs/cliui@8.0.2:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -4068,6 +4075,26 @@ packages:
       nx: 18.0.7(@swc-node/register@1.9.0)(@swc/core@1.4.2)
       tslib: 2.6.2
       yargs-parser: 21.1.1
+    transitivePeerDependencies:
+      - '@swc-node/register'
+      - '@swc/core'
+      - debug
+    dev: true
+
+  /@nxlv/python@18.0.1(@swc-node/register@1.9.0)(@swc/core@1.4.2):
+    resolution: {integrity: sha512-iNaUOhGKA/OKIo9LFBjR92tRpY868Cz5/V0SYdy6nAy9kuUMyhkX3iGGzAD6+++7aTztumgLVRn/O6HkG5qOqg==}
+    dependencies:
+      '@iarna/toml': 2.2.5
+      '@nx/devkit': 18.0.7(nx@18.0.7)
+      chalk: 4.1.2
+      command-exists: 1.2.9
+      cross-spawn: 7.0.3
+      file-uri-to-path: 2.0.0
+      fs-extra: 11.2.0
+      lodash: 4.17.21
+      nx: 18.0.7(@swc-node/register@1.9.0)(@swc/core@1.4.2)
+      tslib: 2.6.2
+      uuid: 9.0.1
     transitivePeerDependencies:
       - '@swc-node/register'
       - '@swc/core'
@@ -8612,6 +8639,10 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
 
+  /command-exists@1.2.9:
+    resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==}
+    dev: true
+
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
@@ -10598,6 +10629,11 @@ packages:
       readable-web-to-node-stream: 3.0.2
       strtok3: 7.0.0
       token-types: 5.0.1
+    dev: true
+
+  /file-uri-to-path@2.0.0:
+    resolution: {integrity: sha512-hjPFI8oE/2iQPVe4gbrJ73Pp+Xfub2+WI2LlXDbsaJBwT5wuMh35WNWVYYTpnz895shtwfyutMFLFywpQAFdLg==}
+    engines: {node: '>= 6'}
     dev: true
 
   /filelist@1.0.4:
