@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Sidebar } from './Sidebar';
+import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
   title: 'Components/Sidebar',
   component: Sidebar,
+  decorators: [withRouter],
 } as Meta;
 
 export const DefaultSidebar: StoryObj<typeof Sidebar> = {

@@ -6,8 +6,7 @@ initImages:
   createSecrets:
     repository: mcr.microsoft.com/create-secrets
     arguments:
-      kvStoreName: enclaveid-prod
-      enableConfidentiality: true
+      environment: aks
       maaEndpoint: sharedeus.eus.attest.azure.net
 
 serviceAccount:

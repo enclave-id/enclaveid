@@ -1,6 +1,7 @@
-import React, { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import { trpc } from '../../utils/trpc';
 import { PersonalityContentProps } from '../PersonalityContent';
+import React from 'react';
 
 export function PersonalityContainer({
   children,
@@ -9,24 +10,14 @@ export function PersonalityContainer({
 }) {
   const personalityQuery = trpc.private.getPersonalityTraits.useQuery();
 
-  useEffect(() => {
-    console.log(personalityQuery.data);
-  }, [personalityQuery.data]);
+  const { isLoading, error } = personalityQuery;
+  const { bigfive, sixteenPersonalityFactor, mbti } =
+    personalityQuery.data || {};
 
-  // const { bigfive, sixteenPersonalityFactor, mbti } =
-  //   personalityQuery.data ?? {};
-
-  // const sixteenPFDataArray = getDisjointSetShallow(
-  //   sixteenPersonalityFactor,
-  //   userTraitsShared,
-  // );
-
+  // TODO: Fix types
   return React.cloneElement(children, {
     // bigFive: bigfive,
-    // sixteenPersonalityFactor: {
-    //   title: '16FP',
-    //   data: sixteenPersonalityFactor,
-    // },
-    // mbti,
+    // sixteenPersonalityFactor: sixteenPersonalityFactor,
+    // mbti: mbti,
   });
 }

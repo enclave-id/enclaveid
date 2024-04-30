@@ -181,6 +181,7 @@ export const MFTChartData = {
   purity: 0.2,
   description:
     'One’s results of the Moral Foundations test are usually plotted against the values for the average Conservative, Libertarian and Left-Liberal individual. Your results, on average, are alike to a:',
+  mftChartAvailable: false,
 };
 
 export const compassChartData = {
@@ -188,6 +189,7 @@ export const compassChartData = {
   y: 2,
   description:
     'The Libertarian Right quadrant on the political compass emphasizes minimal government intervention in both economic and personal affairs. It advocates for free-market capitalism, low taxes, and less regulation, along with strong support for individual liberties and personal choice. This ideology supports a small, limited government and is non-interventionist in foreign policy.',
+  compassChartAvailable: false,
 };
 
 export const radarChart = {
@@ -210,6 +212,9 @@ export const userData = [
     location: 'Philadelphia',
     type: 'Ocean',
     image: '/s1.png',
+    intj: intjCard,
+    traitCard1: traitCard1,
+    traitCard2: traitCard2,
   },
   {
     name: 'Jane Smith',

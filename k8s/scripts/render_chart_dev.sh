@@ -6,13 +6,16 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 LOCAL_REGISTRY="localhost:32000"
 
 API_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/api:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
-CREATE_SECRET_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/create-secrets:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
+CREATE_SECRETS_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/create-secrets:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
+LOAD_SECRETS_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/load-secrets:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
 
 echo "API image digest: ${API_IMAGE_DIGEST}"
-echo "Create secrets image digest: ${CREATE_SECRET_IMAGE_DIGEST}"
+echo "Create secrets image digest: ${CREATE_SECRETS_IMAGE_DIGEST}"
+echo "Load secrets image digest: ${LOAD_SECRETS_IMAGE_DIGEST}"
 
-helm template "enclaveid-${ENV}" "$SCRIPT_DIR"/../helm \
+helm template enclaveid "$SCRIPT_DIR"/../helm \
   --set images.api.tag="${API_IMAGE_DIGEST}" \
-  --set initImages.createSecrets.tag="${CREATE_SECRET_IMAGE_DIGEST}" \
+  --set initImages.createSecrets.tag="${CREATE_SECRETS_IMAGE_DIGEST}" \
+  --set initImages.loadSecrets.tag="${LOAD_SECRETS_IMAGE_DIGEST}" \
   -f "${SCRIPT_DIR}/../helm/values.yaml" -f "${SCRIPT_DIR}/../helm/values.dev.yaml" |
-  ENV="${ENV}" "$SCRIPT_DIR"/split_chart.sh
+  "$SCRIPT_DIR"/split_chart.sh

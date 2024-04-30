@@ -21,6 +21,7 @@ export function AuthenticationContainer({
       ? trpc.public.login.useMutation()
       : trpc.public.signup.useMutation();
 
+  // TODO change to Azure
   const { publicKey, error } = useAwsNitroAttestation();
   const navigate = useNavigate();
 

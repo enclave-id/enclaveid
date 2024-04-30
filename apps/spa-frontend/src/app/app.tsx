@@ -13,12 +13,15 @@ import { CompassDetails } from './components/CompassDetails';
 import { MFTDetails } from './components/MFTDetails';
 import { LandingPage } from './pages/LandingPage';
 import { OnboardingPage } from './pages/OnboardingPage';
-import { SocialPage } from './components/SocialPage';
+
 import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
-
+import { TestPage } from './pages/TestPage';
+import { SocialLayout } from './components/SocialLayout';
+import { SocialPage } from './pages/SocialPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 const reactRouter = createBrowserRouter([
   {
@@ -36,6 +39,10 @@ const reactRouter = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnboardingPage />,
+  },
+  {
+    path: '/test',
+    element: <TestPage />,
   },
   {
     path: '/dashboard',
@@ -61,12 +68,31 @@ const reactRouter = createBrowserRouter([
       { path: 'politics/mft', element: <MFTDetails /> },
       { path: 'career', element: <CareerContent /> },
       { path: 'career/radar', element: <RadarChartDetails /> },
-      { path: 'non-latent', element: <div>non latent</div> },
     ],
   },
   {
     path: '/socials',
-    element: <SocialPage />,
+    element: <SocialLayout />,
+    children: [
+      {
+        index: true,
+        element: <SocialPage />,
+      },
+      {
+        path: '/socials/:profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: '/socials/:profile/personality',
+        element: (
+          <PersonalityContainer>
+            <PersonalityContent />
+          </PersonalityContainer>
+        ),
+      },
+      { path: '/socials/:profile/politics', element: <PoliticsContent /> },
+      { path: '/socials/:profile/career', element: <CareerContent /> },
+    ],
   },
   {
     path: '/chat',

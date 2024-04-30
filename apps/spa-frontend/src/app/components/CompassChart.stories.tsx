@@ -24,6 +24,11 @@ export default {
       defaultValue: false,
       description: 'Toggles the visibility of the description',
     },
+    compassChartAvailable: {
+      control: 'boolean',
+      defaultValue: true,
+      description: 'Toggles the availability state of the compass chart',
+    },
   },
 } as Meta<typeof CompassChart>;
 
@@ -31,10 +36,17 @@ export const Default: StoryObj<typeof CompassChart> = {
   args: {
     x: 2,
     y: 4,
+    compassChartAvailable: true,
   },
   decorators: [
     (Story) => (
-      <div style={{ margin: '10px 0 0 20px' }}>
+      <div
+        style={{
+          margin: '10px 0 0 20px',
+          position: 'relative',
+          maxWidth: '536px',
+        }}
+      >
         <Story />
       </div>
     ),

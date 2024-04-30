@@ -1,8 +1,8 @@
-import { AppContext } from '../context';
-import { authenticatedProcedure, router } from '../trpc';
+import { AppContext } from '../../context';
+import { authenticatedProcedure, router } from '../../trpc';
 import { z } from 'zod';
 
-export const confidential = router({
+export const personality = router({
   getPersonalityTraits: authenticatedProcedure.query(async (opts) => {
     const {
       prisma,

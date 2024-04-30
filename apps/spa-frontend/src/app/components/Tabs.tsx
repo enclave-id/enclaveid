@@ -1,14 +1,15 @@
 import classNames from 'classnames';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Tab } from './Tab';
 
-const tabs = [
-  { title: 'Personality', path: '/dashboard/personality' },
-  { title: 'Politics', path: '/dashboard/politics' },
-  { title: 'Career', path: '/dashboard/career' },
-  { title: 'Non-Latent', path: '/dashboard/non-latent' },
-];
+type TabsProps = {
+  tabs: {
+    title: string;
+    path: string;
+  }[];
+};
 
-function Tabs() {
+function Tabs({ tabs }: TabsProps) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter(Boolean);
   const showTabs = pathSegments.length <= 2;
@@ -18,20 +19,7 @@ function Tabs() {
       {showTabs && (
         <div className="flex overflow-auto border-b border-[#E5E8EE] hideScrollbar pb-1">
           {tabs.map((tab, index) => (
-            <NavLink
-              to={tab.path}
-              key={index}
-              className={({ isActive }) =>
-                classNames(
-                  'text-sm leading-4 pl-[18px] pr-[19px] py-3 transition-colors relative focus:outline-none shrink-0 whitespace-nowrap',
-                  isActive
-                    ? 'font-medium text-greenBg tabButtonSelected'
-                    : 'font-normal text-passiveLinkColor',
-                )
-              }
-            >
-              {tab.title}
-            </NavLink>
+            <Tab {...tab} key={index} />
           ))}
         </div>
       )}

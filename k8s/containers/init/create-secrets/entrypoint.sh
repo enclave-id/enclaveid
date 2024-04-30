@@ -4,14 +4,15 @@ set -euo pipefail
 
 # See https://github.com/microsoft/confidential-container-demos/blob/main/kafka/setup-key.sh
 
-if [ $# != 3 ] && [ $# != 6 ]; then
-  echo "Usage: $0 <KEY_NAME> <KV_STORE_NAME> <ENVIRONMENT> [<MANAGED_IDENTITY>] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
+if [ $# != 2 ] && [ $# != 6 ]; then
+  echo "Usage: $0 <ENVIRONMENT> <KEY_NAME> [<KV_STORE_NAME>] [<MANAGED_IDENTITY>] [<MAA_ENDPOINT>] [<WORKLOAD_MEASUREMENT>]"
   exit 1
 fi
 
-KEY_NAME=$1
-KV_STORE_NAME=$2
-ENVIRONMENT=$3
+ENVIRONMENT=$1
+KEY_NAME=$2
+
+KV_STORE_NAME=$3
 MANAGED_IDENTITY=$4
 MAA_ENDPOINT=$5
 WORKLOAD_MEASUREMENT=$6
@@ -21,11 +22,11 @@ TMPFS_DIR="/tmp"
 cd "$TMPFS_DIR" || exit
 
 # Generate master secret
-openssl genrsa -out master-secret.pem 3072
+openssl genrsa -out "$KEY_NAME.pem" 3072
 echo "......Generated master secret"
 
 # Derive intermediate secret from master secret
-SEED=$(openssl rsa -in master-secret.pem -outform DER | openssl dgst -sha256 -binary | xxd -p | tr -d '\n')
+SEED=$(openssl rsa -in "$KEY_NAME.pem" -outform DER | openssl dgst -sha256 -binary | xxd -p | tr -d '\n')
 certtool --generate-privkey --key-type=rsa --to-rsa --sec-param=high --seed="$SEED" --provable --outfile intermediate-secret.pem
 echo "......Generated intermediate secret"
 
@@ -38,8 +39,8 @@ if [ "$ENVIRONMENT" = "microk8s" ]; then
 
   # Use the unencrypted shared storage to store the secrets
   # as we would do in AKV
-  cp ./master-secret.pem /mnt/unencrypted-shared-storage/
-  cp ./ca-cert.pem /mnt/unencrypted-shared-storage/
+  cp "$KEY_NAME.pem" /mnt/unencrypted-shared-storage/
+  cp ca-cert.pem /mnt/unencrypted-shared-storage/
 
 elif [ "$ENVIRONMENT" = "aks" ]; then
 

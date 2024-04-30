@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { LocationPinIcon } from './Icons';
+import { toSvg } from 'jdenticon';
 
 type User = {
   name: string;
@@ -8,10 +10,33 @@ type User = {
   image: string;
 };
 
-function SocialCard({ name, gender, location, image }: User) {
+function getIdenticon(uniqueId: string): string {
+  const svgString = toSvg(uniqueId, 200);
+
   return (
-    <article className="p-6 flex items-center gap-4 border border-[#E5E8EE] rounded-3xl">
-      <img src={image} alt="" className="w-[101px] h-[101px] rounded-full" />
+    'data:image/svg+xml,' +
+    encodeURIComponent(svgString).replace(/'/g, '%27').replace(/"/g, '%22')
+  );
+}
+
+function SocialCard({ name, gender, location }: User) {
+  const formattedLink = (name: string) => {
+    return name
+      .split(' ')
+      .map((word) => word.toLowerCase())
+      .join('-');
+  };
+  return (
+    <Link
+      to={`/socials/${formattedLink(name)}`}
+      state={{ name, gender, location }}
+      className="p-6 flex items-center gap-4 border border-[#E5E8EE] rounded-3xl"
+    >
+      <img
+        src={getIdenticon(name)}
+        alt=""
+        className="w-[101px] h-[101px] rounded-full"
+      />
       <div className="flex flex-col">
         <h4 className="text-passiveLinkColor font-medium text-2xl leading-7">
           {name}
@@ -26,7 +51,7 @@ function SocialCard({ name, gender, location, image }: User) {
           </h6>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 

@@ -27,6 +27,9 @@ module.exports = {
       fontFamily: {
         sans: ['Work Sans', 'sans-serif'],
       },
+      blur: {
+        xs: '2px',
+      }
     },
   },
   plugins: [],

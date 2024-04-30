@@ -16,7 +16,7 @@ function SocialFilter({
 }: FilterProps) {
   const uniqueFilterTypes = Array.from(
     new Set(userData.map((user) => user.type)),
-  );
+  ).filter((filter) => !selectedFilters.includes(filter));
 
   const toggleFilter = (filter: string) => {
     setSelectedFilters((filters) =>
