@@ -79,19 +79,17 @@ const reactRouter = createBrowserRouter([
         element: <SocialPage />,
       },
       {
-        path: '/socials/:profile',
+        path: ':profile',
         element: <ProfilePage />,
+        children: [
+          {
+            path: '/socials/:profile/personality',
+            element: <PersonalityContent />,
+          },
+          { path: '/socials/:profile/politics', element: <PoliticsContent /> },
+          { path: '/socials/:profile/career', element: <CareerContent /> },
+        ],
       },
-      {
-        path: '/socials/:profile/personality',
-        element: (
-          <PersonalityContainer>
-            <PersonalityContent />
-          </PersonalityContainer>
-        ),
-      },
-      { path: '/socials/:profile/politics', element: <PoliticsContent /> },
-      { path: '/socials/:profile/career', element: <CareerContent /> },
     ],
   },
   {
