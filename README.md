@@ -1,5 +1,6 @@
 # EnclaveID
 
+Figma mocks: https://www.figma.com/file/tSGSLE1L5AlOLq80oV27Xu/EnclaveID?type=design&node-id=0%3A1&mode=design&t=XdBNuLxnG8pWEQtd-1
 Trello board: https://trello.com/b/jsbSDdMQ/enclaveid
 
 ## Architecture
