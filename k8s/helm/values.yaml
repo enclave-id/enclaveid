@@ -78,6 +78,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# TODO: Specify resource limits not to starve the pods
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -91,11 +92,12 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
+# TODO: Figure out HPA later
 autoscaling:
   enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+  # minReplicas: 1
+  # maxReplicas: 100
+  # targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
