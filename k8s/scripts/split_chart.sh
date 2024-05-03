@@ -33,3 +33,6 @@ cat "$TMP_FILE" | $YQ_EXECUTABLE eval "select($KATA_KINDS_EXPRESSION)" - >"$REND
 cat "$TMP_FILE" | $YQ_EXECUTABLE eval "select($NOT_KATA_KINDS_EXPRESSION)" - >"$RENDERS_DIR/k8s-configs.yaml"
 
 rm "$TMP_FILE"
+
+# TODO: move this out in a pipe
+"$SCRIPT_DIR"/patch_guacamole_chart.sh

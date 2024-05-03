@@ -77,7 +77,7 @@ helm-chart: update-app-version
 	RELEASE_NAME=$(RELEASE_NAME) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
 
 .PHONY: deploy
-deploy:
+deploy: helm-chart
 	kubectl apply -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml
 
 .PHONY: undeploy

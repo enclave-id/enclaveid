@@ -18,10 +18,11 @@ postgresql:
         database: enclaveid
   sidecars: [] # TODO add envoy mTLS sidecar
 
+# use a separate database for guacamole
 guacamole:
   postgres:
     database: enclaveid
-    hostname: enclaveid-postgresql
     password: enclaveid
     port: '5432'
     user: enclaveid
+    hostname: enclaveid-postgresql
