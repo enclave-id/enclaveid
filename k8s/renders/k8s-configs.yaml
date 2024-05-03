@@ -101,7 +101,7 @@ metadata:
     helm.sh/chart: postgresql-15.0.0
 type: Opaque
 data:
-  postgres-password: "Q01Zb3BwN215NQ=="
+  postgres-password: "dnhOd2l6TWkwQQ=="
   password: "ZW5jbGF2ZWlk"
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---

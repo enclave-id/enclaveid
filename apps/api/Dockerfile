@@ -24,10 +24,6 @@ RUN pnpm exec nx run api:prisma-generate
 
 RUN pnpm exec nx run api:build --configuration=development
 
-RUN addgroup --system api && \
-          adduser --system -G api api
-
-COPY dist/apps/api api
-RUN chown -R api:api .
+COPY dist/apps/api /api
 
 CMD [ "node", "api" ]

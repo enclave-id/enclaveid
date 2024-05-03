@@ -170,7 +170,7 @@ spec:
       securityContext: {}
       initContainers:
         - name: create-secrets
-          image: "localhost:32000/create-secrets@sha256:e73afb03e246e70aa493b0921fb82ec69fba3ddbed52ad0d43e74cf159fe7b74"
+          image: "localhost:32000/create-secrets@sha256:fb9a71f6a3b30cc0495736e06d31cef1d9617012ad6da00ac252df6ebb577bf0"
           imagePullPolicy: IfNotPresent
           args: ["microk8s", "master-secret", "enclaveid", "", "", ""]
           volumeMounts:
@@ -181,7 +181,7 @@ spec:
       containers:
         - name: enclaveid
           securityContext: {}
-          image: "localhost:32000/api@sha256:9ea54fa74c467753b9be4ba08e8ab2e29f8493c301925957c4f8db72f2a3bac8"
+          image: "localhost:32000/api@sha256:103f4661698fd4e6c4ad06429880521e2d5741e670bd7163026adcb866b93188"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
