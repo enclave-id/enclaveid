@@ -76,29 +76,6 @@ spec:
               name: unencrypted-shared-storage
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        # Add sidecars
-        {{- if .Values.sidecars }}
-        {{- range .Values.sidecars }}
-        - name: {{ .name }}
-          securityContext:
-            {{- toYaml .securityContext | nindent 12 }}
-          image: "{{ .image.repository }}@{{ .image.tag }}"
-          imagePullPolicy: {{ .image.pullPolicy }}
-          ports:
-            {{- range .ports }}
-            - name: {{ .name }}
-              containerPort: {{ .containerPort }}
-              protocol: {{ .protocol }}
-            {{- end }}
-          volumeMounts:
-            {{- range .volumeMounts }}
-            - mountPath: {{ .mountPath }}
-              name: {{ .name }}
-            {{- end }}
-          resources:
-            {{- toYaml .resources | nindent 12 }}
-        {{- end }}
-        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

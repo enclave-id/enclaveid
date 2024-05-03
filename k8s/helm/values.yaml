@@ -104,20 +104,3 @@ tolerations: []
 
 affinity: {}
 
-postgresql:
-  global:
-    postgresql:
-      architecture: standalone
-      auth:
-        username: enclaveid #TODO: change these
-        password: enclaveid
-        database: enclaveid
-  sidecars: [] # TODO add envoy mTLS sidecar
-
-guacamole:
-  postgres:
-    database: guacamole
-    hostname: enclaveid-postgresql
-    password: guacamole
-    port: '5432'
-    user: guacamole

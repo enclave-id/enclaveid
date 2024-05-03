@@ -15,6 +15,7 @@ spec:
           '--context=dir:///',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
+          '--use-new-run',
         ]
       volumeMounts:
         - name: build-context-storage

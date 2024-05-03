@@ -1,6 +1,6 @@
 ENV ?= dev
 VERSION ?= 0.0.0
-RELEASE_NAME := $(ENV)-$(VERSION)
+RELEASE_NAME := $(VERSION)
 
 CLUSTER_NAMESPACE := default
 REGISTRY := registry.container-registry.svc.cluster.local:5000
@@ -23,18 +23,18 @@ print-targets:
 	@echo $(APPS) $(INIT_CONTAINERS) $(SIDECARS)
 
 chrome:
-  pnpx @puppeteer/browsers install chrome@116.0.5793.0
+	@pnpx @puppeteer/browsers install chrome@116.0.5793.0
 
 .PHONY: build
 build: chrome apply-pv apply-pvc $(INIT_CONTAINERS) $(APPS)
 
 .PHONY: apply-pv
 apply-pv:
-	HOST_PATH=$(shell pwd) envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko-pv.yaml | microk8s kubectl apply -f -
+	HOST_PATH=$(shell pwd) envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko-pv.yaml | kubectl apply -f -
 
 .PHONY: apply-pvc
 apply-pvc:
-	microk8s kubectl apply -f $(KANIKO_TEMPLATES_DIR)/kaniko-pvc.yaml
+	kubectl apply -f $(KANIKO_TEMPLATES_DIR)/kaniko-pvc.yaml
 
 # Target for each application
 .PHONY: $(APPS)
@@ -69,7 +69,7 @@ $(SIDECARS):
 # Run this target to clean up kaniko pods
 .PHONY: clean-kaniko
 clean-kaniko:
-	microk8s kubectl delete pod -n $(CLUSTER_NAMESPACE) --selector=category=kaniko-build
+	kubectl delete pod -n $(CLUSTER_NAMESPACE) --selector=category=kaniko-build
 
 .PHONY: update-app-version
 update-app-version:

@@ -8,3 +8,20 @@ initImages:
     arguments:
       environment: microk8s
 
+postgresql:
+  global:
+    postgresql:
+      architecture: standalone
+      auth:
+        username: enclaveid #TODO: change these
+        password: enclaveid
+        database: enclaveid
+  sidecars: [] # TODO add envoy mTLS sidecar
+
+guacamole:
+  postgres:
+    database: enclaveid
+    hostname: enclaveid-postgresql
+    password: enclaveid
+    port: '5432'
+    user: enclaveid
