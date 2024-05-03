@@ -11,7 +11,7 @@ RUN npm install -g pnpm@9.0.6
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-WORKDIR /
+WORKDIR /kaniko/buildcontext/
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
