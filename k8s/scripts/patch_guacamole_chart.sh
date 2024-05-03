@@ -6,4 +6,7 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 K8S_CONFIG_DIR="${SCRIPT_DIR}/../renders/kata-configs.yaml"
 
-yq e 'select(.kind == "Deployment" and .spec.template.metadata.labels."app.kubernetes.io/name" == "guacamole-guacamole").spec.template.spec.initContainers |= [{"name": "wait-for-pg", "image": "busybox", "command": ["sh", "-c", "until nc -z enclaveid-postgresql.default.svc.cluster.local 5432; do echo waiting for postgresql; sleep 2; done;"]}] + .' -i "$K8S_CONFIG_DIR"
+SELECTOR='select(.kind == "Deployment" and .spec.template.metadata.labels."app.kubernetes.io/name" == "guacamole-guacamole").spec.template.spec.initContainers'
+INIT_CONTAINER='[{"name": "wait-for-pg", "image": "busybox", "command": ["sh", "-c", "until nc -z enclaveid-postgresql.default.svc.cluster.local 5432; do echo waiting for postgresql; sleep 2; done;"]}]'
+
+yq e "$SELECTOR |= $INIT_CONTAINER + ." -i "$K8S_CONFIG_DIR"

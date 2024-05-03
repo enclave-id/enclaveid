@@ -80,7 +80,7 @@ type: Opaque
 data:
   GUACD_HOSTNAME: "Z3VhY2Ftb2xlLWd1YWNk"
   GUACD_PORT: "NDgyMg=="
-  POSTGRES_HOSTNAME: "ZW5jbGF2ZWlkLXBvc3RncmVzcWwuZGVmYXVsdC5zdmMuY2x1c3Rlci5sb2NhbA=="
+  POSTGRES_HOSTNAME: "ZW5jbGF2ZWlkLXBvc3RncmVzcWw="
   POSTGRES_PORT: "NTQzMg=="
   POSTGRES_DATABASE: "ZW5jbGF2ZWlk"
   POSTGRES_USER: "ZW5jbGF2ZWlk"
@@ -101,7 +101,7 @@ metadata:
     helm.sh/chart: postgresql-15.0.0
 type: Opaque
 data:
-  postgres-password: "bWxvMnVjdjREaQ=="
+  postgres-password: "Q01Zb3BwN215NQ=="
   password: "ZW5jbGF2ZWlk"
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
 ---
