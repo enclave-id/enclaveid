@@ -1,8 +1,0 @@
-node_modules
-dist
-tmp
-.nx
-apps/data-pipeline/.venv
-.git
-.cache
-chrome
