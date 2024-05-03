@@ -19,6 +19,9 @@ WORKDIR /kaniko/buildcontext/
 # TODO: Might wanna exclude devDependencies but we need nx to build the app...
 RUN pnpm install
 
+# Generate Prisma client
+RUN pnpm exec nx run api:prisma-generate
+
 RUN pnpm exec nx run api:build --configuration=development
 
 RUN addgroup --system api && \
