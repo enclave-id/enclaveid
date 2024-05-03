@@ -170,7 +170,7 @@ spec:
       securityContext: {}
       initContainers:
         - name: create-secrets
-          image: "localhost:32000/create-secrets@sha256:cc49bf70e2b84eaf3ca04f9cd74ac5298ceba8999da1bbc5fdaf394beba139b4"
+          image: "localhost:32000/create-secrets@sha256:f4ba04606729f92ffec2a0a3680eaaeda2a4b3866bf71e6668331bc9f197cac7"
           imagePullPolicy: IfNotPresent
           args: ["microk8s", "master-secret", "enclaveid", "", "", ""]
           volumeMounts:
@@ -181,10 +181,12 @@ spec:
       containers:
         - name: enclaveid
           securityContext: {}
-          image: "localhost:32000/api@sha256:6bdfe997ff30f48cb2d1705b26ed60860128fa61236aa81ebaf09cb6ce39a690"
+          image: "localhost:32000/api@sha256:4a95abf000a2ab77dbb6aa4ed5cdbcdeea7858e1c30d21fc77ac01af1e4b9f6c"
           imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c", "--"]
+          args: ["while true; do sleep 30; done;"]
           env:
-            - name: DATABASE_URL
+            - name: API_DATABASE_URL
               value: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
           ports:
             - name: http
