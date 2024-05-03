@@ -1,6 +1,8 @@
 images:
   api:
     repository: localhost:32000/api
+    env:
+      databaseUrl: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
 
 initImages:
   createSecrets:
@@ -13,15 +15,23 @@ postgresql:
     postgresql:
       architecture: standalone
       auth:
-        username: enclaveid #TODO: change these
+        username: enclaveid
         password: enclaveid
-        database: enclaveid
+  primary:
+    initdb:
+      scripts:
+        init-api.sql: |
+          CREATE DATABASE enclaveid_api;
+          GRANT ALL PRIVILEGES ON DATABASE enclaveid_api TO enclaveid;
+        init-guacamole.sql: |
+          CREATE DATABASE enclaveid_guacamole;
+          GRANT ALL PRIVILEGES ON DATABASE enclaveid_guacamole TO enclaveid;
   sidecars: [] # TODO add envoy mTLS sidecar
 
-# use a separate database for guacamole
+# We use a separate database for guacamole
 guacamole:
   postgres:
-    database: enclaveid
+    database: enclaveid_guacamole
     password: enclaveid
     port: '5432'
     user: enclaveid

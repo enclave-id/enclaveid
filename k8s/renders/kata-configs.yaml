@@ -170,7 +170,7 @@ spec:
       securityContext: {}
       initContainers:
         - name: create-secrets
-          image: "localhost:32000/create-secrets@sha256:fe950f15174e9f9a092e0c0659a3594d464f82764233f89392bac8d92c754af2"
+          image: "localhost:32000/create-secrets@sha256:cc49bf70e2b84eaf3ca04f9cd74ac5298ceba8999da1bbc5fdaf394beba139b4"
           imagePullPolicy: IfNotPresent
           args: ["microk8s", "master-secret", "enclaveid", "", "", ""]
           volumeMounts:
@@ -181,8 +181,11 @@ spec:
       containers:
         - name: enclaveid
           securityContext: {}
-          image: "localhost:32000/api@sha256:1fd4cd12fbb6c15f5d1efe532f0957cf764e87e1d891e713facbeeadcd015d0e"
+          image: "localhost:32000/api@sha256:6bdfe997ff30f48cb2d1705b26ed60860128fa61236aa81ebaf09cb6ce39a690"
           imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URL
+              value: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
           ports:
             - name: http
               containerPort: 80
@@ -298,8 +301,6 @@ spec:
                 secretKeyRef:
                   name: enclaveid-postgresql
                   key: postgres-password
-            - name: POSTGRES_DATABASE
-              value: "enclaveid"
             # Replication
             # Initdb
             # Standby
@@ -336,7 +337,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - exec pg_isready -U "enclaveid" -d "dbname=enclaveid" -h 127.0.0.1 -p 5432
+                - exec pg_isready -U "enclaveid" -h 127.0.0.1 -p 5432
           readinessProbe:
             failureThreshold: 6
             initialDelaySeconds: 5
@@ -349,7 +350,7 @@ spec:
                 - -c
                 - -e
                 - |
-                  exec pg_isready -U "enclaveid" -d "dbname=enclaveid" -h 127.0.0.1 -p 5432
+                  exec pg_isready -U "enclaveid" -h 127.0.0.1 -p 5432
                   [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
           resources:
             limits:
@@ -373,6 +374,8 @@ spec:
             - name: empty-dir
               mountPath: /opt/bitnami/postgresql/logs
               subPath: app-logs-dir
+            - name: custom-init-scripts
+              mountPath: /docker-entrypoint-initdb.d/
             - name: dshm
               mountPath: /dev/shm
             - name: data
@@ -380,6 +383,9 @@ spec:
       volumes:
         - name: empty-dir
           emptyDir: {}
+        - name: custom-init-scripts
+          configMap:
+            name: enclaveid-postgresql-init-scripts
         - name: dshm
           emptyDir:
             medium: Memory

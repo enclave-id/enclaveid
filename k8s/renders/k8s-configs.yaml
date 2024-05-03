@@ -82,7 +82,7 @@ data:
   GUACD_PORT: "NDgyMg=="
   POSTGRES_HOSTNAME: "ZW5jbGF2ZWlkLXBvc3RncmVzcWw="
   POSTGRES_PORT: "NTQzMg=="
-  POSTGRES_DATABASE: "ZW5jbGF2ZWlk"
+  POSTGRES_DATABASE: "ZW5jbGF2ZWlkX2d1YWNhbW9sZQ=="
   POSTGRES_USER: "ZW5jbGF2ZWlk"
   POSTGRES_PASSWORD: "ZW5jbGF2ZWlk"
   WEBAPP_CONTEXT: "Uk9PVA=="
@@ -101,9 +101,29 @@ metadata:
     helm.sh/chart: postgresql-15.0.0
 type: Opaque
 data:
-  postgres-password: "NmJVakxKU2VmNw=="
+  postgres-password: "MnVQSlhrQU1uaQ=="
   password: "ZW5jbGF2ZWlk"
   # We don't auto-generate LDAP password when it's not provided as we do for other passwords
+---
+# Source: enclaveid/charts/postgresql/templates/primary/initialization-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: enclaveid-postgresql-init-scripts
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: enclaveid
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.2.0
+    helm.sh/chart: postgresql-15.0.0
+data:
+  init-api.sql: |
+    CREATE DATABASE enclaveid_api;
+    GRANT ALL PRIVILEGES ON DATABASE enclaveid_api TO enclaveid;
+  init-guacamole.sql: |
+    CREATE DATABASE enclaveid_guacamole;
+    GRANT ALL PRIVILEGES ON DATABASE enclaveid_guacamole TO enclaveid;
 ---
 # Source: enclaveid/templates/pvc.yaml
 apiVersion: v1
