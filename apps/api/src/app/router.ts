@@ -6,7 +6,6 @@ import {
 import { authentication } from './routers/authentication';
 import { attestation } from './routers/attestation';
 import { mergeRouters, router } from './trpc';
-import { fileUpload } from './routers/fileUpload';
 import { career } from './routers/dashboard/career';
 import { politics } from './routers/dashboard/politics';
 import { personality } from './routers/dashboard/personality';
@@ -17,7 +16,6 @@ export const appRouter = router({
     personality,
     career,
     politics,
-    fileUpload,
     fakeOauth,
   ),
   [TRPC_PUBLIC_NAMESPACE]: mergeRouters(attestation, authentication),
