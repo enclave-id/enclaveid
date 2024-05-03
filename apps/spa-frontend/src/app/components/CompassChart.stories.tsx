@@ -29,6 +29,11 @@ export default {
       defaultValue: true,
       description: 'Toggles the availability state of the compass chart',
     },
+    loading: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Displays a loading skeleton',
+    },
   },
 } as Meta<typeof CompassChart>;
 
@@ -37,6 +42,28 @@ export const Default: StoryObj<typeof CompassChart> = {
     x: 2,
     y: 4,
     compassChartAvailable: true,
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          margin: '10px 0 0 20px',
+          position: 'relative',
+          maxWidth: '536px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Loading: StoryObj<typeof CompassChart> = {
+  args: {
+    x: 2,
+    y: 4,
+    compassChartAvailable: true,
+    loading: true,
   },
   decorators: [
     (Story) => (
