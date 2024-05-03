@@ -27,4 +27,6 @@ RUN pnpm exec nx run api:build --configuration=development
 COPY dist/apps/api/ /api/
 COPY node_modules/ /node_modules/
 
+WORKDIR /
+
 CMD [ "node", "api" ]
