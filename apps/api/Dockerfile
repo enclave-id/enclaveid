@@ -6,7 +6,7 @@
 # Run the container with `docker run -p 3000:3000 -t api`.
 FROM node:20.11.1-alpine3.18
 
-RUN npm install -g pnpm@8.15.4
+RUN npm install -g pnpm@9.0.6
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
@@ -15,7 +15,9 @@ WORKDIR /kaniko/buildcontext/
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN pnpm --prod install
+
+# TODO: Might wanna exclude devDependencies but we need nx to build the app...
+RUN pnpm install
 
 RUN pnpm exec nx run api:build --configuration=development
 
