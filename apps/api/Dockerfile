@@ -11,7 +11,7 @@ RUN npm install -g pnpm@9.0.6
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-WORKDIR /kaniko/buildcontext/
+WORKDIR /
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
@@ -24,10 +24,6 @@ RUN pnpm exec nx run api:prisma-generate
 
 RUN pnpm exec nx run api:build --configuration=development
 
-RUN ls -la
-
-RUN ls -la dist/apps/api
-
-COPY dist/apps/api /api
+COPY dist/apps/api/ /api
 
 CMD [ "node", "api" ]

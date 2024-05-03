@@ -15,6 +15,5 @@ spec:
           '--dockerfile=/${DOCKERFILE_PATH}',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
-          '--use-new-run',
         ]
   restartPolicy: Never
