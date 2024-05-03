@@ -2,6 +2,8 @@ FROM node:20.11.1-alpine3.18
 
 RUN npm install -g pnpm@8.15.4
 
+WORKDIR /kaniko/buildcontext/
+
 RUN pnpm install
 
 RUN pnpm exec nx run api:build --configuration=development --skipTypeCheck=true
