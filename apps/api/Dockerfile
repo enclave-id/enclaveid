@@ -15,9 +15,9 @@ WORKDIR /kaniko/buildcontext/
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN pnpm --prefix api --omit=dev -f install
+RUN pnpm --prod install
 
-RUN pnpm exec nx run api:build --configuration=development --skipTypeCheck=true
+RUN pnpm exec nx run api:build --configuration=development
 
 RUN addgroup --system api && \
           adduser --system -G api api
