@@ -13,6 +13,7 @@ interface CompassChartProps {
   compassChartAvailable?: boolean;
   handleClick: () => void;
   loading?: boolean;
+  error?: boolean;
 }
 
 function CompassChart({
@@ -23,6 +24,7 @@ function CompassChart({
   compassChartAvailable,
   handleClick,
   loading,
+  error = true,
 }: CompassChartProps) {
   const [compassRef, compassWidth] = useElementWidth();
 
@@ -71,8 +73,8 @@ function CompassChart({
             className={classNames(
               'flex flex-col items-center justify-center relative',
               showDescription ? 'gap-12' : 'gap-11',
-              !compassChartAvailable &&
-                'blur-xs grayscale-[80%] pointer-events-none pb-8',
+              !compassChartAvailable ||
+                (error && 'blur-xs grayscale-[80%] pointer-events-none pb-8'),
             )}
           >
             {showDescription ? (
@@ -164,6 +166,12 @@ function CompassChart({
               variant="tertiary"
               fullWidth
               onClick={handleClick}
+            />
+          )}
+          {error && (
+            <UnavailableChart
+              unavailability={UnavailabilityType.STILL_PROCESSING}
+              error={true}
             />
           )}
         </>
