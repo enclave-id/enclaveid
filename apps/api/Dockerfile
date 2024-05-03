@@ -24,6 +24,6 @@ RUN pnpm exec nx run api:prisma-generate
 
 RUN pnpm exec nx run api:build --configuration=development
 
-COPY dist/apps/api/ /api
+COPY dist/apps/api/ /api/
 
 CMD [ "node", "api" ]
