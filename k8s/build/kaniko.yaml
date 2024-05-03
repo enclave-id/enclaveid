@@ -11,17 +11,10 @@ spec:
       image: gcr.io/kaniko-project/executor:v1.21.1
       args:
         [
-          '--dockerfile=/workspace/${DOCKERFILE_PATH}',
-          '--context=dir:///',
+          '--context=git://github.com/enclave-id/enclaveid#refs/heads/${BRANCH}',
+          '--dockerfile=/${DOCKERFILE_PATH}',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
           '--use-new-run',
         ]
-      volumeMounts:
-        - name: build-context-storage
-          mountPath: /workspace
   restartPolicy: Never
-  volumes:
-    - name: build-context-storage
-      persistentVolumeClaim:
-        claimName: build-context-claim

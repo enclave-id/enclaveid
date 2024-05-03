@@ -1,10 +1,12 @@
 ENV ?= dev
 VERSION ?= 0.0.0
+BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
+
 RELEASE_NAME := $(VERSION)
 
 CLUSTER_NAMESPACE := default
 REGISTRY := registry.container-registry.svc.cluster.local:5000
-KANIKO_TEMPLATES_DIR := k8s/build/$(ENV)
+KANIKO_TEMPLATE := k8s/build/kaniko.yaml
 
 # Find all applications with a Dockerfile
 APPS_DIR := apps
@@ -26,15 +28,7 @@ chrome:
 	@pnpx @puppeteer/browsers install chrome@116.0.5793.0
 
 .PHONY: build
-build: chrome apply-pv apply-pvc $(INIT_CONTAINERS) $(APPS)
-
-.PHONY: apply-pv
-apply-pv:
-	HOST_PATH=$(shell pwd) envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko-pv.yaml | kubectl apply -f -
-
-.PHONY: apply-pvc
-apply-pvc:
-	kubectl apply -f $(KANIKO_TEMPLATES_DIR)/kaniko-pvc.yaml
+build: chrome $(INIT_CONTAINERS) $(APPS)
 
 # Target for each application
 .PHONY: $(APPS)
@@ -43,7 +37,8 @@ $(APPS):
 	DOCKERFILE_PATH=$(APPS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
 	NAMESPACE=$(CLUSTER_NAMESPACE) \
-	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
+  BRANCH=$(BRANCH) \
+	envsubst < $(KANIKO_TEMPLATE) \
 	| kubectl apply -f -
 
 # Target for initContainers
@@ -53,7 +48,8 @@ $(INIT_CONTAINERS):
 	DOCKERFILE_PATH=$(INIT_CONTAINERS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
 	NAMESPACE=$(CLUSTER_NAMESPACE) \
-	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
+  BRANCH=$(BRANCH) \
+	envsubst < $(KANIKO_TEMPLATE) \
 	| kubectl apply -f -
 
 # Target for sidecars
@@ -63,7 +59,8 @@ $(SIDECARS):
 	DOCKERFILE_PATH=$(SIDECARS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
 	NAMESPACE=$(CLUSTER_NAMESPACE) \
-	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
+  BRANCH=$(BRANCH) \
+	envsubst < $(KANIKO_TEMPLATE) \
 	| kubectl apply -f -
 
 # Run this target to clean up kaniko pods

@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/azure-cli:2.59.0
 # so that we can pin package versions and make it reproducible
 RUN apk add --no-cache openssl gnutls-utils xxd
 
-COPY /workspace/k8s/containers/init/load-secrets/ /
+COPY /k8s/containers/init/load-secrets/ /
 WORKDIR /
 
 ENTRYPOINT ["/entrypoint.sh"]
