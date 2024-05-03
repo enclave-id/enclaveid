@@ -2,7 +2,7 @@ images:
   api:
     repository: localhost:32000/api
     env:
-      databaseUrl: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
+      apiDatabaseUrl: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
 
 initImages:
   createSecrets:

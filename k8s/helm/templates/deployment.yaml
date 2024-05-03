@@ -58,8 +58,8 @@ spec:
           image: "{{ .Values.images.api.repository }}@{{ .Values.images.api.tag }}"
           imagePullPolicy: {{ .Values.images.api.pullPolicy }}
           env:
-            - name: DATABASE_URL
-              value: {{ .Values.images.api.env.databaseUrl }}
+            - name: API_DATABASE_URL
+              value: {{ .Values.images.api.env.apiDatabaseUrl }}
           ports:
             - name: http
               containerPort: 80

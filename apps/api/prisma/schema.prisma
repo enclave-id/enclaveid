@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // This one is used just for generationg the client, in production we set DATABASE_URL at runtime
+  url      = env("API_DATABASE_URL")
 }
 
 model User {
