@@ -17,5 +17,5 @@ COPY node_modules/ /node_modules/
 
 WORKDIR /
 
-CMD [ "node", "chrome-controller" ]
+CMD [ "node", "chrome-controller", "&" ]
 

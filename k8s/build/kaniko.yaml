@@ -1,3 +1,4 @@
+# TODO: make it so that we use the same config for prod and dev (template?)
 apiVersion: v1
 kind: Pod
 metadata:
@@ -15,6 +16,14 @@ spec:
           '--dockerfile=/${DOCKERFILE_PATH}',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
+          '--cache=true',
           '--cache-dir=/workspace/cache',
         ]
+      volumeMounts:
+        - name: local-cache-storage
+          mountPath: /workspace/cache
   restartPolicy: Never
+  volumes:
+    - name: local-cache-storage
+      persistentVolumeClaim:
+        claimName: local-cache-claim
