@@ -2,12 +2,11 @@ import { Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
-import { EventEmitter } from 'eventemitter3';
 import { scrapeGoogleTakeout } from './scraping';
-import { logger } from '../logging';
+import { redis } from './redisPublisher';
+import { ChromeUserEventEnum, toEventPayload } from '@enclaveid/shared';
 
-// TODO Redis
-export const eventEmitter = new EventEmitter();
+const userId = process.env.USER_ID;
 
 puppeteer.use(PrefsPlugin()).use(StealthPlugin());
 
@@ -29,7 +28,12 @@ async function updateBoundingBoxes(page: Page) {
       .filter((el) => el),
   );
 
-  eventEmitter.emit('inputOverlays', inputOverlays);
+  inputOverlays.forEach((inputOverlay) => {
+    redis.publish(
+      userId,
+      toEventPayload(ChromeUserEventEnum.NEW_BOUNDING_BOX, inputOverlay),
+    );
+  });
 }
 const handledPages = new Set();
 async function setupRequestHandling(page: Page, isMobile: boolean) {
@@ -43,9 +47,7 @@ async function setupRequestHandling(page: Page, isMobile: boolean) {
       request.resourceType() === 'document' &&
       request.url() == 'https://takeout.google.com'
     ) {
-      logger.info('Intercepted login request');
-
-      eventEmitter.emit('finishedLogin');
+      redis.publish(userId, toEventPayload(ChromeUserEventEnum.LOGIN_SUCCESS));
 
       scrapeGoogleTakeout(page);
     }
@@ -90,6 +92,8 @@ export async function startPuppeteerSession(
   });
 
   const page = await browser.newPage();
+
+  await redis.publish(userId, toEventPayload(ChromeUserEventEnum.CHROME_READY));
 
   await page.goto('https://takeout.google.com');
 

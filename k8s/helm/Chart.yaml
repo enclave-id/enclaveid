@@ -20,6 +20,9 @@ version: 0.0.0
 # It is recommended to use it with quotes.
 appVersion: 0.0.0
 dependencies:
+  - name: redis
+    version: 19.1.5
+    repository: https://charts.bitnami.com/bitnami
   - name: postgresql
     version: 15.0.0
     repository: https://charts.bitnami.com/bitnami

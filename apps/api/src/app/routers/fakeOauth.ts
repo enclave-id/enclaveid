@@ -5,7 +5,7 @@ import { z } from 'zod';
 import {
   eventEmitter,
   startPuppeteerSession,
-} from '../services/fakeOauth/puppeteer';
+} from '../../../../chrome-controller/src/services/puppeteer';
 
 interface InputOverlay {
   inputId: string;

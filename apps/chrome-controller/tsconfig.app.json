@@ -3,9 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["node"],
-    //"strictNullChecks": true
+    "types": ["node"]
   },
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../chrome-controller/src/services/puppeteer.ts", "../chrome-controller/src/services/scraping.ts"],
+  "include": ["src/**/*.ts"]
 }

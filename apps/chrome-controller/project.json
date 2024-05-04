@@ -1,0 +1,56 @@
+{
+  "name": "chrome-controller",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/chrome-controller/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/chrome-controller",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/chrome-controller/src/main.ts",
+        "tsConfig": "apps/chrome-controller/tsconfig.app.json",
+        "assets": ["apps/chrome-controller/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "chrome-controller:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "chrome-controller:build:development"
+        },
+        "production": {
+          "buildTarget": "chrome-controller:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
