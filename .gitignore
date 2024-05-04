@@ -50,6 +50,7 @@ chrome
 
 # Kaniko
 kaniko_cache
+
 # Python
 .venv
 __pycache__

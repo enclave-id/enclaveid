@@ -18,7 +18,12 @@ import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
+
 import { FakeOauthPage } from './pages/FakeOauthPage';
+import { SocialLayout } from './components/SocialLayout';
+import { SocialPage } from './pages/SocialPage';
+import { ProfilePage } from './pages/ProfilePage';
+
 
 const reactRouter = createBrowserRouter([
   {
