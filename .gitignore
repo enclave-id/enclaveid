@@ -44,3 +44,7 @@ Thumbs.db
 
 # .env files
 .env*
+
+# Python
+.venv
+__pycache__

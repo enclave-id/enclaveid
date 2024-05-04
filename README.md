@@ -153,7 +153,8 @@ Set some env vars:
 AZURE_RESOURCE_GROUP=enclaveid-prod
 
 AZURE_CLUSTER_NAME=enclaveid-cluster
-AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5
+AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5 # For CPU workloads
+AZURE_NODE_VM_SIZE_GPU=NCADS_A100_v4 # For GPU workloads
 
 AZURE_REGION=eastus2
 AZURE_SERVICE_ACCOUNT_NAME=enclaveid-cluster-identity-sa
@@ -183,7 +184,8 @@ az feature show --namespace "Microsoft.ContainerService" --name "KataCcIsolation
 az provider register --namespace "Microsoft.ContainerService"
 ```
 
-Deploy a new cluster (this starts billing the VMs):
+We need to create a cluster with one system node and two nodepools, one for CPU workloads (api, guacamole, dagster) and another for GPU workloads (dagster jobs).
+We configure the cluster autoscaler to minimize costs.
 
 ```bash
 # Create the cluster with one system node (need the same CVM type bc of kata)
@@ -192,8 +194,11 @@ az aks create --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER
 # Get cluster credentials
 az aks get-credentials --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --overwrite-existing
 
-# Add a nodepool with 2 nodes for the enclaveid workloads (excluding ML)
-az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name nodepool2 --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 2 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation
+# Add a nodepool for CPU workloads with confidential computing
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name cpu-nodepool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 1 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation --min-count 1 --max-count 4 --enable-cluster-autoscaler
+
+# Add a nodepool for GPU workloads
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name gpu-nodepool --cluster-name "${AZURE_CLUSTER_NAME}" --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE_GPU}" --min-count 0 --max-count 1 --enable-cluster-autoscaler
 ```
 
 Setup Federated Identity

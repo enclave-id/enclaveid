@@ -25,6 +25,7 @@
     "@nx/web": "18.0.7",
     "@nx/webpack": "18.0.7",
     "@nx/workspace": "18.0.7",
+    "@nxlv/python": "^18.0.1",
     "@nxrocks/nx-spring-boot": "^9.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@storybook/addon-actions": "^7.6.17",

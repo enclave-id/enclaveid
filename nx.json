@@ -75,6 +75,7 @@
     "sharedGlobals": []
   },
   "plugins": [
+    "@nxlv/python",
     "@nxrocks/nx-spring-boot",
     {
       "plugin": "@nx/eslint/plugin",
