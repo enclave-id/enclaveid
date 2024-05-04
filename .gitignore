@@ -54,3 +54,7 @@ kaniko_cache
 # Python
 .venv
 __pycache__
+
+# K8s files
+k8s/renders/*
+!k8s/renders/.gitkeep
