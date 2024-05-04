@@ -16,6 +16,5 @@ spec:
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
           '--cache-dir=/workspace/cache',
-          '--use-new-run',
         ]
   restartPolicy: Never

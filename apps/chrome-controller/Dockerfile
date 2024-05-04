@@ -10,7 +10,7 @@ RUN pnpx @puppeteer/browsers install chrome@116.0.5793.0
 
 RUN pnpm install
 
-RUN pnpm run build:chrome-controller --configuration=development
+RUN pnpm exec nx run chrome-controller:build
 
 COPY dist/apps/chrome-controller/ /chrome-controller/
 COPY node_modules/ /node_modules/

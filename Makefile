@@ -27,6 +27,7 @@ print-targets:
 .PHONY: build
 build: $(INIT_CONTAINERS) $(APPS)
 
+# This makes local builds much faster
 .PHONY: local-cache
 local-cache:
 	@mkdir -p "./kaniko_cache"
