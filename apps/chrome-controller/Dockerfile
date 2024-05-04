@@ -1,6 +1,6 @@
 FROM linuxserver/rdesktop:fedora-icewm
 
-RUN dnf install -y nodejs:20 git
+RUN dnf install -y nodejs git
 
 RUN npm install -g pnpm@9.0.3
 

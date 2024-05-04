@@ -24,11 +24,14 @@ SIDECARS := $(shell find $(SIDECARS_DIR) -name Dockerfile | sed 's|/Dockerfile||
 print-targets:
 	@echo $(APPS) $(INIT_CONTAINERS) $(SIDECARS)
 
-chrome:
-	@pnpx @puppeteer/browsers install chrome@116.0.5793.0
-
 .PHONY: build
-build: chrome $(INIT_CONTAINERS) $(APPS)
+build: $(INIT_CONTAINERS) $(APPS)
+
+.PHONY: local-cache
+local-cache:
+	@mkdir -p "./kaniko_cache"
+	@HOST_PATH="$(shell pwd)/kaniko_cache" \
+	envsubst < k8s/build/local-cache.yaml | kubectl apply -f -
 
 # Target for each application
 .PHONY: $(APPS)

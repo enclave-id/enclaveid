@@ -47,3 +47,6 @@ Thumbs.db
 
 # Chrome
 chrome
+
+# Kaniko
+kaniko_cache
