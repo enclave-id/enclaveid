@@ -80,6 +80,7 @@
     "sharedGlobals": []
   },
   "plugins": [
+    "@nxlv/python",
     {
       "plugin": "@nx/eslint/plugin",
       "options": {

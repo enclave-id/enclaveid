@@ -207,6 +207,9 @@ importers:
       '@nx/workspace':
         specifier: 18.0.7
         version: 18.0.7(@swc-node/register@1.9.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(@swc/types@0.1.6)(typescript@5.3.3))(@swc/core@1.4.13(@swc/helpers@0.5.8))
+      '@nxlv/python':
+        specifier: ^18.0.1
+        version: 18.0.1(@swc-node/register@1.9.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(@swc/types@0.1.6)(typescript@5.3.3))(@swc/core@1.4.13(@swc/helpers@0.5.8))
       '@pmmmwh/react-refresh-webpack-plugin':
         specifier: ^0.5.11
         version: 0.5.11(react-refresh@0.14.0)(type-fest@2.19.0)(webpack-dev-server@4.15.2(webpack@5.91.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(esbuild@0.19.12)))(webpack-hot-middleware@2.26.1)(webpack@5.91.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(esbuild@0.19.12))
@@ -1795,6 +1798,9 @@ packages:
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
 
+  '@iarna/toml@2.2.5':
+    resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
+
   '@ioredis/commands@1.2.0':
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
 
@@ -2260,6 +2266,9 @@ packages:
 
   '@nx/workspace@18.2.4':
     resolution: {integrity: sha512-c3Bca6aBwhpMegvAXAyKO8+dBBZOej8EIVo7m22IXL7APbq+hRetoc0LBCa/wTRcEZpYYPGrN1PzfFZqME21+g==}
+
+  '@nxlv/python@18.0.1':
+    resolution: {integrity: sha512-iNaUOhGKA/OKIo9LFBjR92tRpY868Cz5/V0SYdy6nAy9kuUMyhkX3iGGzAD6+++7aTztumgLVRn/O6HkG5qOqg==}
 
   '@opentelemetry/api@1.8.0':
     resolution: {integrity: sha512-I/s6F7yKUDdtMsoBWXJe8Qz40Tui5vsuKCWJEWVL+5q9sSWRzzx6v2KeNsOBEwd94j0eWkpWCH4yB6rZg9Mf0w==}
@@ -4515,6 +4524,9 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
+  command-exists@1.2.9:
+    resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==}
+
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
@@ -5565,6 +5577,10 @@ packages:
   file-type@17.1.6:
     resolution: {integrity: sha512-hlDw5Ev+9e883s0pwUsuuYNu4tD7GgpUnOvykjv1Gya0ZIjuKumthDRua90VUn6/nlRKAjcxLUnHNTIUWwWIiw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  file-uri-to-path@2.0.0:
+    resolution: {integrity: sha512-hjPFI8oE/2iQPVe4gbrJ73Pp+Xfub2+WI2LlXDbsaJBwT5wuMh35WNWVYYTpnz895shtwfyutMFLFywpQAFdLg==}
+    engines: {node: '>= 6'}
 
   filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
@@ -11328,6 +11344,8 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
+  '@iarna/toml@2.2.5': {}
+
   '@ioredis/commands@1.2.0': {}
 
   '@isaacs/cliui@8.0.2':
@@ -12572,6 +12590,24 @@ snapshots:
       nx: 18.2.4(@swc-node/register@1.9.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(@swc/types@0.1.6)(typescript@5.3.3))(@swc/core@1.4.13(@swc/helpers@0.5.8))
       tslib: 2.6.2
       yargs-parser: 21.1.1
+    transitivePeerDependencies:
+      - '@swc-node/register'
+      - '@swc/core'
+      - debug
+
+  '@nxlv/python@18.0.1(@swc-node/register@1.9.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(@swc/types@0.1.6)(typescript@5.3.3))(@swc/core@1.4.13(@swc/helpers@0.5.8))':
+    dependencies:
+      '@iarna/toml': 2.2.5
+      '@nx/devkit': 18.2.4(nx@18.0.7(@swc-node/register@1.9.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(@swc/types@0.1.6)(typescript@5.3.3))(@swc/core@1.4.13(@swc/helpers@0.5.8)))
+      chalk: 4.1.2
+      command-exists: 1.2.9
+      cross-spawn: 7.0.3
+      file-uri-to-path: 2.0.0
+      fs-extra: 11.2.0
+      lodash: 4.17.21
+      nx: 18.0.7(@swc-node/register@1.9.0(@swc/core@1.4.13(@swc/helpers@0.5.8))(@swc/types@0.1.6)(typescript@5.3.3))(@swc/core@1.4.13(@swc/helpers@0.5.8))
+      tslib: 2.6.2
+      uuid: 9.0.1
     transitivePeerDependencies:
       - '@swc-node/register'
       - '@swc/core'
@@ -15460,6 +15496,8 @@ snapshots:
     dependencies:
       delayed-stream: 1.0.0
 
+  command-exists@1.2.9: {}
+
   commander@2.20.3: {}
 
   commander@3.0.2: {}
@@ -16840,6 +16878,8 @@ snapshots:
       readable-web-to-node-stream: 3.0.2
       strtok3: 7.0.0
       token-types: 5.0.1
+
+  file-uri-to-path@2.0.0: {}
 
   filelist@1.0.4:
     dependencies:
