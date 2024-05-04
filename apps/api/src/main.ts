@@ -1,23 +1,13 @@
 import Fastify from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import path from 'path';
-import staticFiles from '@fastify/static';
-import axios from 'axios';
-import { getPublicKeyHashNode } from './app/services/crypto/asymmetricNode';
+import { logger } from './app/services/logging';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const server = Fastify({
-  logger: {
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-      },
-    },
-  },
+  logger: logger,
   maxParamLength: 5000,
 });
 
@@ -27,31 +17,18 @@ server.register(AutoLoad, {
   //options: { ...opts },
 });
 
-server.register(staticFiles, {
-  root: process.env.ASSETS_PATH,
-  prefix: '/assets/',
-});
+// No need for static files for now...
+// server.register(staticFiles, {
+//   root: process.env.ASSETS_PATH,
+//   prefix: '/assets/',
+// });
 
 // Start listening.
 server.listen({ port, host }, (err) => {
   if (err) {
-    server.log.child(err);
+    server.log.error(err);
     process.exit(1);
   } else {
     console.log(`[ ready ] http://${host}:${port}`);
   }
 });
-
-if (process.env.NODE_ENV === 'production') {
-  axios.get('http://127.0.0.1:8080/enclave/ready').then((res) => {
-    console.log("Told Nitriding we're ready", res.data);
-
-    getPublicKeyHashNode().then((publicKeyHash) => {
-      axios
-        .post('http://127.0.0.1:8080/enclave/hash', publicKeyHash)
-        .then((res) => {
-          console.log('Registered new public key', res.data);
-        });
-    });
-  });
-}

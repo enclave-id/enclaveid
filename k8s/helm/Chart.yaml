@@ -20,16 +20,15 @@ version: 0.0.0
 # It is recommended to use it with quotes.
 appVersion: 0.0.0
 dependencies:
+  - name: postgresql
+    version: 15.0.0
+    repository: https://charts.bitnami.com/bitnami
+  - name: guacamole
+    version: 1.4.1
+    repository: https://charts.beryju.io
   - name: dagster
     version: 1.7.3
     repository: https://dagster-io.github.io/helm-user-cloud
-
-  # TODO: "The Guac"
-  # - name: guacamole
-  #   version: 1.4.1
-  #   repository: https://charts.beryju.io
-
-  # TODO: Add self hosted postgres for confidentiality
-  # - name: postgresql
-  #   version: 15.0.0
-  #   repository: https://charts.bitnami.com/bitnami
+  - name: redis
+    version: 19.1.5
+    repository: https://charts.bitnami.com/bitnami

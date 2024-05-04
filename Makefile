@@ -1,10 +1,12 @@
 ENV ?= dev
 VERSION ?= 0.0.0
-RELEASE_NAME := $(ENV)-$(VERSION)
+BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
+
+RELEASE_NAME := $(VERSION)
 
 CLUSTER_NAMESPACE := default
 REGISTRY := registry.container-registry.svc.cluster.local:5000
-KANIKO_TEMPLATES_DIR := k8s/build/$(ENV)
+KANIKO_TEMPLATE := k8s/build/kaniko.yaml
 
 # Find all applications with a Dockerfile
 APPS_DIR := apps
@@ -23,15 +25,14 @@ print-targets:
 	@echo $(APPS) $(INIT_CONTAINERS) $(SIDECARS)
 
 .PHONY: build
-build: apply-pv apply-pvc $(INIT_CONTAINERS) $(APPS)
+build: $(INIT_CONTAINERS) $(APPS)
 
-.PHONY: apply-pv
-apply-pv:
-	HOST_PATH=$(shell pwd) envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko-pv.yaml | microk8s kubectl apply -f -
-
-.PHONY: apply-pvc
-apply-pvc:
-	microk8s kubectl apply -f $(KANIKO_TEMPLATES_DIR)/kaniko-pvc.yaml
+# This makes local builds much faster
+.PHONY: local-cache
+local-cache:
+	@mkdir -p "./kaniko_cache"
+	@HOST_PATH="$(shell pwd)/kaniko_cache" \
+	envsubst < k8s/build/local-cache.yaml | kubectl apply -f -
 
 # Target for each application
 .PHONY: $(APPS)
@@ -40,7 +41,8 @@ $(APPS):
 	DOCKERFILE_PATH=$(APPS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
 	NAMESPACE=$(CLUSTER_NAMESPACE) \
-	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
+  BRANCH=$(BRANCH) \
+	envsubst < $(KANIKO_TEMPLATE) \
 	| kubectl apply -f -
 
 # Target for initContainers
@@ -50,7 +52,8 @@ $(INIT_CONTAINERS):
 	DOCKERFILE_PATH=$(INIT_CONTAINERS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
 	NAMESPACE=$(CLUSTER_NAMESPACE) \
-	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
+  BRANCH=$(BRANCH) \
+	envsubst < $(KANIKO_TEMPLATE) \
 	| kubectl apply -f -
 
 # Target for sidecars
@@ -60,13 +63,14 @@ $(SIDECARS):
 	DOCKERFILE_PATH=$(SIDECARS_DIR)/$@/Dockerfile \
 	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
 	NAMESPACE=$(CLUSTER_NAMESPACE) \
-	envsubst < $(KANIKO_TEMPLATES_DIR)/kaniko.yaml \
+  BRANCH=$(BRANCH) \
+	envsubst < $(KANIKO_TEMPLATE) \
 	| kubectl apply -f -
 
 # Run this target to clean up kaniko pods
 .PHONY: clean-kaniko
 clean-kaniko:
-	microk8s kubectl delete pod -n $(CLUSTER_NAMESPACE) --selector=category=kaniko-build
+	kubectl delete pod -n $(CLUSTER_NAMESPACE) --selector=category=kaniko-build
 
 .PHONY: update-app-version
 update-app-version:
@@ -77,7 +81,7 @@ helm-chart: update-app-version
 	RELEASE_NAME=$(RELEASE_NAME) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
 
 .PHONY: deploy
-deploy:
+deploy: helm-chart
 	kubectl apply -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml
 
 .PHONY: undeploy

@@ -52,6 +52,11 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "namedInputs": {
@@ -76,7 +81,6 @@
   },
   "plugins": [
     "@nxlv/python",
-    "@nxrocks/nx-spring-boot",
     {
       "plugin": "@nx/eslint/plugin",
       "options": {

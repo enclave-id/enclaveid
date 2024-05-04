@@ -106,13 +106,16 @@ To setup the `microk8s` cluster for local development:
 
 ```bash
 # Install MicroK8s
-sudo snap install microk8s --classic
+sudo snap install microk8s --classic --channel=1.29
 
 sudo usermod -a -G microk8s $USER
 newgrp microk8s
 
 microk8s status --wait-ready
-microk8s enable dns registry dashboard storage helm helm3 metrics-server
+microk8s enable dns registry dashboard hostpath-storage metrics-server
+
+# Configure kubectl:
+# https://microk8s.io/docs/working-with-kubectl
 
 # To access the dashboard
 microk8s dashboard-proxy

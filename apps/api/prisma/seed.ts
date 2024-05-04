@@ -1,5 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.API_DATABASE_URL,
+    },
+  },
+});
 
 async function main() {
   return await prisma.user.create({

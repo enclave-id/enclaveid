@@ -1,5 +1,5 @@
 import k8s from '@kubernetes/client-node';
-import { prisma } from '../services/prisma';
+import { prisma } from '../prisma';
 
 const k8sApi = k8s.Config.defaultClient();
 
@@ -38,7 +38,9 @@ const podManifest = {
   },
 };
 
-export async function provisionChrome(userId: string): Promise<string> {
+export async function provisionChrome(
+  userId: string,
+): Promise<string | undefined> {
   const user = await prisma.user.findUnique({
     where: {
       id: userId,

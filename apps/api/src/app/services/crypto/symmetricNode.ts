@@ -42,9 +42,9 @@ export async function decryptRequestPayload(
   const decipher = crypto.createDecipheriv(
     'aes-256-ctr',
     sessionKey,
-    Buffer.from(nonce, 'hex'),
+    Buffer.from(nonce, 'base64'),
   );
   return (
-    decipher.update(encryptedPayload, 'hex', 'utf8') + decipher.final('utf8')
+    decipher.update(encryptedPayload, 'base64', 'utf8') + decipher.final('utf8')
   );
 }
