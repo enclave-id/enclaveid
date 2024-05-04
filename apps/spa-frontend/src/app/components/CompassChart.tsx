@@ -56,7 +56,7 @@ function CompassChart({
       )}
     >
       {loading ? (
-        <div className="flex flex-col w-full h-full items-center justify-centerrelative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-200 before:to-transparent min-h-[454px]">
+        <div className="flex flex-col w-full h-full items-center justify-center relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-200 before:to-transparent min-h-[454px]">
           <div className="flex flex-col gap-6 justify-between flex-1 w-full items-center pt-[30px] pb-3.5">
             <div className="flex flex-col gap-6">
               <div className="h-6 w-[270px] bg-gray-200/50"></div>
