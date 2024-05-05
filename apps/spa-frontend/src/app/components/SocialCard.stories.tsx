@@ -22,5 +22,6 @@ export const Default: StoryObj<typeof SocialCard> = {
     location: 'New York',
     type: 'User',
     image: '',
+    loading: false,
   },
 };

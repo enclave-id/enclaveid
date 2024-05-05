@@ -36,6 +36,16 @@ export default {
       defaultValue: true,
       description: 'Toggles the availability state of the MFT chart',
     },
+    loading: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Displays a loading skeleton',
+    },
+    error: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Displays an error state',
+    },
   },
 } as Meta<typeof MFTChart>;
 
@@ -43,6 +53,48 @@ const { description, ...circles } = MFTChartData;
 
 export const Default: StoryObj<typeof MFTChart> = {
   args: circles,
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '20px', position: 'relative', maxWidth: '536px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Loading: StoryObj<typeof MFTChart> = {
+  args: {
+    ...circles,
+    loading: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '20px', position: 'relative', maxWidth: '536px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Error: StoryObj<typeof MFTChart> = {
+  args: {
+    ...circles,
+    error: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '20px', position: 'relative', maxWidth: '536px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Unavailable: StoryObj<typeof MFTChart> = {
+  args: {
+    ...circles,
+    mftChartAvailable: false,
+  },
   decorators: [
     (Story) => (
       <div style={{ margin: '20px', position: 'relative', maxWidth: '536px' }}>

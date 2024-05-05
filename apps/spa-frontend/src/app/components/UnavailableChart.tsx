@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 export enum UnavailabilityType {
   NO_DATA = 'NO_DATA',
   STILL_PROCESSING = 'STILL_PROCESSING',
@@ -6,6 +8,7 @@ export enum UnavailabilityType {
 
 interface UnavailableChartProps {
   unavailability: UnavailabilityType;
+  error?: boolean;
 }
 
 const unavailabilityMessage: Record<UnavailabilityType, string> = {
@@ -17,8 +20,17 @@ const unavailabilityMessage: Record<UnavailabilityType, string> = {
 function UnavailableChart(props: UnavailableChartProps) {
   return (
     <div className="absolute inset-0">
-      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gray-50 shadow-xl rounded-xl z-10 text-xl w-2/3 mx-auto py-3 text-center">
-        {unavailabilityMessage[props.unavailability]}
+      <div
+        className={classNames(
+          'absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-xl rounded-xl z-10 text-xl w-2/3 mx-auto py-3 text-center',
+          props.error ? 'bg-red-500' : 'bg-gray-50',
+        )}
+      >
+        {props.error ? (
+          <p>Error while fetching data</p>
+        ) : (
+          unavailabilityMessage[props.unavailability]
+        )}
       </div>
     </div>
   );

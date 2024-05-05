@@ -29,6 +29,16 @@ export default {
       defaultValue: true,
       description: 'Toggles the availability state of the compass chart',
     },
+    loading: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Displays a loading skeleton',
+    },
+    error: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Displays an error state',
+    },
   },
 } as Meta<typeof CompassChart>;
 
@@ -37,6 +47,74 @@ export const Default: StoryObj<typeof CompassChart> = {
     x: 2,
     y: 4,
     compassChartAvailable: true,
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          margin: '10px 0 0 20px',
+          position: 'relative',
+          maxWidth: '536px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Loading: StoryObj<typeof CompassChart> = {
+  args: {
+    x: 2,
+    y: 4,
+    compassChartAvailable: true,
+    loading: true,
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          margin: '10px 0 0 20px',
+          position: 'relative',
+          maxWidth: '536px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Error: StoryObj<typeof CompassChart> = {
+  args: {
+    x: 2,
+    y: 4,
+    compassChartAvailable: true,
+    loading: false,
+    error: true,
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          margin: '10px 0 0 20px',
+          position: 'relative',
+          maxWidth: '536px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Unavailable: StoryObj<typeof CompassChart> = {
+  args: {
+    x: 2,
+    y: 4,
+    compassChartAvailable: false,
+    loading: false,
+    error: false,
   },
   decorators: [
     (Story) => (

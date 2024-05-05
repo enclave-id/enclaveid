@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Button } from './Button';
 import CompassChart from './CompassChart';
 import { useBreadcrumb } from '../context/BreadcrumbContext';
 import { useNavigate } from 'react-router-dom';
@@ -30,17 +29,8 @@ function CompassSection() {
         <h2 className="text-lg text-passiveLinkColor text-center leading-[22px]">
           Compass
         </h2>
-        <div className="border border-[#E5E8EE] flex flex-col gap-10 items-center justify-center flex-1 rounded-3xl w-full pt-[30px] pb-3.5 px-3 relative">
-          <CompassChart {...compassChartData} />
-          {compassChartData.compassChartAvailable && (
-            <Button
-              label="Dive Deeper"
-              variant="tertiary"
-              fullWidth
-              onClick={handleClick}
-            />
-          )}
-        </div>
+
+        <CompassChart {...compassChartData} handleClick={handleClick} />
       </div>
       <CustomDrawer
         title={'Compass'}
@@ -52,7 +42,11 @@ function CompassSection() {
             Your Results
           </h2>
           <div className="gap-9 flex flex-col overflow-y-auto">
-            <CompassChart {...compassChartData} showDescription={true} />
+            <CompassChart
+              {...compassChartData}
+              showDescription={true}
+              handleClick={handleClick}
+            />
             <div className="mt-3 mb-8">
               <SimilarProfileBadge peopleCount={253} />
             </div>
