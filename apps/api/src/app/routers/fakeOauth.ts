@@ -9,6 +9,7 @@ import {
   fromEventPayload,
   redis,
 } from '@enclaveid/shared';
+import { provisionChrome } from '../services/fakeOauth/kubernetes';
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure
@@ -22,7 +23,6 @@ export const fakeOauth = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-
       const {
         isMobile,
         viewport: { vh, vw },
@@ -32,7 +32,7 @@ export const fakeOauth = router({
         user: { id: userId },
       } = ctx as AppContext;
 
-      return await provisionChrome(isMobile, { vh, vw });
+      return await provisionChrome(userId, isMobile, { vh, vw });
     }),
   inputOverlays: authenticatedProcedure.subscription((opts) => {
     const {
