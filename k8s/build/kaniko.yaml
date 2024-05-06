@@ -16,7 +16,7 @@ spec:
           '--dockerfile=/${DOCKERFILE_PATH}',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
-          '--cache=true',
+          '--cache=false',
           '--cache-dir=/workspace/cache',
         ]
       volumeMounts:

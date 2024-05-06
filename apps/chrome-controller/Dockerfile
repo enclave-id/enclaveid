@@ -10,10 +10,13 @@ RUN pnpm install
 
 RUN pnpm exec nx run chrome-controller:build
 
+COPY dist/apps/chrome-controller/ /kaniko/dist/apps/chrome-controller/
+COPY node_modules/ /kaniko/node_modules/
+
 FROM linuxserver/rdesktop:fedora-icewm
 
-COPY /kaniko/buildcontext/dist/apps/chrome-controller/ /chrome-controller/
-COPY /kaniko/buildcontext/node_modules/ /node_modules/
+COPY --from=builder /kaniko/dist/apps/chrome-controller/ /chrome-controller/
+COPY --from=builder /kaniko/node_modules/ /node_modules/
 
 WORKDIR /
 
