@@ -1,6 +1,4 @@
-FROM linuxserver/rdesktop:fedora-icewm
-
-RUN dnf install -y nodejs git
+FROM node:20.11.1-alpine3.18 as builder
 
 RUN npm install -g pnpm@9.0.3
 
@@ -12,8 +10,10 @@ RUN pnpm install
 
 RUN pnpm exec nx run chrome-controller:build
 
-COPY dist/apps/chrome-controller/ /chrome-controller/
-COPY node_modules/ /node_modules/
+FROM linuxserver/rdesktop:fedora-icewm
+
+COPY /kaniko/buildcontext/dist/apps/chrome-controller/ /chrome-controller/
+COPY /kaniko/buildcontext/node_modules/ /node_modules/
 
 WORKDIR /
 
