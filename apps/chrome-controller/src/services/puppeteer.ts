@@ -3,8 +3,7 @@ import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
 import { scrapeGoogleTakeout } from './scraping';
-import { redis } from './redisPublisher';
-import { ChromeUserEventEnum, toEventPayload } from '@enclaveid/shared';
+import { ChromeUserEventEnum, redis, toEventPayload } from '@enclaveid/shared';
 
 const userId = process.env.USER_ID;
 

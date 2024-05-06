@@ -40,14 +40,14 @@ const podManifest = {
 
 export async function provisionChrome(
   userId: string,
-): Promise<string | undefined> {
+  isMobile: boolean,
+  initViewport: { vh: number; vw: number },
+) {
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
     },
   });
-
-  if (!user) throw new Error('User not found');
 
   const podId = `chrome-pod-${userId}`;
 
@@ -73,20 +73,20 @@ export async function provisionChrome(
 
   podManifest.metadata.name = podId;
 
-  const podExists = await k8sApi
-    .readNamespacedPod(podManifest.metadata.name, 'default')
-    .then(() => {
-      return true;
+  const pod = k8sApi
+    .createNamespacedPod('default', podManifest)
+    .then((response) => {
+      return response.body;
     })
-    .catch(() => {
-      return false;
+    .catch((error) => {
+      if (error.response && error.response.statusCode === 409) {
+        return k8sApi.readNamespacedPod(podManifest.metadata.name, 'default');
+      } else {
+        throw error;
+      }
     });
 
-  if (!podExists) {
-    return await k8sApi
-      .createNamespacedPod('default', podManifest)
-      .then((response) => {
-        return response.body.metadata?.name;
-      });
-  }
+  // TODO:  const guacamoleConn =
+
+  return pod;
 }
