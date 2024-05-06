@@ -26,7 +26,7 @@ dependencies:
   - name: guacamole
     version: 1.4.1
     repository: https://charts.beryju.io
-  - name: dagster
+  - name: dagster-cloud-agent
     version: 1.7.3
     repository: https://dagster-io.github.io/helm-user-cloud
   - name: redis

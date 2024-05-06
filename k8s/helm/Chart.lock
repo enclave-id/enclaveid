@@ -5,5 +5,11 @@ dependencies:
 - name: guacamole
   repository: https://charts.beryju.io
   version: 1.4.1
-digest: sha256:2fc52fca95751914627e97f2a8103b1051ea97af6a8c85ff1b069f2224fa76fe
-generated: "2024-04-10T14:15:09.115020923+02:00"
+- name: dagster-cloud-agent
+  repository: https://dagster-io.github.io/helm-user-cloud
+  version: 1.7.3
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 19.1.5
+digest: sha256:768e49b148e39d1a7ef97980c175149684419ae676d7e40e77063b35228b87d8
+generated: "2024-05-06T16:38:26.111898066+02:00"

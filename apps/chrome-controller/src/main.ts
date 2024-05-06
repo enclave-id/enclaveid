@@ -1,7 +1,14 @@
-console.log('Just waiiting and logging');
+import axios from 'axios';
+import { createConnPayload } from './constants';
 
-const x = 30;
+// /api/session/data/postgresql/connections
+
+
+axios.post(
+  'http://localhost:3000/api/session/data/postgresql/connections',
+  createConnPayload,
+);
 
 setInterval(() => {
   console.log('Just waiiting and logging');
-}, x * 1000);
+}, 10 * 1000);
