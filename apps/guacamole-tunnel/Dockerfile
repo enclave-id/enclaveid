@@ -1,10 +1,11 @@
-FROM maven as java-builder
+FROM maven
 
 WORKDIR /kaniko/buildcontext/
 
-RUN pnpm install
-RUN pnpm exec nx run guacamole-tunnel:build
+RUN cd apps/guacamole-tunnel && ./mvnw package
 
-COPY apps/guacamole-tunnel/target/ /kaniko/guacamole-tunnel/
+COPY apps/guacamole-tunnel/target/ /guacamole-tunnel/
 
-COPY --from=java-builder /kaniko/guacamole-tunnel/ /guacamole-tunnel/
+WORKDIR /
+# TODO: fix versioning
+ENTRYPOINT [ "java", "-jar", "/guacamole-tunnel/guacamole-tunnel-0.0.1-SNAPSHOT.jar" ]

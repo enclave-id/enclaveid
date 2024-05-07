@@ -27,6 +27,7 @@ public class GuacamoleTunnelController {
   public GuacamoleTunnel connect(HttpServletRequest request) throws GuacamoleException {
 
     String password = request.getParameter("password");
+    String connectionId = request.getParameter("connectionId");
 
     if (password == null) {
       throw new GuacamoleException("Password not provided.");
@@ -34,7 +35,8 @@ public class GuacamoleTunnelController {
 
     // VNC connection information
     GuacamoleConfiguration config = new GuacamoleConfiguration();
-    config.setProtocol("rdp");
+    config.setConnectionID(connectionId);
+
     config.setParameter("hostname", "localhost");
     config.setParameter("port", "5901");
     config.setParameter("password", password);

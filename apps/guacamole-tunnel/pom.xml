@@ -60,7 +60,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-					<mainClass>com.enclaveid.guacamoleproxy.GuacamoleProxyApplication</mainClass>
+					<mainClass>com.enclaveid.guacamoletunnel.GuacamoleTunnelApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
