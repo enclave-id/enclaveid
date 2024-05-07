@@ -7,9 +7,15 @@ import {
   ChromeUserEventEnum,
   InputOverlay,
   fromEventPayload,
-  redis,
 } from '@enclaveid/shared';
 import { connectFreePod } from '../services/fakeOauth/kubernetes';
+
+import Redis from 'ioredis';
+
+const redis = new Redis({
+  host: process.env['REDIS_HOST'] || 'enclaveid-redis',
+  port: parseInt(process.env['REDIS_PORT'] || '6379'),
+});
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure
