@@ -1,14 +1,5 @@
-import axios from 'axios';
-import { createConnPayload } from './constants';
-
-// /api/session/data/postgresql/connections
-
-
-axios.post(
-  'http://localhost:3000/api/session/data/postgresql/connections',
-  createConnPayload,
-);
+console.log('[chrome-controller] Started');
 
 setInterval(() => {
-  console.log('Just waiiting and logging');
+  // Keep the event loop busy
 }, 10 * 1000);

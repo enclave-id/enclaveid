@@ -9,7 +9,7 @@ import {
   fromEventPayload,
   redis,
 } from '@enclaveid/shared';
-import { provisionChrome } from '../services/fakeOauth/kubernetes';
+import { connectFreePod } from '../services/fakeOauth/kubernetes';
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure
@@ -32,7 +32,7 @@ export const fakeOauth = router({
         user: { id: userId },
       } = ctx as AppContext;
 
-      return await provisionChrome(userId, isMobile, { vh, vw });
+      return await connectFreePod(userId, isMobile, { vh, vw });
     }),
   inputOverlays: authenticatedProcedure.subscription((opts) => {
     const {

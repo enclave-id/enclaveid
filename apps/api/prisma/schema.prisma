@@ -43,9 +43,9 @@ model ChromePod {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  chromePodK8sId String @unique
-  rdpUsername    String
-  rdpPassword    String
+  chromePodId String @unique @default(cuid())
+  rdpUsername String
+  rdpPassword String
 
   user User?
 }
