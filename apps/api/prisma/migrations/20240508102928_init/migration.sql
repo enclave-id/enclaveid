@@ -32,7 +32,7 @@ CREATE TABLE "ChromePod" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "chromePodK8sId" TEXT NOT NULL,
+    "chromePodId" TEXT NOT NULL,
     "rdpUsername" TEXT NOT NULL,
     "rdpPassword" TEXT NOT NULL,
 
@@ -178,7 +178,7 @@ CREATE UNIQUE INDEX "User_chromePodId_key" ON "User"("chromePodId");
 CREATE UNIQUE INDEX "Session_userId_key" ON "Session"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ChromePod_chromePodK8sId_key" ON "ChromePod"("chromePodK8sId");
+CREATE UNIQUE INDEX "ChromePod_chromePodId_key" ON "ChromePod"("chromePodId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserTraits_userId_key" ON "UserTraits"("userId");

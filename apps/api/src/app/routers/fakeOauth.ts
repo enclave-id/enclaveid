@@ -15,6 +15,7 @@ import Redis from 'ioredis';
 const redis = new Redis({
   host: process.env['REDIS_HOST'] || 'enclaveid-redis',
   port: parseInt(process.env['REDIS_PORT'] || '6379'),
+  password: process.env['REDIS_PASSWORD'],
 });
 
 export const fakeOauth = router({

@@ -1,6 +1,5 @@
 package com.enclaveid.guacamoletunnel.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.net.GuacamoleSocket;
 import org.apache.guacamole.net.GuacamoleTunnel;
@@ -10,11 +9,16 @@ import org.apache.guacamole.protocol.ConfiguredGuacamoleSocket;
 import org.apache.guacamole.protocol.GuacamoleConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/tunnel")
+@CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET,
+    RequestMethod.POST }, allowedHeaders = "*", allowCredentials = "true")
 public class GuacamoleTunnelController {
 
   @Value("${guacd.host:localhost}")
@@ -23,11 +27,11 @@ public class GuacamoleTunnelController {
   @Value("${guacd.port:4822}")
   private int guacdPort;
 
-  @GetMapping
+  @RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
   public GuacamoleTunnel connect(HttpServletRequest request) throws GuacamoleException {
 
-    String password = request.getParameter("password");
-    String connectionId = request.getParameter("connectionId");
+    String password = request.getHeader("password");
+    String connectionId = request.getHeader("connectionId");
 
     if (password == null) {
       throw new GuacamoleException("Password not provided.");

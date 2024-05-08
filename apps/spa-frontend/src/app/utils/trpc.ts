@@ -61,7 +61,10 @@ export const trpcClient = trpc.createClient({
           (import.meta.env.DEV ? 'http://' : 'https://') +
           import.meta.env.VITE_API_URL +
           TRPC_PREFIX,
-        fetch: customFetch,
+        fetch:
+          import.meta.env.VITE_ENABLE_CONFIDENTIALITY === 'true'
+            ? customFetch
+            : fetch,
         // You can pass any HTTP headers you wish here
         // async headers() {
         //   return {

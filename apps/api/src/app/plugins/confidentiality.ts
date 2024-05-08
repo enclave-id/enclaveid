@@ -7,6 +7,8 @@ import {
 import { TRPC_PREFIX, TRPC_PRIVATE_NAMESPACE } from '@enclaveid/shared';
 
 export default fp(async (fastify: FastifyInstance) => {
+  if (process.env.ENABLE_CONFIDENTIALITY !== 'true') return;
+
   fastify.addHook('preHandler', async (request) => {
     if (
       request.url.startsWith(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`) &&

@@ -1,6 +1,7 @@
-import k8s from '@kubernetes/client-node';
+import * as k8s from '@kubernetes/client-node';
 import { prisma } from '../prisma';
 import { createGuacConnection, getGuacAuthToken } from './guacamole';
+import { logger } from '../logging';
 
 // Number of idle pods to keep in the buffer
 // This makes sure users can connect to available pods quickly
@@ -85,7 +86,7 @@ export async function createNewPod() {
 
   await changeRdpPassword(podName, newPassword);
 
-  return newPassword;
+  return podRecord;
 }
 
 export async function initializePodsBuffer() {
@@ -101,14 +102,15 @@ export async function connectFreePod(
   isMobile: boolean,
   initViewport: { vh: number; vw: number },
 ) {
-  const freePod = await prisma.chromePod.findFirst({
+  let freePod = await prisma.chromePod.findFirst({
     where: {
       user: null,
     },
   });
 
   if (!freePod) {
-    throw new Error('No free pods');
+    logger.info('No free pods available, creating a new one');
+    freePod = await createNewPod();
   }
 
   await prisma.user.update({
