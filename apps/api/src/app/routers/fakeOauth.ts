@@ -13,20 +13,7 @@ import { connectFreePod } from '../services/fakeOauth/kubernetes';
 
 import Redis from 'ioredis';
 
-import dns from 'dns';
-
-const customLookup = (address, callback) => {
-  dns.resolve4(address, (err, addresses) => {
-    if (err) return callback(err);
-    if (addresses.length) {
-      callback(null, addresses[0], 4);
-    } else {
-      callback(new Error('No addresses found'));
-    }
-  });
-};
-
-const redis = new Redis({ ...redisOptions, lookup: customLookup });
+const redis = new Redis({ ...redisOptions });
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure

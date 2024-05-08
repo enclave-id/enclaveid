@@ -9,13 +9,14 @@ import { mergeRouters, router } from './trpc';
 import { career } from './routers/dashboard/career';
 import { politics } from './routers/dashboard/politics';
 import { personality } from './routers/dashboard/personality';
+import { fakeOauth } from './routers/fakeOauth';
 
 export const appRouter = router({
   [TRPC_PRIVATE_NAMESPACE]: mergeRouters(
     personality,
     career,
     politics,
-    //fakeOauth,
+    fakeOauth,
   ),
   [TRPC_PUBLIC_NAMESPACE]: mergeRouters(attestation, authentication),
 });
