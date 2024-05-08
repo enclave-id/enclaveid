@@ -67,6 +67,10 @@ async function changeRdpPassword(podName, newPassword) {
     )
     .then(() => {
       return newPassword;
+    })
+    .catch((err) => {
+      logger.error(`Failed to change RDP password for pod ${podName}: ${err}`);
+      throw err;
     });
 }
 

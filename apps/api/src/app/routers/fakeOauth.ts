@@ -7,16 +7,26 @@ import {
   ChromeUserEventEnum,
   InputOverlay,
   fromEventPayload,
+  redisOptions,
 } from '@enclaveid/shared';
 import { connectFreePod } from '../services/fakeOauth/kubernetes';
 
 import Redis from 'ioredis';
 
-const redis = new Redis({
-  host: process.env['REDIS_HOST'] || 'enclaveid-redis',
-  port: parseInt(process.env['REDIS_PORT'] || '6379'),
-  password: process.env['REDIS_PASSWORD'],
-});
+import dns from 'dns';
+
+const customLookup = (address, callback) => {
+  dns.resolve4(address, (err, addresses) => {
+    if (err) return callback(err);
+    if (addresses.length) {
+      callback(null, addresses[0], 4);
+    } else {
+      callback(new Error('No addresses found'));
+    }
+  });
+};
+
+const redis = new Redis({ ...redisOptions, lookup: customLookup });
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure

@@ -9,6 +9,7 @@ export const trpc = createTRPCReact<AppRouter>();
 
 const customFetch = async (input: RequestInfo, init: RequestInit) => {
   if (
+    import.meta.env.VITE_ENABLE_CONFIDENTIALITY === 'true' &&
     input.toString().includes(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`) &&
     init.method === 'POST'
   ) {
@@ -27,7 +28,10 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
 
   const response = await fetch(input, init);
 
-  if (input.toString().includes(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`)) {
+  if (
+    import.meta.env.VITE_ENABLE_CONFIDENTIALITY === 'true' &&
+    input.toString().includes(`${TRPC_PREFIX}/${TRPC_PRIVATE_NAMESPACE}.`)
+  ) {
     const { encryptedPayload, nonce } = await response.json();
 
     const decryptedPayload = await symmetricDecrypt(encryptedPayload, nonce);
@@ -37,9 +41,9 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
       statusText: response.statusText,
       headers: response.headers,
     });
-  } else {
-    return response;
   }
+
+  return response;
 };
 
 const wsClient = createWSClient({
@@ -61,10 +65,7 @@ export const trpcClient = trpc.createClient({
           (import.meta.env.DEV ? 'http://' : 'https://') +
           import.meta.env.VITE_API_URL +
           TRPC_PREFIX,
-        fetch:
-          import.meta.env.VITE_ENABLE_CONFIDENTIALITY === 'true'
-            ? customFetch
-            : fetch,
+        fetch: customFetch,
         // You can pass any HTTP headers you wish here
         // async headers() {
         //   return {

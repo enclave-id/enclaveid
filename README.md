@@ -98,7 +98,7 @@ K8s folder structure:
 To install the requirements:
 
 ```
-sudo dnf -y install skopeo jq helm
+sudo dnf -y install skopeo jq helm dnsmasq
 sudo snap install yq
 ```
 
@@ -116,6 +116,14 @@ microk8s enable dns registry dashboard hostpath-storage metrics-server
 
 # Configure kubectl:
 # https://microk8s.io/docs/working-with-kubectl
+
+# Configure your host machine to use the DNS service of MicroK8s for resolving service names within the  cluster. Fedora example using systemd-resolved:
+echo -e "[Resolve]\nDNS=10.152.183.10\nDomains=~cluster.local" | sudo tee /etc/systemd/resolved.conf.d/microk8s.conf
+
+echo -e "[Match]\nName=*\n\n[Network]\nDHCP=yes\n\n[Domain]\nName=cluster.local" | sudo tee /etc/systemd/network/10-microk8s.network
+
+# Restart systemd-resolved
+sudo systemctl restart systemd-resolved
 
 # To access the dashboard
 microk8s dashboard-proxy
