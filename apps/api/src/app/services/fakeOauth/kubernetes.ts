@@ -14,7 +14,7 @@ kc.loadFromDefault();
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 const k8sExec = new k8s.Exec(kc);
 
-export function createPodTemplate(name) {
+export function createPodTemplate(name): k8s.V1Pod {
   return {
     apiVersion: 'v1',
     kind: 'Pod',
@@ -74,7 +74,7 @@ async function changeRdpPassword(podName, newPassword) {
     });
 }
 
-async function waitForPodReady(podName, interval = 1000, timeout = 10000) {
+async function waitForPodReady(podName, interval = 1000, timeout = 30000) {
   const startTime = Date.now();
 
   return new Promise((resolve, reject) => {

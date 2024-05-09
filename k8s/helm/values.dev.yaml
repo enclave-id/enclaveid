@@ -36,6 +36,12 @@ guacamole:
     port: '5432'
     user: enclaveid
     hostname: enclaveid-postgresql
+  guacd:
+    image:
+      tag: 1.5.5
+  guacamole:
+    image:
+      tag: 1.5.5
 
 redis:
   auth:

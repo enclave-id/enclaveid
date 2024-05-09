@@ -41,9 +41,13 @@ export function FakeOauthPage() {
               },
             })
             .then((pod) => {
-              connectGuac(pod.rdpPassword, pod.chromePodId);
+              console.log(pod);
             });
         }}
+      />
+      <Button
+        label="THEGUAC"
+        onClick={() => connectGuac('password', 'connectionId')}
       />
       <div id="display" ref={displayRef}></div>
     </div>
