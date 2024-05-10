@@ -35,9 +35,28 @@ export function FakeOauthPage() {
 
     displayRef.current?.appendChild(guacCanvas);
 
-    guacTunnel.connect();
+    guacClient.connect();
 
-    //guacClient.connect();
+    // Mouse
+    const mouse = new Guacamole.Mouse(guacClient.getDisplay().getElement());
+
+    mouse.onmousedown =
+      mouse.onmouseup =
+      mouse.onmousemove =
+        function (mouseState) {
+          guacClient.sendMouseState(mouseState);
+        };
+
+    // Keyboard
+    const keyboard = new Guacamole.Keyboard(document);
+
+    keyboard.onkeydown = function (keysym) {
+      guacClient.sendKeyEvent(1, keysym);
+    };
+
+    keyboard.onkeyup = function (keysym) {
+      guacClient.sendKeyEvent(0, keysym);
+    };
   }, []);
 
   return (
@@ -54,19 +73,9 @@ export function FakeOauthPage() {
               },
             })
             .then((pod) => {
-              setPodManifest(pod);
+              connectGuac(pod.rdpPassword, pod.hostname, pod.chromePodId);
             });
         }}
-      />
-      <Button
-        label="THEGUAC"
-        onClick={() =>
-          connectGuac(
-            podManifest.rdpPassword,
-            podManifest.hostname,
-            podManifest.chromePodId,
-          )
-        }
       />
       <div
         id="display"
