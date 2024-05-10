@@ -1,6 +1,10 @@
 import { ChromePod } from '@prisma/client';
 
-export function getCreateConnPayload(chromePod: ChromePod, vh, vw) {
+export function getCreateConnPayload(
+  chromePod: ChromePod,
+  vh: number,
+  vw: number,
+) {
   return {
     parentIdentifier: 'ROOT',
     name: chromePod.chromePodId,
@@ -44,8 +48,8 @@ export function getCreateConnPayload(chromePod: ChromePod, vh, vw) {
       timezone: null,
       'enable-touch': '',
       console: '',
-      width: vw,
-      height: vh,
+      width: vw.toString(),
+      height: vh.toString(),
       dpi: '',
       'resize-method': '',
       'normalize-clipboard': '',

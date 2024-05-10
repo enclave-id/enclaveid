@@ -14,31 +14,47 @@ kc.loadFromDefault();
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 const k8sExec = new k8s.Exec(kc);
 
-function getRandomPort(min = 1024, max = 49151) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
+function createServiceTemplate(podName, port): k8s.V1Service {
+  return {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata: {
+      name: `${podName}-service`,
+    },
+    spec: {
+      type: 'ClusterIP',
+      selector: {
+        name: podName,
+      },
+      ports: [
+        {
+          name: 'rdp',
+          port: port,
+          targetPort: 3389,
+        },
+      ],
+    },
+  };
 }
 
-export function createPodTemplate(name, port): k8s.V1Pod {
-  // In microk8s for some reason pod2pod communication is not working
-  // so we go through the host interface and rotate the port
-
+function createPodTemplate(name): k8s.V1Pod {
   return {
     apiVersion: 'v1',
     kind: 'Pod',
     metadata: {
       name: name,
+      labels: {
+        name: name,
+      },
     },
     spec: {
-      hostNetwork: process.env.NODE_ENV === 'development',
       containers: [
         {
           name: 'rdesktop',
           image: 'lscr.io/linuxserver/rdesktop:latest',
           ports: [
             {
-              containerPort: port,
+              containerPort: 3389,
             },
           ],
           env: [
@@ -84,7 +100,7 @@ async function changeRdpPassword(podName, newPassword) {
     });
 }
 
-async function waitForPodReady(podName, interval = 1000, timeout = 30000) {
+async function waitForPodReady(podName, interval = 3000, timeout = 30000) {
   const startTime = Date.now();
 
   return new Promise((resolve, reject) => {
@@ -123,14 +139,16 @@ export async function createNewPod() {
   const podName = `chrome-pod-${Math.random().toString(36).substring(2, 10)}`;
   const newPassword = Math.random().toString(36).substring(2, 10);
 
-  const podPort =
-    process.env.NODE_ENV === 'development' ? getRandomPort() : 3389;
-  const podManifest = createPodTemplate(podName, podPort);
+  const podManifest = createPodTemplate(podName);
 
-  let hostname;
+  // TODO: For now we create a service for each pod, not sure if this is the best way
+  const servicePort = 3389;
+  const serviceManifest = createServiceTemplate(podName, servicePort);
+  const serviceName = serviceManifest.metadata.name;
+
   try {
     await k8sApi.createNamespacedPod('default', podManifest);
-    hostname = await waitForPodReady(podName);
+    await waitForPodReady(podName);
     await changeRdpPassword(podName, newPassword);
   } catch (error) {
     logger.error(`Failed to create pod: ${error}`);
@@ -144,17 +162,33 @@ export async function createNewPod() {
       }
     }
 
-    // Rethrow the original error so that the record is not created in the database
     throw error;
   }
 
+  try {
+    await k8sApi.createNamespacedService('default', serviceManifest);
+  } catch (error) {
+    logger.error(`Failed to create service: ${error}`);
+
+    try {
+      await k8sApi.deleteNamespacedService(serviceName, 'default');
+    } catch (e) {
+      if (e.body.code !== 404) {
+        logger.error(`Failed to delete service: ${e}`);
+        throw e;
+      }
+    }
+    throw error;
+  }
+
+  // The pod is only saved to the database if the creation of both svc/pod was successful
   return await prisma.chromePod.create({
     data: {
       chromePodId: podName,
       rdpUsername: 'abc',
       rdpPassword: newPassword,
-      rdpPort: podPort,
-      hostname: hostname,
+      rdpPort: servicePort,
+      hostname: `${serviceName}.default.svc.cluster.local`,
     },
   });
 }
@@ -183,11 +217,18 @@ export async function connectFreePod(
     freePod = await createNewPod();
   }
 
+  let guacAuthToken;
   try {
-    const guacAuthToken = await getGuacAuthToken();
+    guacAuthToken = await getGuacAuthToken();
+  } catch (error) {
+    logger.error(`Failed to authenticate to Guacamole API: ${error}`);
+    throw error;
+  }
+
+  try {
     await createGuacConnection(guacAuthToken, initViewport, freePod);
   } catch (error) {
-    logger.error(`Failed to connect to Guacamole: ${error}`);
+    logger.error(`Failed to create Guacamole connection: ${error}`);
     throw error;
   }
 

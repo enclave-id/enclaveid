@@ -27,13 +27,17 @@ export async function getGuacAuthToken() {
 export async function createGuacConnection(
   authToken: string,
   initViewport: { vh: number; vw: number },
-  chromePod: ChromePod
+  chromePod: ChromePod,
 ) {
-  const { vh, vw } = initViewport;
+  const payload = getCreateConnPayload(
+    chromePod,
+    initViewport.vh,
+    initViewport.vw,
+  );
 
   return await axios.post(
     `${guacamoleApiUrl}/session/data/postgresql/connections`,
-    getCreateConnPayload(chromePod, vh, vw),
+    payload,
     {
       headers: {
         'Guacamole-Token': authToken,
