@@ -2,6 +2,7 @@ import * as k8s from '@kubernetes/client-node';
 import { prisma } from '../prisma';
 import { createGuacConnection, getGuacAuthToken } from './guacamole';
 import { logger } from '../logging';
+import { ChromePod } from '@prisma/client';
 
 // Number of idle pods to keep in the buffer
 // This makes sure users can connect to available pods quickly
@@ -45,6 +46,7 @@ function createPodTemplate(name): k8s.V1Pod {
       name: name,
       labels: {
         name: name,
+        class: 'chrome-pod',
       },
     },
     spec: {
@@ -205,7 +207,21 @@ export async function connectFreePod(
   userId: string,
   isMobile: boolean,
   initViewport: { vh: number; vw: number },
-) {
+): Promise<ChromePod> {
+  // If the user already has a pod, return it
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      chromePod: true,
+    },
+  });
+
+  if (user?.chromePod) {
+    return user.chromePod;
+  }
+
   let freePod = await prisma.chromePod.findFirst({
     where: {
       user: null,

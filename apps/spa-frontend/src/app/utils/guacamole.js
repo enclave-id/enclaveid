@@ -15061,6 +15061,9 @@ Guacamole.HTTPTunnel = function(tunnelURL, crossDomain, extraTunnelHeaders) {
         connect_xmlhttprequest.withCredentials = withCredentials;
         addExtraHeaders(connect_xmlhttprequest, extraHeaders);
         connect_xmlhttprequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+        console.log(connect_xmlhttprequest);
+
         connect_xmlhttprequest.send(data);
 
     };
