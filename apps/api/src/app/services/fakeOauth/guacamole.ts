@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import { getCreateConnPayload } from './constants';
+import { ChromePod } from '@prisma/client';
 
 const guacamoleApiUrl = `http://enclaveid-guacamole-guacamole.default.svc.cluster.local/api`;
 
@@ -25,15 +26,14 @@ export async function getGuacAuthToken() {
 
 export async function createGuacConnection(
   authToken: string,
-  connName: string,
-  connPassword: string,
   initViewport: { vh: number; vw: number },
+  chromePod: ChromePod
 ) {
   const { vh, vw } = initViewport;
 
   return await axios.post(
     `${guacamoleApiUrl}/session/data/postgresql/connections`,
-    getCreateConnPayload(connName, connPassword, vh, vw),
+    getCreateConnPayload(chromePod, vh, vw),
     {
       headers: {
         'Guacamole-Token': authToken,

@@ -14,7 +14,16 @@ kc.loadFromDefault();
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 const k8sExec = new k8s.Exec(kc);
 
-export function createPodTemplate(name): k8s.V1Pod {
+function getRandomPort(min = 1024, max = 49151) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export function createPodTemplate(name, port): k8s.V1Pod {
+  // In microk8s for some reason pod2pod communication is not working
+  // so we go through the host interface and rotate the port
+
   return {
     apiVersion: 'v1',
     kind: 'Pod',
@@ -22,13 +31,14 @@ export function createPodTemplate(name): k8s.V1Pod {
       name: name,
     },
     spec: {
+      hostNetwork: process.env.NODE_ENV === 'development',
       containers: [
         {
           name: 'rdesktop',
           image: 'lscr.io/linuxserver/rdesktop:latest',
           ports: [
             {
-              containerPort: 3389,
+              containerPort: port,
             },
           ],
           env: [
@@ -91,7 +101,7 @@ async function waitForPodReady(podName, interval = 1000, timeout = 30000) {
 
         if (isReady) {
           clearInterval(intervalId);
-          resolve('Pod is ready.');
+          resolve(pod.status.podIP);
         } else if (Date.now() - startTime > timeout) {
           clearInterval(intervalId);
           reject(
@@ -109,34 +119,21 @@ async function waitForPodReady(podName, interval = 1000, timeout = 30000) {
 }
 
 export async function createNewPod() {
+  // TODO: These should come from the database
+  const podName = `chrome-pod-${Math.random().toString(36).substring(2, 10)}`;
   const newPassword = Math.random().toString(36).substring(2, 10);
 
-  const podRecord = await prisma.chromePod.create({
-    data: {
-      rdpUsername: 'abc',
-      rdpPassword: newPassword,
-    },
-  });
+  const podPort =
+    process.env.NODE_ENV === 'development' ? getRandomPort() : 3389;
+  const podManifest = createPodTemplate(podName, podPort);
 
-  const podName = podRecord.chromePodId;
-  const podManifest = createPodTemplate(podName);
-
+  let hostname;
   try {
     await k8sApi.createNamespacedPod('default', podManifest);
-
-    await waitForPodReady(podName);
-
+    hostname = await waitForPodReady(podName);
     await changeRdpPassword(podName, newPassword);
-
-    return podRecord;
   } catch (error) {
     logger.error(`Failed to create pod: ${error}`);
-
-    await prisma.chromePod.delete({
-      where: {
-        chromePodId: podName,
-      },
-    });
 
     try {
       await k8sApi.deleteNamespacedPod(podName, 'default');
@@ -147,8 +144,19 @@ export async function createNewPod() {
       }
     }
 
+    // Rethrow the original error so that the record is not created in the database
     throw error;
   }
+
+  return await prisma.chromePod.create({
+    data: {
+      chromePodId: podName,
+      rdpUsername: 'abc',
+      rdpPassword: newPassword,
+      rdpPort: podPort,
+      hostname: hostname,
+    },
+  });
 }
 
 export async function initializePodsBuffer() {
@@ -175,6 +183,14 @@ export async function connectFreePod(
     freePod = await createNewPod();
   }
 
+  try {
+    const guacAuthToken = await getGuacAuthToken();
+    await createGuacConnection(guacAuthToken, initViewport, freePod);
+  } catch (error) {
+    logger.error(`Failed to connect to Guacamole: ${error}`);
+    throw error;
+  }
+
   await prisma.user.update({
     where: {
       id: userId,
@@ -187,19 +203,6 @@ export async function connectFreePod(
       },
     },
   });
-
-  try {
-    const guacAuthToken = await getGuacAuthToken();
-    await createGuacConnection(
-      guacAuthToken,
-      freePod.chromePodId,
-      freePod.rdpPassword,
-      initViewport,
-    );
-  } catch (error) {
-    logger.error(`Failed to connect to Guacamole: ${error}`);
-    throw error;
-  }
 
   // Create new pod to keep the buffer full
   // We don't await this promise, as we don't want to block the response

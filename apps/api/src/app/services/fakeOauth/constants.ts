@@ -1,10 +1,13 @@
-export function getCreateConnPayload(connName, password, vh, vw) {
+import { ChromePod } from '@prisma/client';
+
+export function getCreateConnPayload(chromePod: ChromePod, vh, vw) {
   return {
     parentIdentifier: 'ROOT',
-    name: connName,
+    name: chromePod.chromePodId,
     protocol: 'rdp',
     parameters: {
-      port: '',
+      hostname: chromePod.hostname,
+      port: chromePod.rdpPort,
       'read-only': '',
       'swap-red-blue': '',
       cursor: '',
@@ -66,15 +69,16 @@ export function getCreateConnPayload(connName, password, vh, vw) {
       'preconnection-id': '',
       'recording-exclude-touch': '',
       username: 'abc',
-      password: password,
+      password: chromePod.rdpPassword,
     },
     attributes: {
       'max-connections': '1',
       'max-connections-per-user': '1',
       weight: '',
       'failover-only': '',
-      'guacd-port': '',
+      'guacd-port': '4822',
       'guacd-encryption': '',
+      'guacd-hostname': 'enclaveid-guacamole-guacd.default.svc.cluster.local',
     },
   };
 }

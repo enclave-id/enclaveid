@@ -44,8 +44,10 @@ model ChromePod {
   updatedAt DateTime @updatedAt
 
   chromePodId String @unique @default(cuid())
+  hostname    String
   rdpUsername String
   rdpPassword String
+  rdpPort     Int
 
   user User?
 }

@@ -33,8 +33,10 @@ CREATE TABLE "ChromePod" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "chromePodId" TEXT NOT NULL,
+    "hostname" TEXT NOT NULL,
     "rdpUsername" TEXT NOT NULL,
     "rdpPassword" TEXT NOT NULL,
+    "rdpPort" INTEGER NOT NULL,
 
     CONSTRAINT "ChromePod_pkey" PRIMARY KEY ("id")
 );
