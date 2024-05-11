@@ -77,8 +77,9 @@ export async function startPuppeteerSession(
   const { vh, vw } = viewport;
 
   const browser = await puppeteer.launch({
+    executablePath: process.env.CHROMIUM_EXECUTABLE_PATH,
     // executablePath:
-    //   process.env.CHROMIUM_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+    //   '/home/ma9o/Desktop/enclaveid/chrome/linux-116.0.5793.0/chrome-linux64/chrome',
     headless: false,
     userDataDir: '/tmp/fakeOauth',
     args: [

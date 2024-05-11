@@ -53,6 +53,7 @@ function createPodTemplate(name): k8s.V1Pod {
       containers: [
         {
           name: 'rdesktop',
+          //image: 'registry.container-registry.svc.cluster.local:5000/chrome-controller:0.0.0',
           image: 'lscr.io/linuxserver/rdesktop:latest',
           ports: [
             {
@@ -233,20 +234,15 @@ export async function connectFreePod(
     freePod = await createNewPod();
   }
 
-  let guacAuthToken;
-  try {
-    guacAuthToken = await getGuacAuthToken();
-  } catch (error) {
-    logger.error(`Failed to authenticate to Guacamole API: ${error}`);
-    throw error;
-  }
-
-  try {
-    await createGuacConnection(guacAuthToken, initViewport, freePod);
-  } catch (error) {
-    logger.error(`Failed to create Guacamole connection: ${error}`);
-    throw error;
-  }
+  // TODO: This is not necessary because the tunnel service is stateless
+  // But still can be useful for debugging
+  getGuacAuthToken()
+    .then((guacAuthToken) =>
+      createGuacConnection(guacAuthToken, initViewport, freePod),
+    )
+    .catch((error) => {
+      logger.error(`Failed to create Guacamole connection: ${error}`);
+    });
 
   await prisma.user.update({
     where: {

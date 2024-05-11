@@ -1,8 +1,11 @@
 import React, { useCallback } from 'react';
-import Guacamole from '../utils/guacamole';
 import { trpc } from '../utils/trpc';
 import { Button } from '../components/Button';
 import { ChromePod } from '@prisma/client';
+
+// TODO: maybe we wanna serve it from the tunnel and load it dynamically?
+// https://guacamole.apache.org/doc/gug/writing-you-own-guacamole-app.html#updating-pom-xml
+import Guacamole from '../utils/guacamole';
 
 export function FakeOauthPage() {
   const connect = trpc.private.startSession.useMutation();
