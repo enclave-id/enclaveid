@@ -2,17 +2,20 @@ import { Menu, Transition } from '@headlessui/react';
 import { Dispatch, Fragment } from 'react';
 import { RemoveIcon, SearchIcon } from './Icons';
 import { userData } from './mock-data';
+import classNames from 'classnames';
 
 interface FilterProps {
   selectedFilters: string[];
   setSelectedFilters: Dispatch<React.SetStateAction<string[]>>;
   setSearchQuery: Dispatch<React.SetStateAction<string>>;
+  loading: boolean;
 }
 
 function SocialFilter({
   selectedFilters,
   setSelectedFilters,
   setSearchQuery,
+  loading,
 }: FilterProps) {
   const uniqueFilterTypes = Array.from(
     new Set(userData.map((user) => user.type)),
@@ -29,9 +32,14 @@ function SocialFilter({
   const clearFilters = () => setSelectedFilters([]);
 
   return (
-    <div className="flex flex-col gap-3.5">
-      <div className="flex items-center justify-between">
-        <div className="max-w-[340px] w-full relative ">
+    <div
+      className={classNames(
+        'flex flex-col gap-3.5 transition-opacity',
+        loading ? 'opacity-0' : 'opacity-100',
+      )}
+    >
+      <div className="flex min-[810px]:items-center justify-between gap-x-4 gap-y-8 min-[810px]:flex-row flex-col">
+        <div className="min-[810px]:max-w-[340px] w-full relative ">
           <input
             type="text"
             placeholder="Search for people or activities..."
@@ -42,7 +50,7 @@ function SocialFilter({
             <SearchIcon />
           </button>
         </div>
-        <div className="flex gap-2.5 items-center">
+        <div className="flex gap-2.5 items-center min-[810px]:justify-start justify-end z-20">
           {selectedFilters.length > 0 && (
             <button
               onClick={clearFilters}
@@ -86,11 +94,11 @@ function SocialFilter({
           </Menu>
         </div>
       </div>
-      <div className="flex items-center justify-end gap-2.5">
+      <div className="flex items-center min-[810px]:justify-end justify-center gap-2.5 flex-wrap">
         {selectedFilters.map((filter) => (
           <button
             key={filter}
-            className="flex items-center gap-2 px-2 py-1.5 outline outline-1 outline-[#E5E8EE] rounded-full"
+            className="flex items-center gap-2 px-2 py-1.5 outline outline-1 outline-[#E5E8EE] rounded-full whitespace-nowrap"
             onClick={() => toggleFilter(filter)}
           >
             <span className="text-passiveLinkColor font-medium leading-[14px] text-xs">
