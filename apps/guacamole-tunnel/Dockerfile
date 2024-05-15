@@ -4,9 +4,7 @@ WORKDIR /kaniko/buildcontext/
 
 RUN cd apps/guacamole-tunnel && ./mvnw package
 
-RUN ls -la apps/guacamole-tunnel
-
-#COPY apps/guacamole-tunnel/target/ /guacamole-tunnel/
+COPY /kaniko/buildcontext/apps/guacamole-tunnel/target/ /guacamole-tunnel/
 
 WORKDIR /
 

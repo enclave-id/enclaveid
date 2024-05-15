@@ -1,13 +1,15 @@
-FROM python:3.10.14-alpine3.19
+FROM python:3.10.14
 
-RUN apk add --no-cache poetry=1.7.1-r1 nodejs=20.12.2-r0
+WORKDIR /kaniko/buildcontext/
 
-RUN npm install -g pnpm@8.15.4
+RUN apt-get update && apt-get install -y pipx
+RUN pipx ensurepath
+RUN pipx install poetry
 
-COPY /workspace /app
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+RUN nvm install 21.4.0
 
-WORKDIR /app
+RUN npm install -g pnpm@9.1.1
 
+RUN pnpm i
 RUN pnpm exec nx run data-pipeline:install
-
-# TODO: build, etc...

@@ -46,3 +46,10 @@ guacamole:
 redis:
   auth:
     enabled: false
+
+dagsterCloud:
+  deployment: prod
+
+secrets:
+  dagster:
+    token: 'agent:enclaveid:e80aee4f10b74300b4fc58e353065b7d'

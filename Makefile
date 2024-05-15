@@ -1,3 +1,5 @@
+include .env
+
 ENV ?= dev
 VERSION ?= 0.0.0
 BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
@@ -5,9 +7,7 @@ BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 RELEASE_NAME := $(VERSION)
 
 CLUSTER_NAMESPACE := default
-REGISTRY := registry.container-registry.svc.cluster.local:5000
-KANIKO_TEMPLATE := k8s/build/kaniko.yaml
-
+REGISTRY := enclaveid.azurecr.io
 # Find all applications with a Dockerfile
 APPS_DIR := apps
 APPS := $(shell find $(APPS_DIR) -name Dockerfile | sed 's|/Dockerfile||' | xargs -n 1 basename)
@@ -27,45 +27,36 @@ print-targets:
 .PHONY: build
 build: $(INIT_CONTAINERS) $(APPS)
 
-# This makes local builds much faster
-.PHONY: local-cache
-local-cache:
-	@mkdir -p "./kaniko_cache"
-	@HOST_PATH="$(shell pwd)/kaniko_cache" \
-	envsubst < k8s/build/local-cache.yaml | kubectl apply -f -
+.PHONY: docker-secret
+docker-secret:
+	AZURE_CLIENT_ID=$(AZURE_CLIENT_ID) \
+  AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET) \
+  AZURE_TENANT_ID=$(AZURE_TENANT_ID) \
+  envsubst < k8s/build/docker-config.yaml | kubectl apply -f -
+
+define DEPLOY_KANIKO
+	NAME=$1 \
+	CONTEXT_SUB_PATH=$2/$1/ \
+	DESTINATION_IMAGE=$(REGISTRY)/$1:$(RELEASE_NAME) \
+	NAMESPACE=$(CLUSTER_NAMESPACE) \
+	BRANCH=$(BRANCH) \
+	envsubst < k8s/build/kaniko.yaml | kubectl apply -f -
+endef
 
 # Target for each application
 .PHONY: $(APPS)
 $(APPS):
-	NAME=$@ \
-	DOCKERFILE_PATH=$(APPS_DIR)/$@/Dockerfile \
-	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
-	NAMESPACE=$(CLUSTER_NAMESPACE) \
-  BRANCH=$(BRANCH) \
-	envsubst < $(KANIKO_TEMPLATE) \
-	| kubectl apply -f -
+	$(call DEPLOY_KANIKO,$@,$(APPS_DIR))
 
 # Target for initContainers
 .PHONY: $(INIT_CONTAINERS)
 $(INIT_CONTAINERS):
-	NAME=$@ \
-	DOCKERFILE_PATH=$(INIT_CONTAINERS_DIR)/$@/Dockerfile \
-	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
-	NAMESPACE=$(CLUSTER_NAMESPACE) \
-  BRANCH=$(BRANCH) \
-	envsubst < $(KANIKO_TEMPLATE) \
-	| kubectl apply -f -
+	$(call DEPLOY_KANIKO,$@,$(INIT_CONTAINERS_DIR))
 
 # Target for sidecars
 .PHONY: $(SIDECARS)
 $(SIDECARS):
-	NAME=$@ \
-	DOCKERFILE_PATH=$(SIDECARS_DIR)/$@/Dockerfile \
-	DESTINATION_IMAGE=$(REGISTRY)/$@:$(RELEASE_NAME) \
-	NAMESPACE=$(CLUSTER_NAMESPACE) \
-  BRANCH=$(BRANCH) \
-	envsubst < $(KANIKO_TEMPLATE) \
-	| kubectl apply -f -
+	$(call DEPLOY_KANIKO,$@,$(SIDECARS_DIR))
 
 # Run this target to clean up kaniko pods
 .PHONY: clean-kaniko
@@ -87,4 +78,12 @@ deploy: helm-chart
 .PHONY: undeploy
 undeploy:
 	kubectl delete -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml
+
+
+.PHONY: sync-dagster
+sync-dagster:
+	@echo "Syncing dagster"
+  CODE_LOCATION_IMAGE=$(REGISTRY)/data-pipeline:$(RELEASE_NAME) \
+  envsubst < dagster_cloud_template.yaml > dagster_cloud.yaml \
+  | dagster-cloud workspace sync -w dagster_cloud.yaml
 

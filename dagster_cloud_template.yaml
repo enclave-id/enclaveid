@@ -1,0 +1,5 @@
+locations:
+  - location_name: Encalveid-Data-Pipeline
+    image: ${CODE_LOCATION_IMAGE}
+    code_source:
+      module_name: data_pipeline

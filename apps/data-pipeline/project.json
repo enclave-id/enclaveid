@@ -29,7 +29,7 @@
       "options": {
         "outputPath": "apps/data-pipeline/dist",
         "publish": false,
-        "lockedVersions": true,
+        "lockedVersions": false,
         "bundleLocalDependencies": true
       }
     },

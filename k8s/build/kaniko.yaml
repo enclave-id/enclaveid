@@ -9,20 +9,26 @@ metadata:
 spec:
   containers:
     - name: kaniko
-      image: gcr.io/kaniko-project/executor:v1.21.1
-      args: [
+      image: gcr.io/kaniko-project/executor:debug #v1.21.1
+      args:
+        [
           '--context=git://github.com/enclave-id/enclaveid#refs/heads/${BRANCH}',
-          '--dockerfile=/${DOCKERFILE_PATH}',
+          '--context-sub-path=${CONTEXT_SUB_PATH}',
+          '--dockerfile=Dockerfile',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
-          # '--cache=true',
-          # '--cache-dir=/workspace/cache',
+          '--cache=true',
+          '--cache-ttl=48h',
+          '--verbosity=debug',
         ]
-      # volumeMounts:
-      #   - name: local-cache-storage
-      #     mountPath: /workspace/cache
+      envFrom:
+        - secretRef:
+            name: azure-secret
+      volumeMounts:
+        - name: docker-config
+          mountPath: /kaniko/.docker/
+  volumes:
+    - name: docker-config
+      configMap:
+        name: docker-config
   restartPolicy: Never
-  # volumes:
-  #   - name: local-cache-storage
-  #     persistentVolumeClaim:
-  #       claimName: local-cache-claim

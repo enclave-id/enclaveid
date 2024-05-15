@@ -116,6 +116,7 @@ microk8s enable dns registry dashboard hostpath-storage metrics-server
 
 # Configure kubectl:
 # https://microk8s.io/docs/working-with-kubectl
+microk8s config > $HOME/.kube/config
 
 # Configure your host machine to use the DNS service of MicroK8s for resolving service names within the  cluster. Fedora example using systemd-resolved:
 echo -e "[Resolve]\nDNS=10.152.183.10\nDomains=~cluster.local" | sudo tee /etc/systemd/resolved.conf.d/microk8s.conf
