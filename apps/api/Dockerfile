@@ -22,10 +22,9 @@ RUN pnpm install
 # Generate Prisma client
 RUN pnpm exec nx run api:prisma-generate
 
-RUN pnpm exec nx run api:build --configuration=development
-
-COPY dist/apps/api/ /api/
-COPY node_modules/ /node_modules/
+RUN pnpm exec nx run api:build --configuration=development && \
+    cp -r dist/apps/api/ /api/ && \
+    cp -r node_modules/ /node_modules/
 
 WORKDIR /
 

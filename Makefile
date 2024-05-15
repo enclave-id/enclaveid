@@ -7,7 +7,9 @@ BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 RELEASE_NAME := $(VERSION)
 
 CLUSTER_NAMESPACE := default
-REGISTRY := enclaveid.azurecr.io
+REGISTRY := registry.default.svc.cluster.local:5000
+
+#enclaveid.azurecr.io
 # Find all applications with a Dockerfile
 APPS_DIR := apps
 APPS := $(shell find $(APPS_DIR) -name Dockerfile | sed 's|/Dockerfile||' | xargs -n 1 basename)
