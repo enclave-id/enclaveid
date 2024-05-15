@@ -133,9 +133,24 @@
         "schema": "apps/api/prisma/schema.prisma"
       }
     },
-    "docker-build": {
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
       "dependsOn": ["build"],
-      "command": "docker build -f apps/api/Dockerfile . -t api"
+      "options": {
+        "engine": "docker",
+        "file": "Dockerfile.deploy",
+        "metadata": {
+          "images": ["api"],
+          "load": true,
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
+        }
+      }
     }
   },
   "tags": []
