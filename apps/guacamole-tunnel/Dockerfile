@@ -1,4 +1,4 @@
-FROM amazoncorretto:22
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:22
 
 WORKDIR /kaniko/buildcontext/
 

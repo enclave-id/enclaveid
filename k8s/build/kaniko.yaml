@@ -18,6 +18,7 @@ spec:
           '--reproducible',
           '--cache=true',
           '--cache-ttl=48h',
+          '--cache-copy-layers=true',
         ]
       envFrom:
         - secretRef:
