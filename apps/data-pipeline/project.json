@@ -27,7 +27,7 @@
       "executor": "@nxlv/python:build",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "outputPath": "apps/data-pipeline/dist",
+        "outputPath": "dist/apps/data-pipeline",
         "publish": false,
         "lockedVersions": false,
         "bundleLocalDependencies": true
@@ -59,6 +59,26 @@
       "options": {
         "command": "poetry run pytest tests/",
         "cwd": "apps/data-pipeline"
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "options": {
+        "engine": "docker",
+        "push": true,
+        "metadata": {
+          "images": [
+            "registry.container-registry.svc.cluster.local:5000/enclaveid/data-pipeline"
+          ],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
+        }
       }
     }
   },

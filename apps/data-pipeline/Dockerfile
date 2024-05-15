@@ -1,17 +1,12 @@
 FROM python:3.10.14
 
-SHELL ["/bin/bash", "-ec"]
+# TODO: is there a way to install the wheel with poetry?
+# RUN apt-get update && apt-get install -y pipx
+# RUN pipx ensurepath
+# RUN pipx install poetry
 
-WORKDIR /kaniko/buildcontext/
+# TODO: copy local dependencies
+COPY dist/apps/data-pipeline /app
+WORKDIR /app
 
-RUN apt-get update && apt-get install -y pipx
-RUN pipx ensurepath
-RUN pipx install poetry
-
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-RUN nvm install 21.4.0
-
-RUN npm install -g pnpm@9.1.1
-
-RUN pnpm i
-RUN pnpm exec nx run data-pipeline:install
+RUN pip install data_pipeline-1.0.0-py3-none-any.whl
