@@ -1,5 +1,7 @@
 FROM python:3.10.14
 
+SHELL ["/bin/bash", "-ec"]
+
 WORKDIR /kaniko/buildcontext/
 
 RUN apt-get update && apt-get install -y pipx

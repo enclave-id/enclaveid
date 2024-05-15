@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
     - name: kaniko
-      image: gcr.io/kaniko-project/executor:debug #v1.21.1
+      image: gcr.io/kaniko-project/executor:v1.21.1
       args:
         [
           '--context=git://github.com/enclave-id/enclaveid#refs/heads/${BRANCH}',
@@ -19,7 +19,6 @@ spec:
           '--reproducible',
           '--cache=true',
           '--cache-ttl=48h',
-          '--verbosity=debug',
         ]
       envFrom:
         - secretRef:
