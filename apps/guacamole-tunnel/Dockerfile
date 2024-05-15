@@ -1,11 +1,6 @@
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:22
 
-WORKDIR /kaniko/buildcontext/
+WORKDIR /app
+COPY apps/guacamole-tunnel/target /app
 
-RUN cd apps/guacamole-tunnel && \
-  ./mvnw package && \
-  cp -r apps/guacamole-tunnel/target/guacamole-tunnel-0.0.1-SNAPSHOT.jar /guacamole-tunnel-0.0.1-SNAPSHOT.jar
-
-WORKDIR /
-
-ENTRYPOINT [ "java", "-jar", "/guacamole-tunnel-0.0.1-SNAPSHOT.jar" ]
+ENTRYPOINT [ "java", "-jar", "/app/guacamole-tunnel-0.0.1-SNAPSHOT.jar" ]

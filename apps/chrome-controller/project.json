@@ -12,7 +12,7 @@
         "platform": "node",
         "outputPath": "dist/apps/chrome-controller",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/chrome-controller/src/main.ts",
         "tsConfig": "apps/chrome-controller/tsconfig.app.json",
         "assets": ["apps/chrome-controller/src/assets"],
@@ -48,6 +48,26 @@
         },
         "production": {
           "buildTarget": "chrome-controller:build:production"
+        }
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "options": {
+        "engine": "docker",
+        "push": true,
+        "metadata": {
+          "images": [
+            "registry.container-registry.svc.cluster.local:5000/enclaveid/chrome-controller"
+          ],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
         }
       }
     }

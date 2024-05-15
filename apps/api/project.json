@@ -12,7 +12,7 @@
         "platform": "node",
         "outputPath": "dist/apps/api",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
         "assets": ["apps/api/src/assets"],
@@ -138,10 +138,11 @@
       "dependsOn": ["build"],
       "options": {
         "engine": "docker",
-        "file": "Dockerfile.deploy",
+        "push": true,
         "metadata": {
-          "images": ["api"],
-          "load": true,
+          "images": [
+            "registry.container-registry.svc.cluster.local:5000/enclaveid/api"
+          ],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",
