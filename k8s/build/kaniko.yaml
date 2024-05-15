@@ -10,11 +10,10 @@ spec:
   containers:
     - name: kaniko
       image: gcr.io/kaniko-project/executor:v1.21.1
-      args:
-        [
+      args: [
           '--context=git://github.com/enclave-id/enclaveid#refs/heads/${BRANCH}',
-          '--context-sub-path=${CONTEXT_SUB_PATH}',
-          '--dockerfile=Dockerfile',
+          #'--context-sub-path=${CONTEXT_SUB_PATH}',
+          '--dockerfile=${CONTEXT_SUB_PATH}/Dockerfile',
           '--destination=${DESTINATION_IMAGE}',
           '--reproducible',
           '--cache=true',

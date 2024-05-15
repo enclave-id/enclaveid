@@ -5,7 +5,7 @@ WORKDIR /kaniko/buildcontext/
 # so that we can pin package versions and make it reproducible
 RUN apk add --no-cache openssl gnutls-utils xxd
 
-COPY . /
+COPY k8s/containers/init/create-secrets/ /
 
 WORKDIR /
 
