@@ -12,7 +12,7 @@
         "platform": "node",
         "outputPath": "dist/apps/api",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
         "assets": ["apps/api/src/assets"],
@@ -133,9 +133,25 @@
         "schema": "apps/api/prisma/schema.prisma"
       }
     },
-    "docker-build": {
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
       "dependsOn": ["build"],
-      "command": "docker build -f apps/api/Dockerfile . -t api"
+      "options": {
+        "engine": "docker",
+        "push": true,
+        "metadata": {
+          "images": [
+            "registry.container-registry.svc.cluster.local:5000/enclaveid/api"
+          ],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
+        }
+      }
     }
   },
   "tags": []

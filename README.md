@@ -126,6 +126,16 @@ echo -e "[Match]\nName=*\n\n[Network]\nDHCP=yes\n\n[Domain]\nName=cluster.local"
 # Restart systemd-resolved
 sudo systemctl restart systemd-resolved
 
+# Add the registry to the insecure registries list
+echo "
+{
+  \"insecure-registries\" : [\"registry.container-registry.svc.cluster.local:5000\"]
+}
+" | sudo tee /etc/docker/daemon.json
+
+# Restart Docker
+sudo systemctl restart docker
+
 # To access the dashboard
 microk8s dashboard-proxy
 ```
