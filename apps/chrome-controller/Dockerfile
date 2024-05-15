@@ -6,8 +6,7 @@ WORKDIR /kaniko/buildcontext/
 
 RUN pnpx @puppeteer/browsers install chrome@116.0.5793.0
 
-RUN pnpm install
-RUN pnpm exec nx run chrome-controller:build && \
+RUN pnpm install && pnpm exec nx run chrome-controller:build && \
     cp -r dist/apps/chrome-controller/ /kaniko/dist/apps/chrome-controller/ && \
     cp -r node_modules/ /kaniko/node_modules/
 
