@@ -2,7 +2,7 @@ FROM amazoncorretto:22
 
 WORKDIR /kaniko/buildcontext/
 
-RUN cd apps/guacamole-tunnel && ./mvnw package
+RUN apps/guacamole-tunnel/mvnw package
 
 COPY target/ /guacamole-tunnel/
 
