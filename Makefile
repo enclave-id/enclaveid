@@ -30,8 +30,5 @@ undeploy:
 
 .PHONY: sync-dagster
 sync-dagster:
-	@echo "Syncing dagster"
-  CODE_LOCATION_IMAGE=$(REGISTRY)/data-pipeline:$(RELEASE_NAME) \
-  envsubst < dagster_cloud_template.yaml > dagster_cloud.yaml \
-  | dagster-cloud workspace sync -w dagster_cloud.yaml
+	dagster-cloud workspace sync -w apps/data-pipeline/dagster_cloud.yaml
 

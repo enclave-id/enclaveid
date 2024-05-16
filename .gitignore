@@ -58,6 +58,3 @@ __pycache__
 # K8s files
 k8s/renders/*
 !k8s/renders/.gitkeep
-
-# Dagster
-dagster_cloud.yaml

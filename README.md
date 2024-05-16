@@ -176,7 +176,7 @@ AZURE_RESOURCE_GROUP=enclaveid-prod
 
 AZURE_CLUSTER_NAME=enclaveid-cluster
 AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5 # For CPU workloads
-AZURE_NODE_VM_SIZE_GPU=NCADS_A100_v4 # For GPU workloads
+AZURE_NODE_VM_SIZE_GPU=standard_nc24ads_a100_v4 # For GPU workloads
 
 AZURE_REGION=eastus2
 AZURE_SERVICE_ACCOUNT_NAME=enclaveid-cluster-identity-sa
@@ -201,8 +201,13 @@ az extension update --name confcom
 # Register Kata CoCo feature flag
 az feature register --namespace "Microsoft.ContainerService" --name "KataCcIsolationPreview"
 
+# Register AKS GPU image feature flag
+az feature register --namespace "Microsoft.ContainerService" --name "GPUDedicatedVHDPreview"
+
 # Verify registration status and refresh registration status in resource provider
 az feature show --namespace "Microsoft.ContainerService" --name "KataCcIsolationPreview"
+az feature show --namespace "Microsoft.ContainerService" --name "GPUDedicatedVHDPreview"
+
 az provider register --namespace "Microsoft.ContainerService"
 ```
 
@@ -217,10 +222,11 @@ az aks create --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER
 az aks get-credentials --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --overwrite-existing
 
 # Add a nodepool for CPU workloads with confidential computing
-az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name cpu-nodepool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 1 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation --min-count 1 --max-count 4 --enable-cluster-autoscaler
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name cpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 0 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation --min-count 0 --max-count 4 --enable-cluster-autoscaler
 
 # Add a nodepool for GPU workloads
-az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name gpu-nodepool --cluster-name "${AZURE_CLUSTER_NAME}" --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE_GPU}" --min-count 0 --max-count 1 --enable-cluster-autoscaler
+# We also add a taint to make sure only GPU workloads are scheduled here
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name gpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 0 --node-taints sku=gpu:NoSchedule --node-vm-size "${AZURE_NODE_VM_SIZE_GPU}" --min-count 0 --max-count 1 --enable-cluster-autoscaler --aks-custom-headers UseGPUDedicatedVHD=true
 ```
 
 Setup Federated Identity

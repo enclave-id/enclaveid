@@ -1,0 +1,5 @@
+locations:
+  - location_name: data_pipeline
+    image: enclaveid.azurecr.io/enclaveid/data-pipeline:latest
+    code_source:
+      package_name: data_pipeline

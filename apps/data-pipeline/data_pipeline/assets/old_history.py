@@ -12,6 +12,7 @@ from sentence_transformers import SentenceTransformer
 
 from ..partitions import user_partitions_def
 from ..utils.custom_config import RowLimitConfig
+from ..utils.k8s import gpu_toleration_tags
 from ..utils.old_history_utils import (
     InterestsSpec,
     get_embeddings,
@@ -74,6 +75,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         name=spec.name_prefix + "_interests",
         partitions_def=user_partitions_def,
         io_manager_key="parquet_io_manager",
+        tags=gpu_toleration_tags,
     )
     def interests(
         context: AssetExecutionContext,
@@ -109,6 +111,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         partitions_def=user_partitions_def,
         io_manager_key="parquet_io_manager",
         ins={"interests": AssetIn(key=[spec.name_prefix + "_interests"])},
+        tags=gpu_toleration_tags,
     )
     def interests_embeddings(
         context: AssetExecutionContext,
@@ -142,6 +145,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
                 key=[spec.name_prefix + "_interests_embeddings"]
             )
         },
+        tags=gpu_toleration_tags,
     )
     def interests_clusters(
         context: AssetExecutionContext,

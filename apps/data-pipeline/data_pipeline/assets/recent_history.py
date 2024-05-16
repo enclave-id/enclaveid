@@ -22,14 +22,14 @@ from ..utils.recent_history_utils import (
 # where appropriate.
 
 SUMMARY_PROMPT = dedent("""
-    Analyze the provided list of Google search records to identify distinct topic groups. For each group, create a summary in the JSON format below. Ensure each summary includes: 
+    Analyze the provided list of Google search records to identify distinct topic groups. For each group, create a summary in the JSON format below. Ensure each summary includes:
 
     - `time_start`: The start time of the first search in the group.
     - `time_end`: The end time of the last search in the group.
     - `description`: A detailed account of the searches and site visits, enriched with inferred user intent and additional insights into the topic.
     - `interests`: A list of keywords representing the user's interests based on the searches.
 
-    Each `description` should not only recap the searches but also offer a deeper understanding of what the user might be seeking or the broader context of their inquiries. Group searches based on thematic relevance and timing. 
+    Each `description` should not only recap the searches but also offer a deeper understanding of what the user might be seeking or the broader context of their inquiries. Group searches based on thematic relevance and timing.
 
     Example of JSON output format:
 
@@ -39,7 +39,7 @@ SUMMARY_PROMPT = dedent("""
     "description": "Elaborate on what the user did and why, based on the search terms and visited pages.",
     "interests": ["keyword1", "keyword2"]
     }
-    
+
     Here is a list of searches:
 """)
 
@@ -264,7 +264,7 @@ def time_threshold(
             WHERE
                 user_id = '{context.partition_key}'
         ),
-        
+
         TimeDifferences AS (
             SELECT
                 EXTRACT('epoch' FROM time_start - prev_time_end) AS time_diff
@@ -273,7 +273,7 @@ def time_threshold(
             WHERE
                 time_start > prev_time_end
         )
-        
+
         SELECT
             percentile_cont(0.10) WITHIN GROUP (ORDER BY time_diff) AS time_interval_10th
         FROM
@@ -323,7 +323,7 @@ def similarity_threshold(
             WHERE
                 cosine_similarity IS NOT NULL
         )
-        
+
         SELECT
             percentile_cont(0.90) WITHIN GROUP (ORDER BY cosine_similarity) AS embedding_similarity_90th
         FROM
@@ -365,9 +365,9 @@ def recent_sessions_merged(
     )
     client.execute_query(
         query=f"""
-        INSERT INTO recent_sessions_merged 
+        INSERT INTO recent_sessions_merged
         SELECT *
-        FROM recent_session_embeddings 
+        FROM recent_session_embeddings
         WHERE user_id = '{context.partition_key}';
         """
     )
@@ -383,27 +383,27 @@ def recent_sessions_merged(
     # alternative solution.
     candidates_to_merge = client.execute_query(
         query=f"""
-        SELECT 
-            a.id, 
+        SELECT
+            a.id,
             b.id
-        FROM 
+        FROM
             recent_sessions_merged a
-        JOIN 
-            recent_sessions_merged b 
+        JOIN
+            recent_sessions_merged b
             ON
                 a.user_id = '{context.partition_key}'
                 AND a.user_id = b.user_id
-                AND a.id != b.id 
+                AND a.id != b.id
                 AND (
-                    b.date > a.date 
+                    b.date > a.date
                     OR (a.date = b.date AND b.time_start >= a.time_end)
                 )
-        WHERE 
+        WHERE
             EXTRACT(
                 'epoch' FROM (
                     (b.date || ' ' || b.time_start)::timestamp
                     - (a.date || ' ' || a.time_end)::timestamp
-                ) 
+                )
             ) <= {time_threshold}
             AND
             1 - (a.embedding <=> b.embedding) >= {similarity_threshold}""",
@@ -419,9 +419,9 @@ def recent_sessions_merged(
             f"""
             UPDATE recent_sessions_merged
             SET time_end = (
-                SELECT 
+                SELECT
                     GREATEST(max_a.time_end, max_b.time_end)
-                FROM 
+                FROM
                     (SELECT time_end FROM recent_sessions_merged WHERE id = {a}) as max_a,
                     (SELECT time_end FROM recent_sessions_merged WHERE id = {b}) as max_b
             )
@@ -434,9 +434,9 @@ def recent_sessions_merged(
             f"""
             UPDATE recent_sessions_merged
             SET time_start = (
-                SELECT 
+                SELECT
                     LEAST(min_a.time_start, min_b.time_start)
-                FROM 
+                FROM
                     (SELECT time_start FROM recent_sessions_merged WHERE id = {a}) as min_a,
                     (SELECT time_start FROM recent_sessions_merged WHERE id = {b}) as min_b
             )
@@ -479,13 +479,13 @@ def recent_sessions_graph(
             FROM
                 recent_sessions_merged a
             JOIN
-                recent_sessions_merged b 
+                recent_sessions_merged b
                 ON
                     a.user_id = '{context.partition_key}'
                     AND a.user_id = b.user_id
-                    AND a.id != b.id 
+                    AND a.id != b.id
                     AND (
-                        b.date > a.date 
+                        b.date > a.date
                         OR (a.date = b.date AND b.time_start >= a.time_end)
                     )
         ),
@@ -499,7 +499,7 @@ def recent_sessions_graph(
                 ) AS rank
             FROM
                 DocumentPairs
-        ), 
+        ),
 
         FilteredPairs1 as (
             SELECT
@@ -515,7 +515,7 @@ def recent_sessions_graph(
         )
 
         INSERT INTO recent_sessions_graph (user_id, parent_id, child_id, weight)
-        
+
         SELECT
             user_id,
             doc_id,

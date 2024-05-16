@@ -1,4 +1,4 @@
-FROM python:3.10.14
+FROM nvcr.io/nvidia/rapidsai/base:24.04-cuda12.2-py3.10
 
 # TODO: is there a way to install the wheel with poetry?
 # RUN apt-get update && apt-get install -y pipx
