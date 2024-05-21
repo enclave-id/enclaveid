@@ -26,9 +26,7 @@ function MFTSection() {
   return (
     <>
       <div className="flex flex-col gap-2.5 items-center">
-        <h2 className="text-lg text-passiveLinkColor text-center leading-[22px]">
-          MFT
-        </h2>
+        <h2 className="chart-title">MFT</h2>
 
         <MFTChart {...MFTChartData} handleClick={handleClick} />
       </div>

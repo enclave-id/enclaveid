@@ -49,9 +49,7 @@ function CareerContent() {
   return (
     <>
       <div className="flex flex-col gap-2.5 items-center mt-3.5 max-w-[538px]">
-        <h2 className="text-lg text-passiveLinkColor text-center leading-[22px]">
-          RIASEC
-        </h2>
+        <h2 className="chart-title">RIASEC</h2>
         <div className="border border-[#E5E8EE] flex flex-col gap-10 items-center justify-center rounded-3xl w-full pt-[30px] pb-3.5 px-3">
           <RadarChart values={radarChart.values} />
           <Button

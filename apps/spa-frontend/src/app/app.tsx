@@ -24,7 +24,6 @@ import { SocialLayout } from './components/SocialLayout';
 import { SocialPage } from './pages/SocialPage';
 import { ProfilePage } from './pages/ProfilePage';
 
-
 const reactRouter = createBrowserRouter([
   {
     path: '/',
