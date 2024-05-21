@@ -10,7 +10,6 @@ function Pin({ variant, style }: PinProps) {
     variant === 'secondary'
       ? {
           ...style,
-          // @ts-expect-error: Property 'transform' does not exist on type 'CSSProperties'.
           transform: `${style.transform} translateY(-50%)`,
         }
       : style;

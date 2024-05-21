@@ -11,7 +11,11 @@ CLUSTER_NAMESPACE := default
 REGISTRY := registry.container-registry.svc.cluster.local:5000
 
 build:
-	nx run-many --target=build --all --parallel
+	pnpm exec nx run-many --target=build --all --parallel
+
+.PHONY: containers
+containers: build
+	pnpm exec nx run-many --target=container --all --parallel --output-style=stream
 
 .PHONY: update-app-version
 update-app-version:

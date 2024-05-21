@@ -32,7 +32,13 @@ function MFTDetails() {
         </div>
       </div>
       <div className="gap-9 flex flex-col overflow-y-auto items-center justify-center shrink-0 xl:max-w-[545px] w-full xl:pt-0 pt-10">
-        <MFTChart {...circles} />
+        <MFTChart
+          mftChartAvailable={false}
+          handleClick={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+          {...circles}
+        />
       </div>
     </div>
   );

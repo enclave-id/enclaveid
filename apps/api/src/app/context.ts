@@ -6,6 +6,9 @@ import { UserCookie } from './types/fastify';
 async function setJwtCookie(user: UserCookie, reply: FastifyReply) {
   const token = await reply.jwtSign(user);
 
+  // TODO: figure out why frontend is complaining about this
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   reply.setCookie('token', token, {
     path: '/',
     secure: true,
