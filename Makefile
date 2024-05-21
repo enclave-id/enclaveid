@@ -10,6 +10,8 @@ CLUSTER_NAMESPACE := default
 # Change to enclaveid.azurecr.io for remote registry
 REGISTRY := registry.container-registry.svc.cluster.local:5000
 
+build:
+	nx run-many --target=build --all --parallel
 
 .PHONY: update-app-version
 update-app-version:
