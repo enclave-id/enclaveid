@@ -5,6 +5,9 @@ import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
 import { scrapeGoogleTakeout } from './scraping';
 import { ChromeUserEventEnum, toEventPayload } from '@enclaveid/shared';
 
+// Keep this here otherwise it doesnt get bundled
+import 'puppeteer-extra-plugin-user-data-dir';
+
 import Redis from 'ioredis';
 
 const redis = new Redis({
@@ -77,14 +80,12 @@ export async function startPuppeteerSession(
   const { vh, vw } = viewport;
 
   const browser = await puppeteer.launch({
-    executablePath: process.env.CHROMIUM_EXECUTABLE_PATH,
-    // executablePath:
-    //   '/home/ma9o/Desktop/enclaveid/chrome/linux-116.0.5793.0/chrome-linux64/chrome',
+    executablePath: process.env.CHROME_BIN,
     headless: false,
     userDataDir: '/tmp/fakeOauth',
     args: [
-      //'--start-fullscreen',
-      //'--kiosk',
+      '--start-fullscreen',
+      '--kiosk',
       '--disable-infobars',
       '--disable-session-crashed-bubble',
       '--noerrdialogs',

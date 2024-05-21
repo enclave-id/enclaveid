@@ -2,12 +2,13 @@ FROM linuxserver/rdesktop:fedora-icewm
 
 SHELL ["/bin/bash", "--login", "-ec"]
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-RUN nvm install 22
+WORKDIR /
+
+RUN dnf update -y && dnf install -y nodejs
 
 RUN npx @puppeteer/browsers install chrome@116.0.5793.0
+ENV CHROME_BIN=/chrome/linux-116.0.5793.0/chrome-linux64/chrome
 
-WORKDIR /app
-COPY dist/apps/chrome-controller/ /app/
+COPY dist/apps/chrome-controller/ /chrome-controller/
 
 CMD [ "node", "chrome-controller", "&" ]
