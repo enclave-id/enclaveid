@@ -36,10 +36,11 @@ readme = 'README.md'
   mistralai = "^0.1.8"
   vllm = "^0.4.1"
   sentence-transformers = "^2.7.0"
+  # TODO: In theory there is no need for these if we use the rapidsai base image
   # See: https://github.com/rapidsai/cuml/issues/4493
-  dask-cudf-cu12 = { url = "https://pypi.nvidia.com/dask-cudf-cu12/dask_cudf_cu12-24.4.0-py3-none-any.whl"}
-  cuml-cu12 = { url = "https://pypi.nvidia.com/cuml-cu12/cuml_cu12-24.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
-  cudf-cu12 = { url = "https://pypi.nvidia.com/cudf-cu12/cudf_cu12-24.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
+  # dask-cudf-cu12 = { url = "https://pypi.nvidia.com/dask-cudf-cu12/dask_cudf_cu12-24.4.0-py3-none-any.whl"}
+  # cuml-cu12 = { url = "https://pypi.nvidia.com/cuml-cu12/cuml_cu12-24.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
+  # cudf-cu12 = { url = "https://pypi.nvidia.com/cudf-cu12/cudf_cu12-24.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
 
 
   [tool.poetry.group.dev.dependencies]

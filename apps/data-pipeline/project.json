@@ -68,9 +68,7 @@
         "engine": "docker",
         "push": true,
         "metadata": {
-          "images": [
-            "registry.container-registry.svc.cluster.local:5000/enclaveid/data-pipeline"
-          ],
+          "images": ["docker.io/enclaveid/data-pipeline"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",

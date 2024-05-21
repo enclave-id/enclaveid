@@ -30,5 +30,8 @@ undeploy:
 
 .PHONY: sync-dagster
 sync-dagster:
-	dagster-cloud workspace sync -w apps/data-pipeline/dagster_cloud.yaml
+	dagster-cloud workspace sync -w apps/data-pipeline/dagster_cloud.yaml \
+    --api-token $(DAGSTER_API_TOKEN) \
+    --organization enclaveid \
+    --deployment prod
 
