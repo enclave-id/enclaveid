@@ -5,6 +5,7 @@ import { userData } from '../components/mock-data';
 function SocialPage() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const filteredUsers = userData.filter(
     (user) =>
@@ -19,10 +20,11 @@ function SocialPage() {
         selectedFilters={selectedFilters}
         setSelectedFilters={setSelectedFilters}
         setSearchQuery={setSearchQuery}
+        loading={loading}
       />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-5 gap-y-4">
         {filteredUsers.map((user, index) => (
-          <SocialCard key={index} {...user} />
+          <SocialCard key={index} {...user} loading={loading} />
         ))}
       </div>
     </div>

@@ -20,7 +20,7 @@ function getIdenticon(uniqueId: string): string {
   );
 }
 
-function SocialCard({ name, gender, location, loading = true }: User) {
+function SocialCard({ name, gender, location, loading }: User) {
   const formattedLink = (name: string) => {
     return name
       .split(' ')

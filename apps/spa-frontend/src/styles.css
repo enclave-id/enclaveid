@@ -16,6 +16,9 @@
   .landing-container {
     @apply max-w-[1440px] w-full mx-auto xl:px-16 lg:px-12 md:px-8 sm:px-6 px-4;
   }
+  .chart-title {
+    @apply text-lg text-passiveLinkColor text-center leading-[22px];
+  }
 }
 
 .text-rotation {
