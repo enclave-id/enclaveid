@@ -1,14 +1,20 @@
-FROM linuxserver/rdesktop:fedora-icewm
+FROM linuxserver/rdesktop:fedora-xfce
 
-SHELL ["/bin/bash", "--login", "-ec"]
+SHELL ["/bin/bash", "-c"]
+
+RUN dnf install -y nodejs
 
 WORKDIR /
 
-RUN dnf update -y && dnf install -y nodejs
-
 RUN npx @puppeteer/browsers install chrome@116.0.5793.0
-ENV CHROME_BIN=/chrome/linux-116.0.5793.0/chrome-linux64/chrome
 
-COPY dist/apps/chrome-controller/ /chrome-controller/
+WORKDIR /config
 
-CMD [ "node", "chrome-controller", "&" ]
+COPY dist/apps/chrome-controller/ chrome-controller/
+
+RUN cd chrome-controller && npm i puppeteer-extra-plugin-stealth
+
+COPY apps/chrome-controller/entrypoint.sh /config/entrypoint.sh
+RUN chmod +x /config/entrypoint.sh
+
+CMD ["/config/entrypoint.sh"]

@@ -2,11 +2,9 @@ import { Page } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
+import UserDataDirPlugin from 'puppeteer-extra-plugin-user-data-dir';
 import { scrapeGoogleTakeout } from './scraping';
 import { ChromeUserEventEnum, toEventPayload } from '@enclaveid/shared';
-
-// Keep this here otherwise it doesnt get bundled
-import 'puppeteer-extra-plugin-user-data-dir';
 
 import Redis from 'ioredis';
 
@@ -17,7 +15,7 @@ const redis = new Redis({
 
 const userId = process.env.USER_ID;
 
-puppeteer.use(PrefsPlugin()).use(StealthPlugin());
+puppeteer.use(PrefsPlugin()).use(UserDataDirPlugin()).use(StealthPlugin());
 
 async function updateBoundingBoxes(page: Page) {
   const elements = await page.$$('input[type="email"], input[type="password"]');
@@ -80,9 +78,11 @@ export async function startPuppeteerSession(
   const { vh, vw } = viewport;
 
   const browser = await puppeteer.launch({
-    executablePath: process.env.CHROME_BIN,
+    executablePath:
+      process.env['CHROME_BIN'] ||
+      '/chrome/linux-116.0.5793.0/chrome-linux64/chrome',
     headless: false,
-    userDataDir: '/tmp/fakeOauth',
+    //userDataDir: '/tmp/fakeOauth',
     args: [
       '--start-fullscreen',
       '--kiosk',
@@ -90,6 +90,7 @@ export async function startPuppeteerSession(
       '--disable-session-crashed-bubble',
       '--noerrdialogs',
       `--window-size=${vw},${vh}`,
+      '--no-sandbox',
     ],
     ignoreDefaultArgs: ['--enable-automation'],
     defaultViewport: {
