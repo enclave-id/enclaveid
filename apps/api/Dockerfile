@@ -7,7 +7,6 @@ WORKDIR /
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Pino is not bundling correctly so we need to install it manually
-RUN cd api && npm install pino-pretty
+COPY node_modules/prisma/libquery_engine-linux-musl-openssl-3.0.x.so.node /.prisma/client/
 
 CMD [ "node", "api" ]
