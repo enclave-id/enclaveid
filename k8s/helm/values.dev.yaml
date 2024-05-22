@@ -2,7 +2,7 @@ containers:
   api:
     image: localhost:32000/enclaveid/api:master # TODO: versioning and immutable @digest
     env:
-      apiDatabaseUrl: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
+      apiDatabaseUrl: postgres://enclaveid:enclaveid@enclaveid-postgresql.default.svc.cluster.local:5432/enclaveid_api
 
 initContainers:
   createSecrets:

@@ -10,6 +10,7 @@ import helmet from './app/plugins/helmet';
 import jwtAuth from './app/plugins/jwtAuth';
 import prismaLifecycle from './app/plugins/prismaLifecycle';
 import trpcAdapter from './app/plugins/trpcAdapter';
+import fastifyHealthcheck from 'fastify-healthcheck';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -27,6 +28,7 @@ server.register(helmet);
 server.register(jwtAuth);
 server.register(prismaLifecycle);
 server.register(trpcAdapter);
+server.register(fastifyHealthcheck);
 
 // Start listening.
 server.listen({ port, host }, (err) => {

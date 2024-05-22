@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "enclaveid.fullname" . }}:{{ .Values.service.port }}']
+      args: ['http://enclaveid.default.svc.cluster.local/health']
   restartPolicy: Never

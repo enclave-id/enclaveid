@@ -58,3 +58,6 @@ __pycache__
 # K8s files
 k8s/renders/*
 !k8s/renders/.gitkeep
+
+# Winston logs
+logs

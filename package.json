@@ -114,6 +114,7 @@
     "classnames": "^2.5.1",
     "eventemitter3": "^5.0.1",
     "fastify": "~4.26.2",
+    "fastify-healthcheck": "^4.4.0",
     "fastify-plugin": "~4.5.1",
     "framer-motion": "^11.2.4",
     "ioredis": "^5.4.1",
