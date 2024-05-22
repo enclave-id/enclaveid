@@ -53,8 +53,9 @@ function createPodTemplate(name): k8s.V1Pod {
       containers: [
         {
           name: 'rdesktop',
-          //image: 'registry.container-registry.svc.cluster.local:5000/chrome-controller:0.0.0',
-          image: 'lscr.io/linuxserver/rdesktop:latest',
+          image:
+            process.env['CHROME_CONTROLLER_IMAGE'] ||
+            'registry.container-registry.svc.cluster.local:5000/enclaveid/chrome-controller:master',
           ports: [
             {
               containerPort: 3389,

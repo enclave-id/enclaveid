@@ -6,6 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
+      "dependsOn": ["prisma-generate"],
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
@@ -17,12 +18,7 @@
         "tsConfig": "apps/api/tsconfig.app.json",
         "assets": ["apps/api/src/assets"],
         "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
+        "esbuildConfig": "apps/api/esbuild.config.js"
       },
       "configurations": {
         "development": {},
