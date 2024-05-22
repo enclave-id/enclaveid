@@ -5,29 +5,27 @@
 replicaCount: 1
 
 # These are set when running make helm-chart
-images:
+containers:
   api:
-    repository:
-    tag:
-    pullPolicy: IfNotPresent
+    image:
+    imagePullPolicy: IfNotPresent
 
-initImages:
-  createSecrets:
-    repository:
-    tag:
-    pullPolicy: IfNotPresent
-    arguments:
-      environment:
-      keyName: master-secret
-      kvStoreName: enclaveid
-      managedIdentity:
-      maaEndpoint:
-      workloadMeasurement:
-  loadSecrets:
-    repository:
-    tag:
-    pullPolicy: IfNotPresent
-    arguments: {}
+# initContainers:
+#   createSecrets:
+#     image:
+#     imagePullPolicy: IfNotPresent
+#     arguments:
+#       environment:
+#       keyName: master-secret
+#       kvStoreName: enclaveid
+#       managedIdentity:
+#       maaEndpoint:
+#       workloadMeasurement:
+#   loadSecrets:
+#     repository:
+#     tag:
+#     pullPolicy: IfNotPresent
+#     arguments: {}
 
 imagePullSecrets: []
 nameOverride: ''

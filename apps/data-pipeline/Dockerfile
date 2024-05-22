@@ -12,4 +12,5 @@ FROM python:3.10
 COPY dist/apps/data-pipeline /app
 WORKDIR /app
 
-RUN pip install data_pipeline-1.0.0-py3-none-any.whl
+# TODO: remove ml deps
+# RUN pip install data_pipeline-1.0.0-py3-none-any.whl

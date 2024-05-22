@@ -2,16 +2,28 @@ include .env
 
 ENV ?= dev
 VERSION ?= 0.0.0
-BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 
-RELEASE_NAME := $(VERSION)
-
-CLUSTER_NAMESPACE := default
 # Change to enclaveid.azurecr.io for remote registry
 REGISTRY := registry.container-registry.svc.cluster.local:5000
 
+# Find all auxiliary containers
+AUX_CONTAINERS_DIR := k8s/aux_containers
+AUX_CONTAINERS := $(shell find $(AUX_CONTAINERS_DIR) -name Dockerfile | sed 's|/Dockerfile||' | xargs -n 1 basename)
+
 build:
 	pnpm exec nx run-many --target=build --all --parallel
+
+# TODO: Can we make nx handle this too?
+.PHONY: aux-containers
+aux-containers:
+	@for container in $(AUX_CONTAINERS); do \
+		docker build -t $(REGISTRY)/enclaveid/$$container:$(VERSION) $(AUX_CONTAINERS_DIR)/$$container & \
+	done
+	@wait
+	@for container in $(AUX_CONTAINERS); do \
+		docker push $(REGISTRY)/enclaveid/$$container:$(VERSION) & \
+	done
+	@wait
 
 .PHONY: containers
 containers: build
@@ -19,11 +31,11 @@ containers: build
 
 .PHONY: update-app-version
 update-app-version:
-	@echo "Updating app version to $(RELEASE_NAME)"
-	@yq eval -i '.appVersion = "$(RELEASE_NAME)"' k8s/helm/Chart.yaml
+	@echo "Updating app version to $(VERSION)"
+	@yq eval -i '.appVersion = "$(VERSION)"' k8s/helm/Chart.yaml
 
 helm-chart: update-app-version
-	RELEASE_NAME=$(RELEASE_NAME) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
+	RELEASE_NAME=$(VERSION) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
 
 .PHONY: deploy
 deploy: helm-chart

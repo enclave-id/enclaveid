@@ -36,15 +36,15 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: create-secrets
-          image: "{{ .Values.initImages.createSecrets.repository }}@{{ .Values.initImages.createSecrets.tag }}"
-          imagePullPolicy: {{ .Values.initImages.createSecrets.pullPolicy }}
+          image: "{{ .Values.initContainers.createSecrets.image }}"
+          imagePullPolicy: {{ .Values.initContainers.createSecrets.imagePullPolicy }}
           args: [
-            "{{ .Values.initImages.createSecrets.arguments.environment }}",
-            "{{ .Values.initImages.createSecrets.arguments.keyName }}",
-            "{{ .Values.initImages.createSecrets.arguments.kvStoreName }}",
-            "{{ .Values.initImages.createSecrets.arguments.managedIdentity }}",
-            "{{ .Values.initImages.createSecrets.arguments.maaEndpoint }}",
-            "{{ .Values.initImages.createSecrets.arguments.workloadMeasurement }}"
+            "{{ .Values.initContainers.createSecrets.arguments.environment }}",
+            "{{ .Values.initContainers.createSecrets.arguments.keyName }}",
+            "{{ .Values.initContainers.createSecrets.arguments.kvStoreName }}",
+            "{{ .Values.initContainers.createSecrets.arguments.managedIdentity }}",
+            "{{ .Values.initContainers.createSecrets.arguments.maaEndpoint }}",
+            "{{ .Values.initContainers.createSecrets.arguments.workloadMeasurement }}"
           ]
           # TODO: how can we add this to every container?
           volumeMounts:
@@ -56,11 +56,11 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.images.api.repository }}@{{ .Values.images.api.tag }}"
-          imagePullPolicy: {{ .Values.images.api.pullPolicy }}
+          image: "{{ .Values.containers.api.image }}"
+          imagePullPolicy: {{ .Values.containers.api.imagePullPolicy }}
           env:
             - name: API_DATABASE_URL
-              value: {{ .Values.images.api.env.apiDatabaseUrl }}
+              value: {{ .Values.containers.api.env.apiDatabaseUrl }}
           ports:
             - name: http
               containerPort: 80

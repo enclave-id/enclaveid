@@ -1,12 +1,12 @@
-images:
+containers:
   api:
-    repository: localhost:32000/api
+    image: localhost:32000/enclaveid/api:master # TODO: versioning and immutable @digest
     env:
       apiDatabaseUrl: postgresql://enclaveid:enclaveid@enclaveid-postgresql:5432/enclaveid_api
 
-initImages:
+initContainers:
   createSecrets:
-    repository: localhost:32000/create-secrets
+    image: localhost:32000/enclaveid/create-secrets:0.0.0 # TODO: versioning and immutable @digest
     arguments:
       environment: microk8s
 
