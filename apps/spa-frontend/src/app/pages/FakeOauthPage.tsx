@@ -11,7 +11,7 @@ export function FakeOauthPage() {
   const startSession = trpc.private.startSession.useMutation();
 
   const [connecting, setConnecting] = useState(false);
-  const [subscribePodEvents, setSubscribePodEvents] = useState(null);
+  const [podId, setPodId] = useState(null);
   const [guacClient, setGuacClient] = useState<Guacamole.Client | null>(null);
 
   const displayRef = useRef<HTMLDivElement>(null);
@@ -87,14 +87,17 @@ export function FakeOauthPage() {
   }, [guacClient]);
 
   trpc.private.podEvents.useSubscription(
-    { podName: subscribePodEvents },
+    { podName: podId },
     {
-      enabled: !!subscribePodEvents,
+      enabled: !!podId,
       onData: ({ event, data }) => {
         switch (event) {
           case ChromeUserEventEnum.LOGIN_SUCCESS:
             guacClient.disconnect();
-            setSubscribePodEvents(null);
+            displayRef.current?.removeChild(
+              guacClient.getDisplay().getElement(),
+            );
+            setPodId(null);
             break;
           case ChromeUserEventEnum.NEW_BOUNDING_BOX:
             console.log('NEW_BOUNDING_BOX', data); // TODO
@@ -122,7 +125,7 @@ export function FakeOauthPage() {
               },
             })
             .then((pod) => {
-              setSubscribePodEvents(pod.chromePodId);
+              setPodId(pod.chromePodId);
               connectGuac(pod.rdpPassword, pod.hostname, pod.chromePodId);
             });
         }}

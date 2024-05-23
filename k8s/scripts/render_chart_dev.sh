@@ -15,7 +15,7 @@ echo "Load secrets image digest: ${LOAD_SECRETS_IMAGE_DIGEST}"
 
 helm template enclaveid "$SCRIPT_DIR"/../helm \
   --set containers.api.image="${LOCAL_REGISTRY}/enclaveid/api@${API_IMAGE_DIGEST}" \
-  --set initCotnainers.createSecrets.image="${LOCAL_REGISTRY}/enclaveid/create-secrets@${CREATE_SECRETS_IMAGE_DIGEST}" \
-  --set initCotnainers.loadSecrets.image="${LOCAL_REGISTRY}/enclaveid/load-secrets@${LOAD_SECRETS_IMAGE_DIGEST}" \
+  --set initContainers.createSecrets.image="${LOCAL_REGISTRY}/enclaveid/create-secrets@${CREATE_SECRETS_IMAGE_DIGEST}" \
+  --set initContainers.loadSecrets.image="${LOCAL_REGISTRY}/enclaveid/load-secrets@${LOAD_SECRETS_IMAGE_DIGEST}" \
   -f "${SCRIPT_DIR}/../helm/values.yaml" -f "${SCRIPT_DIR}/../helm/values.dev.yaml" |
   "$SCRIPT_DIR"/split_chart.sh
