@@ -1,4 +1,4 @@
-import { prisma } from '../prisma';
+import { prisma } from '@enclaveid/backend';
 import crypto from 'crypto';
 
 export async function encryptResponsePayload(

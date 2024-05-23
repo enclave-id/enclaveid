@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@enclaveid/backend": ["libs/backend/src/index.ts"],
       "@enclaveid/shared": ["libs/shared/src/index.ts"]
     }
   },

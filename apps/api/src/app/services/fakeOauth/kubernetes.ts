@@ -1,5 +1,5 @@
 import * as k8s from '@kubernetes/client-node';
-import { prisma } from '../prisma';
+import { prisma } from '@enclaveid/backend';
 import { createGuacConnection, getGuacAuthToken } from './guacamole';
 import { logger } from '../logging';
 import { ChromePod } from '@prisma/client';

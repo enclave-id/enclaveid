@@ -1,6 +1,6 @@
 import { TRPCError, initTRPC } from '@trpc/server';
 import { AppContext } from './context';
-import { prisma } from './services/prisma';
+import { prisma } from '@enclaveid/backend';
 
 const t = initTRPC.create();
 

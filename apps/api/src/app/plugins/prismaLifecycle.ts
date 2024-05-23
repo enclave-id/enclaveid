@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin';
 import { FastifyInstance } from 'fastify';
-import { prisma } from '../services/prisma';
+import { prisma } from '@enclaveid/backend';
 
 export default fp(async (fastify: FastifyInstance) => {
   await prisma.$connect();

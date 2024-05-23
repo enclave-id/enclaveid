@@ -4,15 +4,8 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import PrefsPlugin from 'puppeteer-extra-plugin-user-preferences';
 import UserDataDirPlugin from 'puppeteer-extra-plugin-user-data-dir';
 import { scrapeGoogleTakeout } from './scraping';
-import {
-  ChromeUserEventEnum,
-  redisOptions,
-  toEventPayload,
-} from '@enclaveid/shared';
-
-import Redis from 'ioredis';
-
-const redis = new Redis(redisOptions);
+import { ChromeUserEventEnum, toEventPayload } from '@enclaveid/shared';
+import { redis } from '@enclaveid/backend';
 
 const userId = process.env.USER_ID;
 

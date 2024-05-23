@@ -1,5 +1,5 @@
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import { prisma } from './services/prisma';
+import { prisma } from '@enclaveid/backend';
 import { FastifyReply } from 'fastify';
 import { UserCookie } from './types/fastify';
 
