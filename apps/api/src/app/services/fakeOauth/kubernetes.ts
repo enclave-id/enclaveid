@@ -160,10 +160,8 @@ export async function createNewPod() {
     try {
       await k8sApi.deleteNamespacedPod(podName, 'default');
     } catch (e) {
-      if (e.body.code !== 404) {
-        logger.error(`Failed to delete pod: ${e}`);
-        throw e;
-      }
+      logger.error(`Failed to delete pod: ${e}`);
+      throw e;
     }
 
     throw error;
@@ -177,11 +175,10 @@ export async function createNewPod() {
     try {
       await k8sApi.deleteNamespacedService(serviceName, 'default');
     } catch (e) {
-      if (e.body.code !== 404) {
-        logger.error(`Failed to delete service: ${e}`);
-        throw e;
-      }
+      logger.error(`Failed to delete service: ${e}`);
+      throw e;
     }
+    
     throw error;
   }
 

@@ -1,3 +1,5 @@
+// TODO: There should be a better way to do generics here
+
 import { BoundingBox } from 'puppeteer';
 
 export enum ChromeUserEventEnum {
@@ -28,8 +30,13 @@ export function toEventPayload<E extends ChromeUserEventEnum>(
   return JSON.stringify({ event, data });
 }
 
+export type ParsedPayload<E extends ChromeUserEventEnum> = {
+  event: E;
+  data?: ChromeUserEventData[E];
+};
+
 export function fromEventPayload<E extends ChromeUserEventEnum>(
   payload: string,
-): { event: E; data?: ChromeUserEventData[E] } {
+): ParsedPayload<E> {
   return JSON.parse(payload);
 }

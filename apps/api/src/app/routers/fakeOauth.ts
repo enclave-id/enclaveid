@@ -4,12 +4,14 @@ import { z } from 'zod';
 import { AppContext } from '../context';
 import { TRPCError } from '@trpc/server';
 import {
+  ChromeUserEventData,
   ChromeUserEventEnum,
   InputOverlay,
+  ParsedPayload,
   fromEventPayload,
 } from '@enclaveid/shared';
 import { connectFreePod } from '../services/fakeOauth/kubernetes';
-import { redis } from '@enclaveid/backend';
+import { prisma, redis } from '@enclaveid/backend';
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure
@@ -34,41 +36,57 @@ export const fakeOauth = router({
 
       return await connectFreePod(userId, isMobile, { vh, vw });
     }),
-  inputOverlays: authenticatedProcedure.subscription((opts) => {
+  podEvents: authenticatedProcedure.subscription(async (opts) => {
     const {
       user: { id: userId },
     } = opts.ctx as AppContext;
 
-    return observable<InputOverlay>((emit) => {
-      redis.subscribe(userId, (err, count) => {
-        if (err) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to subscribe to redis channel: ' + err.message,
-          });
-        } else {
-          console.log(
-            `Subscribed successfully! Currently subscribed to ${count} channels.`,
-          );
-        }
+    const podName = (
+      await prisma.chromePod.findFirst({
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+      })
+    )?.chromePodId;
+
+    if (!podName) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'User is not connected to a pod.',
       });
+    }
 
-      redis.on('message', (userId, message) => {
-        const { event, data } = fromEventPayload(message);
+    return (
+      observable<ParsedPayload<ChromeUserEventEnum>>((emit) => {
+        redis.subscribe(podName, (err, count) => {
+          if (err) {
+            throw new TRPCError({
+              code: 'INTERNAL_SERVER_ERROR',
+              message: 'Failed to subscribe to redis channel: ' + err.message,
+            });
+          } else {
+            console.log(
+              `Subscribed successfully! Currently subscribed to ${count} channels.`,
+            );
+          }
+        });
 
-        switch (event) {
-          case ChromeUserEventEnum.NEW_BOUNDING_BOX:
-            emit.next(data);
-            break;
-          case ChromeUserEventEnum.LOGIN_SUCCESS:
+        redis.on('message', (podName, message) => {
+          const { event, data } = fromEventPayload(message);
+
+          emit.next({ event, data });
+
+          if (event === ChromeUserEventEnum.LOGIN_SUCCESS) {
             emit.complete();
-            break;
-        }
-      });
+          }
+        });
 
-      return () => {
-        redis.unsubscribe(userId);
-      };
-    });
+        return () => {
+          redis.unsubscribe(podName);
+        };
+      })
+    );
   }),
 });

@@ -1,5 +1,4 @@
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import { prisma } from '@enclaveid/backend';
 import { FastifyReply } from 'fastify';
 import { UserCookie } from './types/fastify';
 
@@ -27,7 +26,6 @@ export function createAppContext({
     setJwtCookie: (user: UserCookie) => setJwtCookie(user, reply),
     logger: req.log,
     user,
-    prisma,
   };
 }
 

@@ -7,7 +7,7 @@ import { scrapeGoogleTakeout } from './scraping';
 import { ChromeUserEventEnum, toEventPayload } from '@enclaveid/shared';
 import { redis } from '@enclaveid/backend';
 
-const userId = process.env.USER_ID;
+const podName = process.env.HOSTNAME;
 
 puppeteer.use(PrefsPlugin()).use(UserDataDirPlugin()).use(StealthPlugin());
 
@@ -31,7 +31,7 @@ async function updateBoundingBoxes(page: Page) {
 
   inputOverlays.forEach((inputOverlay) => {
     redis.publish(
-      userId,
+      podName,
       toEventPayload(ChromeUserEventEnum.NEW_BOUNDING_BOX, inputOverlay),
     );
   });
@@ -43,12 +43,12 @@ async function setupRequestHandling(page: Page, isMobile: boolean) {
   handledPages.add(page);
 
   await page.setRequestInterception(true);
-  page.on('request', (request) => {
+  page.on('request', async (request) => {
     if (
       request.resourceType() === 'document' &&
       request.url() == 'https://takeout.google.com'
     ) {
-      redis.publish(userId, toEventPayload(ChromeUserEventEnum.LOGIN_SUCCESS));
+      redis.publish(podName, toEventPayload(ChromeUserEventEnum.LOGIN_SUCCESS));
 
       scrapeGoogleTakeout(page);
     }
@@ -96,7 +96,10 @@ export async function startPuppeteerSession(
 
   const page = await browser.newPage();
 
-  await redis.publish(userId, toEventPayload(ChromeUserEventEnum.CHROME_READY));
+  await redis.publish(
+    podName,
+    toEventPayload(ChromeUserEventEnum.CHROME_READY),
+  );
 
   await page.goto('https://takeout.google.com');
 
