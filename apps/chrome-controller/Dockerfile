@@ -16,7 +16,7 @@ COPY dist/apps/chrome-controller/ chrome-controller/
 RUN cd chrome-controller && npm i puppeteer-extra-plugin-stealth
 
 # Necessary for Prisma to work
-COPY node_modules/prisma/libquery_engine-linux-musl-openssl-3.0.x.so.node /.prisma/client/
+COPY node_modules/prisma/libquery_engine-rhel-openssl-3.0.x.so.node /.prisma/client/
 
 COPY apps/chrome-controller/entrypoint.sh /config/entrypoint.sh
 RUN chmod +x /config/entrypoint.sh

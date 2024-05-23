@@ -12,6 +12,13 @@ export const publicProcedure = t.procedure;
 export const authenticatedProcedure = t.procedure.use(async (opts) => {
   const { user } = opts.ctx as AppContext;
 
+  if (!user) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User cookie not provided.',
+    });
+  }
+
   const userRecord = await prisma.user.findUnique({
     where: {
       id: user.id,
@@ -19,7 +26,7 @@ export const authenticatedProcedure = t.procedure.use(async (opts) => {
   });
 
   if (!userRecord) {
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not authenticated' });
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'User not found.' });
   }
 
   return opts.next(opts);

@@ -11,5 +11,8 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 19.1.5
-digest: sha256:768e49b148e39d1a7ef97980c175149684419ae676d7e40e77063b35228b87d8
-generated: "2024-05-06T16:38:26.111898066+02:00"
+- name: redisinsight
+  repository: https://charts.truecharts.org
+  version: 7.0.4
+digest: sha256:319837be8f3360a298c1e5a45dfc7f680cc7872b02343b560d8cb7c8c417a67b
+generated: "2024-05-23T12:23:12.165935673+02:00"

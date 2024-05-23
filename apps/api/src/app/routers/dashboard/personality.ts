@@ -1,3 +1,4 @@
+import { prisma } from '@enclaveid/backend';
 import { AppContext } from '../../context';
 import { authenticatedProcedure, router } from '../../trpc';
 import { z } from 'zod';
@@ -5,7 +6,6 @@ import { z } from 'zod';
 export const personality = router({
   getPersonalityTraits: authenticatedProcedure.query(async (opts) => {
     const {
-      prisma,
       user: { id: userId },
     } = opts.ctx as AppContext;
 
@@ -52,7 +52,6 @@ export const personality = router({
     )
     .mutation(async (opts) => {
       const {
-        prisma,
         user: { id: userId },
       } = opts.ctx as AppContext;
 

@@ -1,7 +1,13 @@
 import type { AppRouter } from 'apps/api/src/app/router';
 
 import { createTRPCReact } from '@trpc/react-query';
-import { createWSClient, httpBatchLink, wsLink, splitLink } from '@trpc/client';
+import {
+  createWSClient,
+  httpBatchLink,
+  wsLink,
+  splitLink,
+  loggerLink,
+} from '@trpc/client';
 import { symmetricEncrypt, symmetricDecrypt } from './crypto/symmetricBrowser';
 import { TRPC_PREFIX, TRPC_PRIVATE_NAMESPACE } from '@enclaveid/shared';
 
@@ -55,10 +61,17 @@ const wsClient = createWSClient({
 
 export const trpcClient = trpc.createClient({
   links: [
+    loggerLink({
+      enabled: (opts) =>
+        (process.env.NODE_ENV === 'development' &&
+          typeof window !== 'undefined') ||
+        (opts.direction === 'down' && opts.result instanceof Error),
+    }),
     splitLink({
       condition: (op) => op.type === 'subscription',
       true: wsLink({
         client: wsClient,
+
       }),
       false: httpBatchLink({
         url:
@@ -66,12 +79,6 @@ export const trpcClient = trpc.createClient({
           import.meta.env.VITE_API_URL +
           TRPC_PREFIX,
         fetch: customFetch,
-        // You can pass any HTTP headers you wish here
-        // async headers() {
-        //   return {
-        //     authorization: getAuthCookie(),
-        //   };
-        // },
       }),
     }),
   ],

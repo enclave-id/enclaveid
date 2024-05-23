@@ -32,3 +32,6 @@ dependencies:
   - name: redis
     version: 19.1.5
     repository: https://charts.bitnami.com/bitnami
+  - name: redisinsight
+    version: 7.0.4
+    repository: https://charts.truecharts.org

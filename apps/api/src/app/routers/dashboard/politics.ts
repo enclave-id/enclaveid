@@ -1,10 +1,10 @@
+import { prisma } from '@enclaveid/backend';
 import { AppContext } from '../../context';
 import { authenticatedProcedure, router } from '../../trpc';
 
 export const politics = router({
   getPoliticsTraits: authenticatedProcedure.query(async (opts) => {
     const {
-      prisma,
       user: { id: userId },
     } = opts.ctx as AppContext;
 

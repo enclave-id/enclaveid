@@ -21,6 +21,9 @@ function createServiceTemplate(podName, port): k8s.V1Service {
     kind: 'Service',
     metadata: {
       name: `${podName}-service`,
+      labels: {
+        class: 'chrome-pod',
+      },
     },
     spec: {
       type: 'ClusterIP',
@@ -73,6 +76,14 @@ function createPodTemplate(name): k8s.V1Pod {
             {
               name: 'PGID',
               value: '1000',
+            },
+            {
+              name: 'API_DATABASE_URL',
+              value: process.env.API_DATABASE_URL,
+            },
+            {
+              name: 'POD_NAME',
+              value: name,
             },
           ],
         },
@@ -178,7 +189,7 @@ export async function createNewPod() {
       logger.error(`Failed to delete service: ${e}`);
       throw e;
     }
-    
+
     throw error;
   }
 

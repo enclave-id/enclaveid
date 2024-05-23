@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { trpc } from '../utils/trpc';
 import { Button } from '../components/Button';
 import { ChromeUserEventEnum } from '@enclaveid/shared';
@@ -8,14 +8,13 @@ import { ChromeUserEventEnum } from '@enclaveid/shared';
 import Guacamole from '../utils/guacamole';
 
 export function FakeOauthPage() {
-  const connect = trpc.private.startSession.useMutation();
+  const startSession = trpc.private.startSession.useMutation();
 
-  const [connecting, setConnecting] = React.useState(false);
-  const [guacClient, setGuacClient] = React.useState<Guacamole.Client | null>(
-    null,
-  );
+  const [connecting, setConnecting] = useState(false);
+  const [subscribePodEvents, setSubscribePodEvents] = useState(null);
+  const [guacClient, setGuacClient] = useState<Guacamole.Client | null>(null);
 
-  const displayRef = React.useRef<HTMLDivElement>(null);
+  const displayRef = useRef<HTMLDivElement>(null);
 
   const connectGuac = useCallback((password, hostname, connectionId) => {
     setConnecting(true);
@@ -87,12 +86,34 @@ export function FakeOauthPage() {
     };
   }, [guacClient]);
 
+  trpc.private.podEvents.useSubscription(
+    { podName: subscribePodEvents },
+    {
+      enabled: !!subscribePodEvents,
+      onData: ({ event, data }) => {
+        switch (event) {
+          case ChromeUserEventEnum.LOGIN_SUCCESS:
+            guacClient.disconnect();
+            setSubscribePodEvents(null);
+            break;
+          case ChromeUserEventEnum.NEW_BOUNDING_BOX:
+            console.log('NEW_BOUNDING_BOX', data); // TODO
+            break;
+          case ChromeUserEventEnum.CHROME_READY:
+            setConnecting(false);
+            break;
+        }
+      },
+      onError: (err) => console.error('Pod event error', err),
+    },
+  );
+
   return (
     <div>
       <Button
         label="Connect"
         onClick={() => {
-          connect
+          startSession
             .mutateAsync({
               isMobile: false,
               viewport: {
@@ -101,23 +122,7 @@ export function FakeOauthPage() {
               },
             })
             .then((pod) => {
-              trpc.private.podEvents.useSubscription(undefined, {
-                onData: ({ event, data }) => {
-                  switch (event) {
-                    case ChromeUserEventEnum.LOGIN_SUCCESS:
-                      guacClient.disconnect();
-                      break;
-                    case ChromeUserEventEnum.NEW_BOUNDING_BOX:
-                      console.log('NEW_BOUNDING_BOX', data); // TODO
-                      break;
-                    case ChromeUserEventEnum.CHROME_READY:
-                      setConnecting(false);
-                      break;
-                  }
-                },
-                onError: (err) => console.error('Pod event error', err),
-              });
-
+              setSubscribePodEvents(pod.chromePodId);
               connectGuac(pod.rdpPassword, pod.hostname, pod.chromePodId);
             });
         }}

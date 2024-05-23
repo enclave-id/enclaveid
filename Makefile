@@ -53,3 +53,8 @@ sync-dagster:
     --organization enclaveid \
     --deployment prod
 
+.PHONY: clean-chrome-pods
+clean-chrome-pods:
+	kubectl delete pods -n default -l class=chrome-pod; \
+	kubectl delete services -n default -l class=chrome-pod;
+

@@ -3,6 +3,7 @@ import { publicProcedure, router } from '../trpc';
 import { AppContext } from '../context';
 import { TRPCError } from '@trpc/server';
 import { asymmetricDecrypt } from '../services/crypto/asymmetricNode';
+import { prisma } from '@enclaveid/backend';
 
 export const authentication = router({
   login: publicProcedure
@@ -13,7 +14,7 @@ export const authentication = router({
     )
     .mutation(async (opts) => {
       const { encryptedCredentials } = opts.input;
-      const { prisma, setJwtCookie, logger } = opts.ctx as AppContext;
+      const { setJwtCookie, logger } = opts.ctx as AppContext;
 
       const { email, password, b64SessionKey } = JSON.parse(
         await asymmetricDecrypt(encryptedCredentials),
@@ -48,7 +49,6 @@ export const authentication = router({
     )
     .mutation(async (opts) => {
       const { encryptedCredentials } = opts.input;
-      const { prisma } = opts.ctx as AppContext;
 
       const { email, password } = JSON.parse(
         await asymmetricDecrypt(encryptedCredentials),

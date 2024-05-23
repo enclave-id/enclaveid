@@ -44,6 +44,7 @@ guacamole:
       tag: 1.5.5
 
 redis:
+  architecture: standalone
   auth:
     enabled: false
 
