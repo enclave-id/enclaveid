@@ -20,7 +20,7 @@ function deserializeNitridingPayload(userData: Uint8Array) {
 }
 
 export function getExpectedMesaurements() {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.VITE_ENABLE_CONFIDENTIALITY !== 'true') {
     return {
       expectedPcr0: mockPCR0,
       expectedNonce: mockNonce,

@@ -2,6 +2,7 @@ import winston from 'winston';
 
 const { combine, timestamp, prettyPrint } = winston.format;
 
+// TODO: this config doesn't produce useful logs, we use the default logger for now. Pino-pretty messes up the bundle.
 export const logger = winston.createLogger({
   levels: {
     fatal: 0,

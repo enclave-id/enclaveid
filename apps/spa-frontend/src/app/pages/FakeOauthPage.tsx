@@ -7,6 +7,8 @@ import { ChromePod } from '@prisma/client';
 // https://guacamole.apache.org/doc/gug/writing-you-own-guacamole-app.html#updating-pom-xml
 import Guacamole from '../utils/guacamole';
 
+const canvasRelativeXpath = '/div/div[2]/div[2]';
+
 export function FakeOauthPage() {
   const connect = trpc.private.startSession.useMutation();
   const [podManifest, setPodManifest] = React.useState<ChromePod>(null);
@@ -15,7 +17,7 @@ export function FakeOauthPage() {
 
   const connectGuac = useCallback((password, hostname, connectionId) => {
     const guacTunnel = new Guacamole.HTTPTunnel(
-      'http://localhost:8080/tunnel',
+      import.meta.env['VITE_GUAC_TUNNEL_URL'] || 'http://localhost:8080/tunnel',
       true,
       {
         password,
@@ -38,6 +40,18 @@ export function FakeOauthPage() {
 
     displayRef.current?.appendChild(guacCanvas);
 
+    // Cover the Chrome banner
+    // TODO: Can we do it server side?
+    const cover = document.createElement('div');
+    cover.style.position = 'absolute';
+    cover.style.top = '0';
+    cover.style.left = '0';
+    cover.style.width = '100%';
+    cover.style.height = '60px';
+    cover.style.backgroundColor = 'white';
+    cover.style.zIndex = '1000';
+    guacCanvas.appendChild(cover);
+
     guacClient.connect();
 
     // Mouse
@@ -47,6 +61,9 @@ export function FakeOauthPage() {
       mouse.onmouseup =
       mouse.onmousemove =
         function (mouseState) {
+          // TODO: We should hide the mouse server side rather than here
+          guacClient.getDisplay().showCursor(false);
+
           guacClient.sendMouseState(mouseState);
         };
 

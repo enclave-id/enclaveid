@@ -24,14 +24,18 @@ const { privateKey: privateKeyProd, publicKey: publicKeyProd } =
 
 export async function getPublicEncryptionKey() {
   const pem =
-    process.env.NODE_ENV === 'development' ? mockPublicKey : publicKeyProd;
+    process.env.ENABLE_CONFIDENTIALITY === 'true'
+      ? publicKeyProd
+      : mockPublicKey;
 
   return createPublicKey(pem);
 }
 
 async function getPrivateEncryptionKey() {
   const pem =
-    process.env.NODE_ENV === 'development' ? mockPrivateKey : privateKeyProd;
+    process.env.ENABLE_CONFIDENTIALITY === 'true'
+      ? privateKeyProd
+      : mockPrivateKey;
 
   return pem;
 }

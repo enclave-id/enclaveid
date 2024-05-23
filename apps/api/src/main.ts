@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-import { logger } from './app/services/logging';
 import { initializePodsBuffer } from './app/services/fakeOauth/kubernetes';
 
 // Plugins
@@ -16,8 +15,7 @@ const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const server = Fastify({
-  //@ts-expect-error idk
-  logger: logger,
+  logger: true,
   maxParamLength: 5000,
 });
 
@@ -38,13 +36,12 @@ server.listen({ port, host }, (err) => {
   } else {
     console.log(`[ ready ] http://${host}:${port}`);
 
-    if (process.env.NODE_ENV === 'production')
-      initializePodsBuffer()
-        .then(() => {
-          console.log('[ fakeOauth ] Pods buffer initialized');
-        })
-        .catch((err) => {
-          console.error('[ fakeOauth ] Pods buffer initialization failed', err);
-        });
+    initializePodsBuffer()
+      .then(() => {
+        console.log('[ fakeOauth ] Pods buffer initialized');
+      })
+      .catch((err) => {
+        console.error('[ fakeOauth ] Pods buffer initialization failed', err);
+      });
   }
 });

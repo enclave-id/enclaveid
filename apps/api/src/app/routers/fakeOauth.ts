@@ -13,7 +13,7 @@ import { connectFreePod } from '../services/fakeOauth/kubernetes';
 
 import Redis from 'ioredis';
 
-const redis = new Redis({ ...redisOptions });
+const redis = new Redis(redisOptions);
 
 export const fakeOauth = router({
   startSession: authenticatedProcedure

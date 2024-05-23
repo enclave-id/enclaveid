@@ -55,7 +55,7 @@ function createPodTemplate(name): k8s.V1Pod {
           name: 'rdesktop',
           image:
             process.env['CHROME_CONTROLLER_IMAGE'] ||
-            'registry.container-registry.svc.cluster.local:5000/enclaveid/chrome-controller:master',
+            'localhost:32000/enclaveid/chrome-controller:master',
           ports: [
             {
               containerPort: 3389,
@@ -198,9 +198,22 @@ export async function createNewPod() {
 }
 
 export async function initializePodsBuffer() {
-  const podPromises = Array.from({ length: BUFFER_SIZE }).map(async () => {
-    return await createNewPod();
+  // Only create new pods if the buffer is not full
+  const freePods = await prisma.chromePod.count({
+    where: {
+      user: null,
+    },
   });
+
+  if (freePods >= BUFFER_SIZE) {
+    return;
+  }
+
+  const podPromises = Array.from({ length: BUFFER_SIZE - freePods }).map(
+    async () => {
+      return await createNewPod();
+    },
+  );
 
   return await Promise.all(podPromises);
 }

@@ -11,7 +11,7 @@ async function setJwtCookie(user: UserCookie, reply: FastifyReply) {
   // @ts-ignore
   reply.setCookie('token', token, {
     path: '/',
-    secure: true,
+    secure: false, // TODO: set to true in AKS
     httpOnly: true,
     sameSite: false,
   });
