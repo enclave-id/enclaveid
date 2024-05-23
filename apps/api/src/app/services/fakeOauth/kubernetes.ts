@@ -248,7 +248,7 @@ export async function connectFreePod(
     freePod = await createNewPod();
   }
 
-  // TODO: This is not necessary because the tunnel service is stateless
+  // This is not necessary because the tunnel service is stateless
   // But still can be useful for debugging
   getGuacAuthToken()
     .then((guacAuthToken) =>

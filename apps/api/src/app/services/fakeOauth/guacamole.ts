@@ -3,7 +3,9 @@ import qs from 'qs';
 import { getCreateConnPayload } from './constants';
 import { ChromePod } from '@prisma/client';
 
-const guacamoleApiUrl = `http://enclaveid-guacamole-guacamole.default.svc.cluster.local/api`;
+const guacamoleApiUrl =
+  process.env.GUACAMOLE_API_URL ||
+  `http://enclaveid-guacamole-guacamole.default.svc.cluster.local/api`;
 
 export async function getGuacAuthToken() {
   const {
@@ -11,8 +13,8 @@ export async function getGuacAuthToken() {
   } = await axios.post(
     `${guacamoleApiUrl}/tokens`,
     qs.stringify({
-      username: process.env.GUACAMOLE_USERNAME,
-      password: process.env.GUACAMOLE_PASSWORD,
+      username: process.env.GUACAMOLE_USERNAME || 'guacadmin',
+      password: process.env.GUACAMOLE_PASSWORD || 'guacadmin',
     }),
     {
       headers: {

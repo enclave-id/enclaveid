@@ -8,6 +8,7 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 ENV API_DATABASE_URL=postgres://enclaveid:enclaveid@enclaveid-postgresql.default.svc.cluster.local:5432/enclaveid_api
 
+# Necessary for Prisma to work
 COPY node_modules/prisma/libquery_engine-linux-musl-openssl-3.0.x.so.node /.prisma/client/
 
 EXPOSE 3000
