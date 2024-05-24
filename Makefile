@@ -35,7 +35,7 @@ update-app-version:
 	@yq eval -i '.appVersion = "$(VERSION)"' k8s/helm/Chart.yaml
 
 helm-chart: update-app-version
-	RELEASE_NAME=$(VERSION) ENV=$(ENV) ./k8s/scripts/render_chart_$(ENV).sh
+	RELEASE_NAME=$(VERSION) ./k8s/scripts/render_chart_$(ENV).sh
 
 .PHONY: deploy
 deploy: helm-chart

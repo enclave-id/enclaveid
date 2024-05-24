@@ -20,7 +20,8 @@ export function FakeOauthPage() {
     setConnecting(true);
 
     const guacTunnel = new Guacamole.HTTPTunnel(
-      import.meta.env['VITE_GUAC_TUNNEL_URL'] || 'http://localhost:8080/tunnel',
+      import.meta.env['VITE_GUAC_TUNNEL_URL'] ||
+        'http://enclaveid-guacamole-tunnel.default.svc.cluster.local/tunnel',
       true,
       {
         password,

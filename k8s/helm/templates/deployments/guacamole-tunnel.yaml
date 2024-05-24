@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "enclaveid.fullname" . }}-guacamole-tunnel
+  labels:
+{{ include "enclaveid.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "enclaveid.name" . }}-guacamole-tunnel
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "enclaveid.name" . }}-guacamole-tunnel
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-guacamole-tunnel
+          image: {{ .Values.containers.guacamoleTunnel.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
