@@ -20,7 +20,8 @@ function LandingInformation() {
               <p className="text-[#93989D] leading-[21px] tracking-[-0.02em]">
                 EnclaveID runs on <b>AMD SEV-SNP</b> capable hardware - hence
                 "enclave" in the name - which guarantess that your data is
-                inaccessible by any other software or human (except you).
+                inaccessible by any other software or human (except you), not
+                even by the infrastructure provider!
               </p>
             </div>
             <div className="md:py-6 py-4 lg:py-[38.5px] px-3 lg:px-6 flex flex-col w-full gap-6">
@@ -32,7 +33,7 @@ function LandingInformation() {
                 GitHub and the build pipeline is <b>fully reproducible</b>.
                 Thanks to remote <b>attestation</b>, this means that you can
                 trust that whatever is in the code is what is running in our
-                Kubernetes cluster, much like an Ethereum smart contract!
+                Kubernetes cluster, much like an Ethereum smart contract.
               </p>
             </div>
             <div className="md:py-6 py-4 lg:py-[38.5px] px-3 lg:px-6 flex flex-col w-full gap-6 border-t border-[#DEE4EB]">

@@ -6,11 +6,16 @@ function LandingFeatures() {
           <div className="flex md:flex-row flex-col md:gap-0 gap-4 md:items-end md:justify-between">
             <div className="md:max-w-[469px] flex flex-col gap-4">
               <h1 className="text-[#525C66] tracking-[-0.02em] font-medium lg:text-[32px] lg:leading-[42px] text-2xl">
-                Automatically inferred <img src="/logos.png" />
+                Discover what your data says about you <img src="/logos.png" />
               </h1>
 
               <p className="text-[#8793A0] tracking-[-0.02em] text-sm leading-[18px]">
-                Simply connect your
+                The new privacy laws enable you to materialize the most
+                comprehensive dataset of your identity to date, from your Google
+                search history to your conversations with ChatGPT. Combined with
+                the latest advancements in cognitive science, NLP, and privacy
+                tech, you can now gain invaluable insights from this data, all
+                while preserving anonymity and confidentiality.
               </p>
             </div>
             {/* <div>
@@ -68,9 +73,11 @@ function LandingFeatures() {
                   </h2>
                 </div>
                 <p className="text-[#8793A0] tracking-[-0.02em] leading-5">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Maecenas in neque vel diam consequat feugiat. Suspendisse
-                  potenti.
+                  Every time you message a friend, look up something on Reddit,
+                  or even just scroll though your Instagram feed, you are
+                  evolving your understanding of the world. Sometimes we get
+                  stuck without realizing it, and EnclaveID can help you zoom
+                  back and work out the bigger picture.
                 </p>
               </div>
               <div className="flex xl:flex-1 items-end justify-end">
@@ -128,9 +135,8 @@ function LandingFeatures() {
                     </h2>
                   </div>
                   <p className="text-[#8793A0] xl:max-w-[292px] w-full tracking-[-0.02em] leading-5">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas in neque vel diam consequat feugiat. Suspendisse
-                    potenti.
+                    Understand your fundamental personality traits and values
+                    and how they shape your interactions with others.
                   </p>
                 </div>
                 <div className="flex items-end justify-end flex-1 shrink-0 min-w-[304px]">
@@ -179,9 +185,9 @@ function LandingFeatures() {
                     </h2>
                   </div>
                   <p className="text-[#8793A0] xl:max-w-[292px] w-full tracking-[-0.02em] leading-5">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Maecenas in neque vel diam consequat feugiat. Suspendisse
-                    potenti.
+                    Gain insights on on your professional life and hobbies, and
+                    which of your strengths you can leverage to get the most out
+                    of them.
                   </p>
                 </div>
                 <div className="flex items-end justify-end flex-1 shrink-0 min-w-[304px]">
