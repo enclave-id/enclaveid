@@ -135,7 +135,7 @@ function LandingFeatures() {
                     </h2>
                   </div>
                   <p className="text-[#8793A0] xl:max-w-[292px] w-full tracking-[-0.02em] leading-5">
-                    Understand your fundamental personality traits and values
+                    Understand your fundamental personality traits and core values
                     and how they shape your interactions with others.
                   </p>
                 </div>

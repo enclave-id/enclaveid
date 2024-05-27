@@ -10,6 +10,9 @@ function LandingInformation() {
                 Your rules
               </span>
             </h1>
+            <img src="/coco.png" />
+            <img src="/nvtrust.png" />
+            <img src="/amd.png" />
           </div>
           <div className="flex flex-col lg:gap-6 md:max-w-[598px]">
             <div className="md:py-6 py-4 lg:py-[38.5px] px-3 lg:px-6 flex flex-col w-full gap-6 border-b border-[#DEE4EB]">
