@@ -1,25 +1,23 @@
-import { Button } from '../Button';
-
 function LandingHero() {
   return (
     <>
       <section className="bg-[#32433F] overflow-hidden relative h-full flex flex-col justify-between">
-        <div className="md:pt-20 pt-10 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[830px] mx-auto relative z-10">
+        <div className="md:pt-20 pt-10 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[860px] mx-auto relative z-10">
           <div className="flex flex-col gap-6">
             <h1 className="text-white md:text-[86px] text-5xl md:leading-[77px] md:tracking-[-0.03em] text-center">
-              Discover what your{' '}
-              <span className="font-semibold text-greenBg">data says</span>{' '}
-              about you
+              Harness the power of your{' '}
+              <span className="font-semibold text-greenBg">personal data</span>{' '}
             </h1>
             <p className="text-[#D6D9D9]/80 text-lg md:text-xl md:tracking-[-0.02em] md:leading-7 text-center">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-              in neque vel diam consequat feugiat. Suspendisse potenti. Nunc
-              placerat ac elit in finibus.
+              Everything you do online tracked to show you ads, but we can do so
+              much more! EnclaveID extracts deep insights from your digital
+              trace data to make your internet experience more personalized,
+              social and fun.
             </p>
           </div>
-          <div>
+          {/* <div>
             <Button label="Join Us Now!" />
-          </div>
+          </div> */}
         </div>
         <div className="relative z-10 flex items-center justify-center">
           <svg

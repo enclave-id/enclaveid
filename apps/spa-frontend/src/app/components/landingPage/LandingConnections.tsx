@@ -11,26 +11,28 @@ function LandingConnections() {
                 <Logo noText={true} />
               </div>
               <h6 className="text-white text-[19px] leading-[22px] tracking-[-0.02em]">
-                Enclave<span className="font-semibold">ID</span>
+                <span className="font-semibold">New!</span>
               </h6>
             </div>
             <div className="flex flex-col">
               <h1 className="md:text-[54px] md:leading-[48px] text-4xl md:tracking-[-0.04em] text-white">
-                Create deep
+                Deep and lasting
               </h1>
               <h1 className="md:text-[70px] md:leading-[62px] text-5xl font-medium text-white md:tracking-[-0.04em]">
                 connections
               </h1>
             </div>
             <p className="text-white/80 md:tracking-[-0.02em] md:text-base text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-              in neque vel diam consequat feugiat. Suspendisse potenti. Nunc
-              placerat ac elit in finibus.
+              Early friendships form in the simplicity of shared beginnings, but
+              as we age our interests, struggles, and values become more complex
+              and defined. EnclaveID lets you effortlessly leverage this
+              uniqueness to connect with others, with full control on how much
+              you share.
             </p>
           </div>
           <div>
             <button className="text-greenBg bg-white rounded-lg px-[38.5px] py-[18.5px] leading-3 font-medium tracking-[-0.02em]">
-              Join Us Now!
+              Try It Out
             </button>
           </div>
         </div>

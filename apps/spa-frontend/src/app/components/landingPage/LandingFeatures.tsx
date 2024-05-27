@@ -1,5 +1,3 @@
-import { Button } from '../Button';
-
 function LandingFeatures() {
   return (
     <section className="lg:pt-40 md:pt-16 md:pb-28 lg:pb-32 pt-12 pb-24">
@@ -8,17 +6,16 @@ function LandingFeatures() {
           <div className="flex md:flex-row flex-col md:gap-0 gap-4 md:items-end md:justify-between">
             <div className="md:max-w-[469px] flex flex-col gap-4">
               <h1 className="text-[#525C66] tracking-[-0.02em] font-medium lg:text-[32px] lg:leading-[42px] text-2xl">
-                Lorem Ipsum dolor sit amet
+                Automatically inferred <img src="/logos.png" />
               </h1>
+
               <p className="text-[#8793A0] tracking-[-0.02em] text-sm leading-[18px]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Maecenas in neque vel diam consequat feugiat. Suspendisse
-                potenti.
+                Simply connect your
               </p>
             </div>
-            <div>
+            {/* <div>
               <Button label="Join Us Now!" />
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-6 w-full xl:flex-row flex-col items-center">
             <div className="flex xl:max-w-[521px] max-w-[679px] bg-[#F9FAFB] border border-[#E0E9F1] rounded-2xl overflow-hidden gap-2 flex-col w-full shrink-0 max-h-[608px]">

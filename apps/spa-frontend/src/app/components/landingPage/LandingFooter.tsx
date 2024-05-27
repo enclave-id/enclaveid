@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom';
 import { DiscordIcon, GithubIcon } from '../Icons';
 import { Logo } from '../Logo';
 
 function LandingFooter() {
   return (
-    <footer className="lg:py-20 md:py-12 py-10 xl:py-[98px] bg-[#297D69]">
+    <footer className="lg:py-20 md:py-12 py-10  bg-[#297D69]">
       <div className="landing-container">
         <div className="flex flex-col md:gap-10 gap-6 lg:gap-14">
-          <div className="flex xl:items-center justify-between xl:flex-row flex-col xl:gap-0 gap-10">
+          {/* <div className="flex xl:items-center justify-between xl:flex-row flex-col xl:gap-0 gap-10">
             <div className="max-w-[632px] flex flex-col md:gap-5 gap-4 lg:gap-6">
               <h1 className="md:text-[32px] text-2xl md:leading-5 font-medium md:tracking-[-0.02em] text-white">
                 Discover what your data says about you
@@ -29,7 +28,7 @@ function LandingFooter() {
                 </button>
               </Link>
             </div>
-          </div>
+          </div> */}
           <div className="lg:pt-10 md:pt-8 pt-6 border-t border-[#51A38F]">
             <div className="flex lg:flex-row flex-col lg:gap-0 gap-10 lg:items-center justify-between">
               <div className="flex items-center gap-10">

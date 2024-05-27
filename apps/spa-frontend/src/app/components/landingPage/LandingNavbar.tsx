@@ -9,14 +9,14 @@ function LandingNavbar() {
       <nav className="landing-container">
         <div className="flex items-center justify-between xl:pl-10 xl:pr-12">
           <Logo isSmall={true} />
-          <div className="lg:flex items-center gap-6 hidden">
+          {/* <div className="lg:flex items-center gap-6 hidden">
             <button className="px-5 py-2.5 leading-3 text-lg font-medium tracking-[-0.02em] text-greenBg bg-greenBg/10 rounded-full">
               Home
             </button>
             <button className="text-lg font-medium tracking-[-0.02em] leading-3 text-[#B5BBBB]">
               About
             </button>
-          </div>
+          </div> */}
           <div className="flex items-center gap-4">
             <a
               href="https://discord.gg/BftCHbV4TW"
@@ -27,7 +27,7 @@ function LandingNavbar() {
               <DiscordIcon />
             </a>
             <a
-              href="https://github.com/enclave-id/"
+              href="https://github.com/enclaveid/enclaveid"
               target="_blank"
               rel="noreferrer"
               className="text-greenBg"
