@@ -11,6 +11,14 @@
         "cwd": "apps/data-pipeline"
       }
     },
+    "export": {
+      "executor": "@nxlv/python:run-commands",
+      "dependsOn": ["lock"],
+      "options": {
+        "command": "poetry export --only ml -f requirements.txt --output requirements.ml.txt --without-hashes && poetry export --without ml,dev -f requirements.txt --output requirements.prod.txt --without-hashes",
+        "cwd": "apps/data-pipeline"
+      }
+    },
     "add": {
       "executor": "@nxlv/python:add",
       "options": {}
@@ -25,6 +33,7 @@
     },
     "build": {
       "executor": "@nxlv/python:build",
+      "dependsOn": ["export"],
       "outputs": ["{projectRoot}/dist"],
       "options": {
         "outputPath": "dist/apps/data-pipeline",

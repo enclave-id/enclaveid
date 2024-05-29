@@ -1,16 +1,18 @@
-FROM python:3.10
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime
 
-# TODO: it's too big
-# FROM nvcr.io/nvidia/rapidsai/base:24.04-cuda12.2-py3.10
+SHELL ["/bin/bash", "--login","-c"]
 
-# TODO: is there a way to install the wheel with poetry?
-# RUN apt-get update && apt-get install -y pipx
-# RUN pipx ensurepath
-# RUN pipx install poetry
-
-# TODO: copy local dependencies
-COPY dist/apps/data-pipeline /app
 WORKDIR /app
 
-# TODO: remove ml deps
-# RUN pip install data_pipeline-1.0.0-py3-none-any.whl
+# Install ML dependencies
+COPY apps/data-pipeline/requirements.ml.txt /app/
+RUN pip install --no-cache-dir --extra-index-url https://pypi.nvidia.com -r requirements.ml.txt
+
+# Install prod dependencies
+COPY apps/data-pipeline/requirements.prod.txt /app/
+RUN pip install --no-cache-dir -r requirements.prod.txt
+
+# Install the root only
+COPY dist/apps/data-pipeline/ /app/
+RUN pip install --no-deps  *.whl
+

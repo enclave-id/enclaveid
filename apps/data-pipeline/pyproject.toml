@@ -20,6 +20,11 @@ readme = 'README.md'
   [[tool.poetry.packages]]
   include = "data_pipeline"
 
+  [[tool.poetry.source]]
+  name = "nvidia"
+  url = "https://pypi.nvidia.com"
+  priority = "supplemental"
+
   [tool.poetry.dependencies]
   python = ">=3.10,<3.11"
   dagster = "^1.7.3"
@@ -34,14 +39,15 @@ readme = 'README.md'
   universal-pathlib = "^0.2.2"
   tqdm = "^4.66.2"
   mistralai = "^0.1.8"
-  vllm = "^0.4.1"
-  sentence-transformers = "^2.7.0"
-  # TODO: In theory there is no need for these if we use the rapidsai base image
-  # See: https://github.com/rapidsai/cuml/issues/4493
-  # dask-cudf-cu12 = { url = "https://pypi.nvidia.com/dask-cudf-cu12/dask_cudf_cu12-24.4.0-py3-none-any.whl"}
-  # cuml-cu12 = { url = "https://pypi.nvidia.com/cuml-cu12/cuml_cu12-24.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
-  # cudf-cu12 = { url = "https://pypi.nvidia.com/cudf-cu12/cudf_cu12-24.4.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"}
 
+  # These are very large packages. They are cached as a docker layer and shouldn't be changed often.
+  [tool.poetry.group.ml.dependencies]
+  torch = "2.3.0"
+  vllm = "0.4.2"
+  sentence-transformers = "3.0.0"
+  dask-cudf-cu12 = { version = "24.4.0", source = "nvidia" }
+  cuml-cu12 = { version = "24.4.0", source = "nvidia" }
+  cudf-cu12 = { version = "24.4.0", source = "nvidia" }
 
   [tool.poetry.group.dev.dependencies]
   autopep8 = "2.0.2"
