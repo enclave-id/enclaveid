@@ -2,21 +2,33 @@ function LandingInformation() {
   return (
     <section className="bg-[#F9FAFB] md:py-16 py-10 sm:py-12 lg:py-[94px]">
       <div className="landing-container">
-        <div className="flex lg:flex-row flex-col xl:gap-[200px] justify-between xl:justify-normal xl:pl-10 xl:pr-12 ">
+        <div className="flex lg:flex-row flex-col lg:gap-[150px] xl:gap-[200px] justify-between xl:justify-normal xl:pl-10 xl:pr-12 ">
           <div className="px-4 py-6 flex gap-10 flex-col justify-between flex-1">
-            <h1 className="text-[#93989D] md:text-[54px] text-4xl font-medium md:tracking-[-0.02em] md:leading-[50px] whitespace-nowrap">
+            <h1 className="text-[#93989D] md:text-[54px] text-4xl font-medium md:tracking-[-0.02em] md:leading-[50px] whitespace-nowrap md:text-left text-center">
               Your data <br />
               <span className="md:leading-[68px] md:text-[62px] text-5xl text-[#525C66]">
                 Your rules
               </span>
             </h1>
-            <div>
-              <img src="/nvtrust.png" alt="" className=" inline-block md:p-5" />
-              <img src="/coco.png" alt="" className=" inline-block md:p-5" />
-              <img src="/amd.png" alt="" className="inline-block md:p-5" />
+            <div className="grid lg:grid-cols-1 md:grid-cols-3 grid-cols-2 md:gap-0 gap-4">
+              <img
+                src="/nvtrust.png"
+                alt=""
+                className="block lg:w-3/4 md:p-5 object-cover my-auto"
+              />
+              <img
+                src="/coco.png"
+                alt=""
+                className="block lg:w-3/4 md:p-5 object-cover my-auto"
+              />
+              <img
+                src="/amd.png"
+                alt=""
+                className="block lg:w-3/4 md:p-5 object-cover my-auto md:col-span-1 col-span-2 md:size-auto size-3/4 mx-auto md:mx-0"
+              />
             </div>
           </div>
-          <div className="flex flex-col lg:gap-6 md:max-w-[598px]">
+          <div className="flex flex-col lg:gap-6 lg:max-w-[598px]">
             <div className="md:py-6 py-4 lg:py-[38.5px] px-3 lg:px-6 flex flex-col w-full gap-6 border-b border-[#DEE4EB]">
               <h1 className="text-[#525C66] font-semibold text-2xl leading-8">
                 <span className="text-[#4BB89E]">Zero Trust</span>{' '}
