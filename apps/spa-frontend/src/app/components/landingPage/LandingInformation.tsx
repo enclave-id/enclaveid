@@ -2,17 +2,19 @@ function LandingInformation() {
   return (
     <section className="bg-[#F9FAFB] md:py-16 py-10 sm:py-12 lg:py-[94px]">
       <div className="landing-container">
-        <div className="flex lg:flex-row flex-col xl:gap-[200px] justify-between xl:justify-normal xl:pl-10 xl:pr-12 items-center">
-          <div className="px-4 py-6">
+        <div className="flex lg:flex-row flex-col xl:gap-[200px] justify-between xl:justify-normal xl:pl-10 xl:pr-12 ">
+          <div className="px-4 py-6 flex flex-col-reverse gap-10 lg:flex-col justify-between flex-1">
             <h1 className="text-[#93989D] md:text-[54px] text-4xl font-medium md:tracking-[-0.02em] md:leading-[50px] whitespace-nowrap">
               Your data <br />
               <span className="md:leading-[68px] md:text-[62px] text-5xl text-[#525C66]">
                 Your rules
               </span>
             </h1>
-            <img src="/coco.png" />
-            <img src="/nvtrust.png" />
-            <img src="/amd.png" />
+            <div>
+              <img src="/coco.png" className="w-1/2 inline-block" />
+              <img src="/nvtrust.png" className="w-1/2 inline-block" />
+              <img src="/amd.png" className="mx-auto md:size-auto size-32" />
+            </div>
           </div>
           <div className="flex flex-col lg:gap-6 md:max-w-[598px]">
             <div className="md:py-6 py-4 lg:py-[38.5px] px-3 lg:px-6 flex flex-col w-full gap-6 border-b border-[#DEE4EB]">

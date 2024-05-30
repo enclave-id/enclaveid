@@ -1,8 +1,11 @@
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
+
 function LandingHero() {
   return (
     <>
-      <section className="bg-[#32433F] overflow-hidden relative h-full flex flex-col justify-between">
-        <div className="md:pt-20 pt-10 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[860px] mx-auto relative z-10">
+      <section className="bg-[#32433F] overflow-hidden relative md:max-h-full max-h-[calc(100dvh-80px)] md:h-full flex flex-col justify-between">
+        <div className="pt-10 sm:pt-20 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[860px] mx-auto relative z-10 xl:px-16 lg:px-12 md:px-8 sm:px-6 px-4">
           <div className="flex flex-col gap-6">
             <h1 className="text-white md:text-[86px] text-5xl md:leading-[77px] md:tracking-[-0.03em] text-center">
               Harness the power of your{' '}
@@ -14,12 +17,27 @@ function LandingHero() {
               trace data to make your internet experience more personalized,
               social and fun.
             </p>
+            <div className="flex items-center gap-4 justify-center">
+              <Link to="/login" className="lg:hidden block">
+                <button className="w-[109px] h-10 flex items-center justify-center border border-greenBg text-greenBg rounded-lg text-sm font-medium leading-3">
+                  Log In
+                </button>
+              </Link>
+              <Link to="/signup" className="lg:hidden block">
+                <button className="w-[109px] h-10 flex items-center justify-center gap-1 bg-greenBg rounded-lg">
+                  <span className="text-white text-sm font-medium leading-3">
+                    Sign Up
+                  </span>
+                  <ChevronRightIcon className="w-4 h-4 text-white" />
+                </button>
+              </Link>
+            </div>
           </div>
           {/* <div>
             <Button label="Join Us Now!" />
           </div> */}
         </div>
-        <div className="relative z-10 flex items-center justify-center">
+        <div className="relative z-10 hidden sm:flex items-center justify-center">
           <svg
             width="1328"
             height="344"
@@ -102,8 +120,8 @@ function LandingHero() {
           </svg>
         </div>
       </section>
-      <div className="flex items-center justify-center relative z-20 md:-mt-[200px] -mt-[150px] lg:-mt-[260px]">
-        <img src="./hero.png" alt="" />
+      <div className="flex items-center justify-center relative z-20 md:-mt-[200px] sm:-mt-[150px] lg:-mt-[260px]">
+        <img src="./hero.png" alt="" className="object-cover" />
       </div>
     </>
   );
