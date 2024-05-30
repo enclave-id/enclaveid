@@ -5,7 +5,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 
 function LandingNavbar() {
   return (
-    <header className="bg-[#32433F] py-6">
+    <header className="bg-[#32433F] sm:bg-transparent py-6 sm:absolute sm:top-0 z-50 w-full">
       <nav className="landing-container">
         <div className="flex items-center justify-between xl:pl-10 xl:pr-12">
           <Logo isSmall={true} />
