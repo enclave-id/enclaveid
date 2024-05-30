@@ -70,14 +70,15 @@
         "cwd": "apps/data-pipeline"
       }
     },
-    "container": {
+    "container-ml": {
       "executor": "@nx-tools/nx-container:build",
       "dependsOn": ["build"],
       "options": {
         "engine": "docker",
         "push": true,
+        "file": "apps/data-pipeline/Dockerfile.ml",
         "metadata": {
-          "images": ["docker.io/enclaveid/data-pipeline"],
+          "images": ["docker.io/enclaveid/data-pipeline-ml"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",
@@ -86,6 +87,34 @@
             "type=sha,prefix=sha-"
           ]
         }
+      }
+    },
+    "container-base": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "options": {
+        "engine": "docker",
+        "push": true,
+        "file": "apps/data-pipeline/Dockerfile.base",
+        "metadata": {
+          "images": ["docker.io/enclaveid/data-pipeline-base"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
+        }
+      }
+    },
+    "container": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm exec nx run data-pipeline:container-base",
+          "pnpm exec nx run data-pipeline:container-ml"
+        ]
       }
     }
   },

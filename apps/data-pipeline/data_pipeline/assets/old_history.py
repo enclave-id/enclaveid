@@ -1,23 +1,27 @@
 from functools import partial
 
-import cuml
-import cupy as cp
 import numpy as np
 import polars as pl
-from cuml.cluster import HDBSCAN
-from cuml.metrics import pairwise_distances
 from dagster import AssetExecutionContext, AssetIn, AssetsDefinition, asset
 from pydantic import Field
-from sentence_transformers import SentenceTransformer
 
 from ..partitions import user_partitions_def
 from ..utils.custom_config import RowLimitConfig
-from ..utils.k8s import gpu_toleration_tags
+from ..utils.is_cuda_available import is_cuda_available
+from ..utils.k8s import k8s_gpu_config
 from ..utils.old_history_utils import (
     InterestsSpec,
     get_embeddings,
     get_full_history_sessions,
 )
+
+if is_cuda_available():
+    import cuml
+    import cupy as cp
+    from cuml.cluster import HDBSCAN
+    from cuml.metrics import pairwise_distances
+    from sentence_transformers import SentenceTransformer
+
 
 SUMMARY_PROMPT = (
     "Here is a list of my Google search data. Are there any highly sensitive "
@@ -75,7 +79,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         name=spec.name_prefix + "_interests",
         partitions_def=user_partitions_def,
         io_manager_key="parquet_io_manager",
-        tags=gpu_toleration_tags,
+        tags=k8s_gpu_config,
     )
     def interests(
         context: AssetExecutionContext,
@@ -111,7 +115,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         partitions_def=user_partitions_def,
         io_manager_key="parquet_io_manager",
         ins={"interests": AssetIn(key=[spec.name_prefix + "_interests"])},
-        tags=gpu_toleration_tags,
+        tags=k8s_gpu_config,
     )
     def interests_embeddings(
         context: AssetExecutionContext,
@@ -145,7 +149,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
                 key=[spec.name_prefix + "_interests_embeddings"]
             )
         },
-        tags=gpu_toleration_tags,
+        tags=k8s_gpu_config,
     )
     def interests_clusters(
         context: AssetExecutionContext,

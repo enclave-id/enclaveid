@@ -1,0 +1,17 @@
+# TODO: it would be nice to use nvcr.io/nvidia/pytorch:24.04-py3 since it comes
+# with all the stuff preinstalled, but they use some weird versioning for the packages
+# which results in the existing packages being reinstalled.
+FROM python:3.10
+
+SHELL ["/bin/bash", "--login","-c"]
+
+WORKDIR /app
+
+# Install prod dependencies
+COPY apps/data-pipeline/requirements.prod.txt /app/
+RUN pip install --no-cache-dir -r requirements.prod.txt
+
+# Install the root only
+COPY dist/apps/data-pipeline/ /app/
+RUN pip install --no-deps  *.whl
+

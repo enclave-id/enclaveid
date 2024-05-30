@@ -6,11 +6,15 @@ from logging import Logger
 from typing import Any
 
 import polars as pl
-import torch
 from pydantic import BaseModel, Field
-from sentence_transformers import SentenceTransformer
-from vllm import LLM, SamplingParams
-from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
+
+from .is_cuda_available import is_cuda_available
+
+if is_cuda_available():
+    import torch
+    from sentence_transformers import SentenceTransformer
+    from vllm import LLM, SamplingParams
+    from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
 
 
 class InterestsSpec(BaseModel):
