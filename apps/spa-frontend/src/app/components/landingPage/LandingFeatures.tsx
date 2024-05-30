@@ -4,12 +4,20 @@ function LandingFeatures() {
       <div className="landing-container">
         <div className="flex flex-col gap-10 w-full xl:pl-10 xl:pr-12">
           <div className="flex md:flex-row flex-col md:gap-0 gap-4 md:items-end md:justify-between">
-            <div className="md:max-w-[469px] flex flex-col gap-4">
-              <h1 className="text-[#525C66] tracking-[-0.02em] font-medium lg:text-[32px] lg:leading-[42px] text-2xl">
-                Discover what your data says about you <img src="/logos.png" />
-              </h1>
+            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+              <div className="flex items-center gap-4 flex-wrap">
+                <h1 className="text-[#525C66] tracking-[-0.02em] font-medium lg:text-[32px] lg:leading-[42px] text-2xl">
+                  Discover what your data says{' '}
+                  <br className="sm:block hidden" /> about you
+                </h1>
+                <img
+                  src="/logos.png"
+                  alt="Logos"
+                  className="sm:max-h-[42px] max-h-8"
+                />
+              </div>
 
-              <p className="text-[#8793A0] tracking-[-0.02em] text-sm leading-[18px]">
+              <p className="text-[#8793A0] tracking-[-0.02em]">
                 The new privacy laws enable you to materialize the most
                 comprehensive dataset of your identity to date, from your Google
                 search history to your conversations with ChatGPT. Combined with
@@ -135,8 +143,8 @@ function LandingFeatures() {
                     </h2>
                   </div>
                   <p className="text-[#8793A0] xl:max-w-[292px] w-full tracking-[-0.02em] leading-5">
-                    Understand your fundamental personality traits and core values
-                    and how they shape your interactions with others.
+                    Understand your fundamental personality traits and core
+                    values and how they shape your interactions with others.
                   </p>
                 </div>
                 <div className="flex items-end justify-end flex-1 shrink-0 min-w-[304px]">

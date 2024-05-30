@@ -29,7 +29,7 @@ function LandingFooter() {
               </Link>
             </div>
           </div> */}
-          <div className="lg:pt-10 md:pt-8 pt-6 border-t border-[#51A38F]">
+          <div className="lg:pt-10 md:pt-8 pt-6 sm:border-t border-[#51A38F]">
             <div className="flex lg:flex-row flex-col lg:gap-0 gap-10 lg:items-center justify-between">
               <div className="flex items-center gap-10">
                 <div className="flex items-center gap-2.5">
