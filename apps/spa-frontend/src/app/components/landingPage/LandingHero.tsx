@@ -5,7 +5,7 @@ function LandingHero() {
   return (
     <>
       <section className="bg-[#32433F] overflow-hidden relative md:max-h-full max-h-[calc(100dvh-80px)] md:h-full flex flex-col justify-between">
-        <div className="pt-10 sm:pt-20 pb-10 lg:pt-[104px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[860px] mx-auto relative z-10 xl:px-16 lg:px-12 md:px-8 sm:px-6 px-4">
+        <div className="pt-10 sm:pt-20 pb-10 md:pt-[150px] md:pb-14 flex flex-col items-center justify-center gap-10 max-w-[860px] mx-auto relative z-10 xl:px-0  md:px-8 sm:px-6 px-4">
           <div className="flex flex-col gap-6">
             <h1 className="text-white md:text-[86px] text-5xl md:leading-[77px] md:tracking-[-0.03em] text-center">
               Harness the power of your{' '}

@@ -4,11 +4,10 @@ function LandingFeatures() {
       <div className="landing-container">
         <div className="flex flex-col gap-10 w-full xl:pl-10 xl:pr-12">
           <div className="flex md:flex-row flex-col md:gap-0 gap-4 md:items-end md:justify-between">
-            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+            <div className="flex flex-col gap-4 max-w-[80%] mx-auto">
               <div className="flex items-center gap-4 flex-wrap">
                 <h1 className="text-[#525C66] tracking-[-0.02em] font-medium lg:text-[32px] lg:leading-[42px] text-2xl">
-                  Discover what your data says{' '}
-                  <br className="sm:block hidden" /> about you
+                  Discover what your data says about you
                 </h1>
                 <img
                   src="/logos.png"
