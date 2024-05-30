@@ -3,18 +3,24 @@ import gc
 import re
 from dataclasses import dataclass
 from logging import Logger
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import polars as pl
 from pydantic import BaseModel, Field
 
 from .is_cuda_available import is_cuda_available
 
-if is_cuda_available():
+if is_cuda_available() or TYPE_CHECKING:
     import torch
     from sentence_transformers import SentenceTransformer
     from vllm import LLM, SamplingParams
     from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
+else:
+    torch = None
+    SentenceTransformer = None
+    LLM = None
+    SamplingParams = None
+    destroy_model_parallel = None
 
 
 class InterestsSpec(BaseModel):
@@ -134,10 +140,10 @@ def get_full_history_sessions(
     first_instruction: str,
     second_instruction: str,
     logger: Logger,
-    model_name: str = "mistralai/Mistral-7B-Instruct-v0.2",
+    ml_model_name: str = "mistralai/Mistral-7B-Instruct-v0.2",
 ):
     logger.info("Loading the model. This may take a few minutes...")
-    llm = LLM(model=model_name)
+    llm = LLM(model=ml_model_name)
 
     # TODO: We could potentially make this part of the Config so the params can be
     # configured from the Dagster UI

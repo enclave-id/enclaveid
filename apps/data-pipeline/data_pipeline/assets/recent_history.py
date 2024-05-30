@@ -21,7 +21,8 @@ from ..utils.recent_history_utils import (
 # TODO: Avoid auto-committing queries and bundle them as one transaction,
 # where appropriate.
 
-SUMMARY_PROMPT = dedent("""
+SUMMARY_PROMPT = dedent(
+    """
     Analyze the provided list of Google search records to identify distinct topic groups. For each group, create a summary in the JSON format below. Ensure each summary includes:
 
     - `time_start`: The start time of the first search in the group.
@@ -41,12 +42,13 @@ SUMMARY_PROMPT = dedent("""
     }
 
     Here is a list of searches:
-""")
+"""
+)
 
 
 class SessionsConfig(RowLimitConfig):
     chunk_size: int = Field(default=15, description="The size of each chunk.")
-    model_name: str = Field(
+    ml_model_name: str = Field(
         default="mistral-tiny",
         description=(
             "The Mistral model to use. See the Mistral docs for a list of valid "
@@ -100,7 +102,7 @@ async def recent_sessions(
             day=day,
             prompt=SUMMARY_PROMPT,
             rate_limit=config.rate_limit,
-            model=config.model_name,
+            model=config.ml_model_name,
         )
         daily_outputs.append(output)
 
@@ -188,7 +190,7 @@ class SessionEmbeddingsConfig(RowLimitConfig):
             "batch size if the API returns a 'Too many tokens in batch.' error"
         ),
     )
-    model_name: str = Field(
+    ml_model_name: str = Field(
         default="mistral-embed",
         description=(
             "The Mistral model to use. See the Mistral docs for a list of valid "
@@ -229,7 +231,7 @@ async def recent_session_embeddings(
         batch_size=config.batch_size,
         logger=context.log,
         rate_limit=config.rate_limit,
-        model=config.model_name,
+        model=config.ml_model_name,
     )
 
     recent_sessions = recent_sessions.with_columns(

@@ -31,7 +31,7 @@ SUMMARY_PROMPT = (
 
 
 class InterestsConfig(RowLimitConfig):
-    model_name: str = Field(
+    ml_model_name: str = Field(
         default="mistralai/Mistral-7B-Instruct-v0.2",
         description=(
             "The Hugging Face model to use as the LLM. See the vLLMs docs for a "
@@ -53,7 +53,7 @@ class InterestsConfig(RowLimitConfig):
 
 
 class InterestsEmbeddingsConfig(RowLimitConfig):
-    model_name: str = Field(
+    ml_model_name: str = Field(
         default="Salesforce/SFR-Embedding-Mistral",
         description=("The Hugging Face model to use with SentenceTransformers."),
     )
@@ -79,7 +79,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         name=spec.name_prefix + "_interests",
         partitions_def=user_partitions_def,
         io_manager_key="parquet_io_manager",
-        tags=k8s_gpu_config,
+        op_tags=k8s_gpu_config,
     )
     def interests(
         context: AssetExecutionContext,
@@ -115,7 +115,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         partitions_def=user_partitions_def,
         io_manager_key="parquet_io_manager",
         ins={"interests": AssetIn(key=[spec.name_prefix + "_interests"])},
-        tags=k8s_gpu_config,
+        op_tags=k8s_gpu_config,
     )
     def interests_embeddings(
         context: AssetExecutionContext,
@@ -131,7 +131,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         )
 
         context.log.info("Loading the model. This may take a few minutes...")
-        model = SentenceTransformer(config.model_name)
+        model = SentenceTransformer(config.ml_model_name)
 
         context.log.info("Computing embeddings")
         return df.with_columns(
@@ -149,7 +149,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
                 key=[spec.name_prefix + "_interests_embeddings"]
             )
         },
-        tags=k8s_gpu_config,
+        op_tags=k8s_gpu_config,
     )
     def interests_clusters(
         context: AssetExecutionContext,

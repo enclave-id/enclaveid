@@ -37,10 +37,12 @@ readme = 'README.md'
   polars = "^0.20.23"
   pgvector = "^0.2.5"
   universal-pathlib = "^0.2.2"
+  psycopg = "^3.1.19"
   tqdm = "^4.66.2"
   mistralai = "^0.1.8"
 
-  # These are very large packages. They are cached as a docker layer and shouldn't be changed often.
+  # These are very large packages.
+  # They are cached as a docker layer and shouldn't be changed often.
   [tool.poetry.group.ml.dependencies]
   torch = "2.3.0"
   vllm = "0.4.2"
