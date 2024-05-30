@@ -24,7 +24,7 @@ function LandingInformation() {
               <img
                 src="/amd.png"
                 alt=""
-                className="block lg:w-3/4 md:p-5 lg:h-auto size-32 md:size-40 md:mx-0 mx-auto md:col-span-1 col-span-2"
+                className="block lg:w-3/4 md:p-5 object-cover my-auto md:col-span-1 col-span-2 md:size-auto size-3/4 mx-auto md:mx-0"
               />
             </div>
           </div>
