@@ -43,6 +43,7 @@ readme = 'README.md'
 
   # These are very large packages.
   # They are cached as a docker layer and shouldn't be changed often.
+  dagster-k8s = "^0.23.7"
   [tool.poetry.group.ml.dependencies]
   torch = "2.3.0"
   vllm = "0.4.2"
