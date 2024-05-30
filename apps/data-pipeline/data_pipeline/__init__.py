@@ -1,6 +1,11 @@
 import warnings
 
-from dagster import Definitions, ExperimentalWarning, load_assets_from_modules
+from dagster import (
+    Definitions,
+    ExperimentalWarning,
+    k8s_job_executor,
+    load_assets_from_modules,
+)
 
 from .assets import old_history, recent_history, takeout
 from .resources import mistral_resource, parquet_io_manager, pgvector_resource
@@ -20,4 +25,5 @@ defs = Definitions(
         "mistral": mistral_resource,
         "pgvector": pgvector_resource,
     },
+    executor=k8s_job_executor,
 )
