@@ -40,11 +40,11 @@ readme = 'README.md'
   psycopg = "^3.1.19"
   tqdm = "^4.66.2"
   mistralai = "^0.1.8"
+  dagster-k8s = "^0.23.7"
 
+  [tool.poetry.group.ml.dependencies]
   # These are very large packages.
   # They are cached as a docker layer and shouldn't be changed often.
-  dagster-k8s = "^0.23.7"
-  [tool.poetry.group.ml.dependencies]
   torch = "2.3.0"
   vllm = "0.4.2"
   sentence-transformers = "3.0.0"

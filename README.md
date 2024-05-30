@@ -178,7 +178,7 @@ AZURE_CLUSTER_NAME=enclaveid-cluster
 AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5 # For CPU workloads
 AZURE_NODE_VM_SIZE_GPU=standard_nc24ads_a100_v4 # For GPU workloads
 
-AZURE_REGION=eastus2
+AZURE_REGION=eastus
 AZURE_SERVICE_ACCOUNT_NAME=enclaveid-cluster-identity-sa
 AZURE_SUBSCRIPTION=$(az account show --query id --output tsv)
 AZURE_USER_ASSIGNED_IDENTITY_NAME=enclaveid-cluster-identity
@@ -216,7 +216,7 @@ We configure the cluster autoscaler to minimize costs.
 
 ```bash
 # Create the cluster with one system node (need the same CVM type bc of kata)
-az aks create --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --kubernetes-version 1.29 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --node-count 1 --enable-oidc-issuer --enable-workload-identity --generate-ssh-keys
+az aks create --location "${AZURE_REGION}" --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --kubernetes-version 1.29 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --node-count 1 --enable-oidc-issuer --enable-workload-identity --generate-ssh-keys
 
 # Get cluster credentials
 az aks get-credentials --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --overwrite-existing
