@@ -12,6 +12,23 @@ k8s_gpu_config = {
                     "effect": "NoSchedule",
                 }
             ],
+            "affinity": {
+                "node_affinity": {
+                    "required_during_scheduling_ignored_during_execution": {
+                        "node_selector_terms": [
+                            {
+                                "match_expressions": [
+                                    {
+                                        "key": "sku",
+                                        "operator": "In",
+                                        "values": ["gpu"],
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
         },
     }
 }

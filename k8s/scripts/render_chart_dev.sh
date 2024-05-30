@@ -13,6 +13,7 @@ CREATE_SECRETS_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/enclave
 LOAD_SECRETS_IMAGE_DIGEST=$(skopeo inspect "docker://${LOCAL_REGISTRY}/enclaveid/load-secrets:${RELEASE_NAME}" --tls-verify=false | jq -r .Digest)
 
 helm template enclaveid "$SCRIPT_DIR"/../helm \
+  --set secrets.dagster.token="${DAGSTER_TOKEN}" \
   --set containers.api.image="${LOCAL_REGISTRY}/enclaveid/api@${API_IMAGE_DIGEST}" \
   --set containers.guacamoleTunnel.image="${LOCAL_REGISTRY}/enclaveid/guacamole-tunnel@${GUACAMOLE_TUNNEL_IMAGE_DIGEST}" \
   --set initContainers.createSecrets.image="${LOCAL_REGISTRY}/enclaveid/create-secrets@${CREATE_SECRETS_IMAGE_DIGEST}" \

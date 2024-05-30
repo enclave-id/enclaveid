@@ -226,7 +226,7 @@ az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name cpupool --
 
 # Add a nodepool for GPU workloads
 # We also add a taint to make sure only GPU workloads are scheduled here
-az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name gpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 0 --node-taints sku=gpu:NoSchedule --node-vm-size "${AZURE_NODE_VM_SIZE_GPU}" --min-count 0 --max-count 1 --enable-cluster-autoscaler --aks-custom-headers UseGPUDedicatedVHD=true
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name gpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 0 --labels sku=gpu --node-taints sku=gpu:NoSchedule --node-vm-size "${AZURE_NODE_VM_SIZE_GPU}" --min-count 0 --max-count 1 --enable-cluster-autoscaler --aks-custom-headers UseGPUDedicatedVHD=true
 ```
 
 Setup Federated Identity
