@@ -17,12 +17,12 @@ function LandingFeatures() {
               </div>
 
               <p className="text-[#8793A0] tracking-[-0.02em]">
-                The new privacy laws enable you to materialize the most
-                comprehensive dataset of your identity to date, from your Google
-                search history to your conversations with ChatGPT. Combined with
-                the latest advancements in cognitive science, NLP, and privacy
-                tech, you can now gain invaluable insights from this data, all
-                while preserving anonymity and confidentiality.
+                The new data regulations let you obtain the most comprehensive
+                dataset of your identity to date, from your Google search
+                history to your conversations with ChatGPT. With the latest
+                advancements in cognitive science, NLP, and PETs, you can now
+                gain invaluable insights from this data, all while preserving
+                privacy.
               </p>
             </div>
             {/* <div>
@@ -82,16 +82,17 @@ function LandingFeatures() {
                 <p className="text-[#8793A0] tracking-[-0.02em] leading-5">
                   Every time you message a friend, look up something on Reddit,
                   or even just scroll though your Instagram feed, you are
-                  evolving your understanding of the world. Sometimes we get
-                  stuck without realizing it, and EnclaveID can help you zoom
-                  back and work out the bigger picture.
+                  evolving your understanding of the world. Sometimes this
+                  exploration leads to dead ends without us realizing it, and
+                  EnclaveID can help you zoom back and work out the bigger
+                  picture.
                 </p>
               </div>
               <div className="flex xl:flex-1 items-end justify-end">
                 <img
-                  src="/f1.png"
+                  src="/journeys.png"
                   alt=""
-                  className="max-h-[345px] max-w-[481px] w-full"
+                  className="max-w-[481px] w-full md:rounded-tl-lg"
                 />
               </div>
             </div>
@@ -147,7 +148,7 @@ function LandingFeatures() {
                   </p>
                 </div>
                 <div className="flex items-end justify-end flex-1 shrink-0 min-w-[304px]">
-                  <img src="/f2.png" alt="" />
+                  <img src="/mft.png" alt="" className=" md:rounded-tl-lg" />
                 </div>
               </div>
               <div className="bg-[#F9FAFB] border border-[#E0E9F1] rounded-2xl overflow-hidden flex xl:flex-row flex-col gap-2 min-h-[292px]">
@@ -198,7 +199,7 @@ function LandingFeatures() {
                   </p>
                 </div>
                 <div className="flex items-end justify-end flex-1 shrink-0 min-w-[304px]">
-                  <img src="/f3.png" alt="" />
+                  <img src="/riasec.png" alt="" className=" md:rounded-tl-lg" />
                 </div>
               </div>
             </div>

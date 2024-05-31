@@ -23,16 +23,18 @@ function AuthenticationForm({
       <FormCardLayout>
         {authenticationType === 'signup' && (
           <p className="description-text mb-[30px]">
-            EnclaveID does not have an user agreement. By signing up, you agree
-            to your data being processed as described in the open source code.{' '}
+            <b>Private alpha: </b>
+            We are only accepting a limited cohort of users at this time. If you
+            would like to request early access, please send us an email at{' '}
             <a
-              href="https://github.com/enclave-id/enclaveid"
+              href="mailto:contact@enclaveid.com"
               className="underline"
               target="_blank"
               rel="noreferrer"
             >
-              Learn more
+              contact@enclaveid.com
             </a>
+            .
           </p>
         )}
         <div className="flex flex-col gap-5">

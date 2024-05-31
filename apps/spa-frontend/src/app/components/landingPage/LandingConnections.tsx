@@ -38,9 +38,9 @@ function LandingConnections() {
         </div>
         <div className="bg-[#2F9C82] flex flex-1 items-end justify-end min-w-[600px]">
           <img
-            src="/connection.png"
+            src="/social.png"
             alt="Connection"
-            className="outline-2 outline-[#E5EAE8] rounded-tl-2xl overflow-hidden"
+            className="outline-2 outline-[#E5EAE8] md:rounded-tl-2xl overflow-hidden"
           />
         </div>
       </div>
