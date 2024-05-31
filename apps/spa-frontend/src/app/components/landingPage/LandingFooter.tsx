@@ -41,8 +41,20 @@ function LandingFooter() {
                   </h6>
                 </div>
                 <div className="text-white flex items-center gap-4">
-                  <DiscordIcon />
-                  <GithubIcon />
+                  <a
+                    href="https://discord.gg/BftCHbV4TW"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <DiscordIcon />
+                  </a>
+                  <a
+                    href="https://github.com/enclaveid/enclaveid"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <GithubIcon />
+                  </a>
                 </div>
               </div>
               <span className="text-[#DFE1E8] text-lg leading-7">

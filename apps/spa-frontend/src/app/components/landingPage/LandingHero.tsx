@@ -12,8 +12,8 @@ function LandingHero() {
               <span className="font-semibold text-greenBg">personal data</span>{' '}
             </h1>
             <p className="text-[#D6D9D9]/80 text-lg md:text-xl md:tracking-[-0.02em] md:leading-7 text-center">
-              Everything you do online tracked to show you ads, but we can do so
-              much more! EnclaveID extracts deep insights from your digital
+              Big Tech hoards your data to show you ads, but we can do so much
+              more with it! EnclaveID extracts deep insights from your digital
               trace data to make your internet experience more personalized,
               social and fun.
             </p>
