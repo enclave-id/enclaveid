@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Sidebar } from './Sidebar';
-import { withRouter } from 'storybook-addon-react-router-v6';
+import { withRouter } from 'storybook-addon-remix-react-router';
 
 export default {
   title: 'Components/Sidebar',
