@@ -1,6 +1,6 @@
-import ProxyChain from 'proxy-chain';
+import { Server } from 'proxy-chain';
 
-const server = new ProxyChain.Server({
+const server = new Server({
   port: 8000,
   host: 'localhost',
   verbose: true,
