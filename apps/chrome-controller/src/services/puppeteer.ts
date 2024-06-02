@@ -92,6 +92,7 @@ export async function startPuppeteerSession(
       '--noerrdialogs',
       `--window-size=${vw},${vh}`,
       '--no-sandbox',
+      '--proxy-server=http://localhost:8000',
     ],
     ignoreDefaultArgs: ['--enable-automation'],
     defaultViewport: {
