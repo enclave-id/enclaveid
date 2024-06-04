@@ -117,6 +117,11 @@ model MoralFoundations {
   sanctityDegradation Float
   summary             String?
 
+  // These two are used to catch users who don't answer sincerely
+  // They should both be true if the test is valid
+  goodCheck Boolean
+  mathCheck Boolean
+
   userTraits   UserTraits? @relation(fields: [userTraitsId], references: [id])
   userTraitsId String?
 }
