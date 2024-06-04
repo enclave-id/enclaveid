@@ -4,12 +4,6 @@
 
 replicaCount: 1
 
-# These are set when running make helm-chart
-containers:
-  api:
-    image:
-    imagePullPolicy: IfNotPresent
-
 # initContainers:
 #   createSecrets:
 #     image:

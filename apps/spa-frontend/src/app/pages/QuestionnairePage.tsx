@@ -1,0 +1,19 @@
+import { useNavigate } from 'react-router-dom';
+import { StepForm } from '../components/StepForm';
+import { QuestionnaireContainer } from '../components/containers/QuestionnaireContainer';
+
+export function QuestionnairePage() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="h-screen flex items-center justify-center bg-[#F3F5F7]">
+      <QuestionnaireContainer
+        onSkipAll={() => {
+          navigate('/dashboard/personality');
+        }}
+      >
+        <StepForm />
+      </QuestionnaireContainer>
+    </div>
+  );
+}

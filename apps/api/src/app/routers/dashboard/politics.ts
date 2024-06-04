@@ -35,4 +35,28 @@ export const politics = router({
       moralFoundations: user?.userTraits?.moralFoundations[0],
     };
   }),
+  createMoralFoundations: authenticatedProcedure.mutation(async (opts) => {
+    const {
+      user: { id: userId },
+    } = opts.ctx as AppContext;
+
+    const { care, fairness, loyalty, authority, sanctity } = opts.input;
+
+    const moralFoundations = await prisma.moralFoundation.create({
+      data: {
+        care,
+        fairness,
+        loyalty,
+        authority,
+        sanctity,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return moralFoundations;
+  }),
 });

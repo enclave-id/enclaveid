@@ -12,17 +12,17 @@ import { PoliticsContent } from './components/PoliticsContent';
 import { CompassDetails } from './components/CompassDetails';
 import { MFTDetails } from './components/MFTDetails';
 import { LandingPage } from './pages/LandingPage';
-import { OnboardingPage } from './pages/OnboardingPage';
 
 import { CareerContent } from './components/CareerContent';
 import { RadarChartDetails } from './components/RadarChartDetails';
 import { ChatPage } from './components/ChatUI/ChatPage';
 import { PersonalityContainer } from './components/containers/PersonalityContainer';
 
-import { FakeOauthPage } from './pages/FakeOauthPage';
 import { SocialLayout } from './components/SocialLayout';
 import { SocialPage } from './pages/SocialPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { FileUploadPage } from './pages/FileUploadPage';
+import { QuestionnairePage } from './pages/QuestionnairePage';
 
 const reactRouter = createBrowserRouter([
   {
@@ -38,13 +38,17 @@ const reactRouter = createBrowserRouter([
     element: <AuthenticationPage authenticationType="signup" />,
   },
   {
-    path: '/onboarding',
-    element: <OnboardingPage />,
+    path: '/fileUpload',
+    element: <FileUploadPage />,
   },
   {
-    path: '/fakeOauth',
-    element: <FakeOauthPage />,
+    path: '/questionnaire',
+    element: <QuestionnairePage />,
   },
+  // {
+  //   path: '/fakeOauth',
+  //   element: <FakeOauthPage />,
+  // },
   {
     path: '/dashboard',
     element: <DashboardPage />,

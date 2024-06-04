@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: create-secrets
           image: "{{ .Values.initContainers.createSecrets.image }}"
-          imagePullPolicy: {{ .Values.initContainers.createSecrets.imagePullPolicy }}
+          imagePullPolicy: Always
           args: [
             "{{ .Values.initContainers.createSecrets.arguments.environment }}",
             "{{ .Values.initContainers.createSecrets.arguments.keyName }}",
@@ -57,7 +57,7 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ .Values.containers.api.image }}
-          imagePullPolicy: {{ .Values.containers.api.imagePullPolicy }}
+          imagePullPolicy: Always
           env:
             - name: API_DATABASE_URL
               value: {{ .Values.containers.api.env.apiDatabaseUrl }}

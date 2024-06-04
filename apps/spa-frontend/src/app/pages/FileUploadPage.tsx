@@ -1,7 +1,7 @@
 import { FileUploadForm } from '../components/FileUploadForm';
 import { FileUploadContainer } from '../components/containers/FileUploadContainer';
 
-export function OnboardingPage() {
+export function FileUploadPage() {
   return (
     <FileUploadContainer>
       <FileUploadForm />

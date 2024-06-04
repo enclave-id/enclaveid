@@ -12,7 +12,8 @@ interface FileUploadSectionProps {
   uploadInputRef: MutableRefObject<HTMLInputElement | null>;
   openFileDialog: () => void;
   icon: JSX.Element;
-  description: string;
+  description: JSX.Element;
+  instructionLink: string;
 }
 
 function FileUploadSection({
@@ -23,6 +24,7 @@ function FileUploadSection({
   openFileDialog,
   icon,
   description,
+  instructionLink,
 }: FileUploadSectionProps) {
   return (
     <Dropzone dropzone={dropzone} ref={uploadInputRef}>
@@ -49,22 +51,23 @@ function FileUploadSection({
             </div>
           </div>
         ) : (
-          <div className="bg-[#F4F5F7] border border-[#E5E8EE] rounded-xl flex flex-col items-center justify-center pt-[21px] pb-[27px] gap-2">
+          <div
+            onClick={openFileDialog}
+            className="cursor-pointer bg-[#F4F5F7] border border-[#E5E8EE] rounded-xl flex flex-col items-center justify-center pt-[21px] pb-[27px] gap-2"
+          >
             <button>
               <UploadIcon />
             </button>
             <p className="max-w-[236px] text-xs text-[#6C7A8A] text-center">
-              Drag & drop your file here or{' '}
-              <Button
-                label="click here"
-                variant="secondary"
-                onClick={openFileDialog}
-                size="small"
-              />{' '}
-              to select from your device
+              Drag & drop your file here or click to select from your device
             </p>
           </div>
         )}
+        <span className="text-[#6C7A8A] text-md underline text-center mt-3">
+          <a href={instructionLink} target="_blank" rel="noreferrer">
+            Show instruction video
+          </a>
+        </span>
       </div>
     </Dropzone>
   );

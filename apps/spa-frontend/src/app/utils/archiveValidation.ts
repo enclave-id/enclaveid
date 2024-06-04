@@ -1,6 +1,6 @@
 import JSZip from 'jszip';
 
-export function validateGoogleTakoutZip(zipFile: File) {
+export function validateGoogleTakoutZip(zipFile: File): boolean {
   JSZip.loadAsync(zipFile).then((zip) => {
     // Takeout/My Activity/Search/MyActivity.json
 
@@ -8,4 +8,6 @@ export function validateGoogleTakoutZip(zipFile: File) {
       console.log(filename);
     });
   });
+
+  return false;
 }
