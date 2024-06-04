@@ -1,6 +1,7 @@
 import { prisma } from '@enclaveid/backend';
 import { AppContext } from '../../context';
 import { authenticatedProcedure, router } from '../../trpc';
+import { z } from 'zod';
 
 export const politics = router({
   getPoliticsTraits: authenticatedProcedure.query(async (opts) => {
@@ -35,28 +36,34 @@ export const politics = router({
       moralFoundations: user?.userTraits?.moralFoundations[0],
     };
   }),
-  createMoralFoundations: authenticatedProcedure.mutation(async (opts) => {
-    const {
-      user: { id: userId },
-    } = opts.ctx as AppContext;
+  createMoralFoundations: authenticatedProcedure
+    .input(
+      z.object({
+        mfq20Answers: z.record(z.string(), z.string()),
+      }),
+    )
+    .mutation(async (opts) => {
+      const {
+        user: { id: userId },
+      } = opts.ctx as AppContext;
 
-    const { care, fairness, loyalty, authority, sanctity } = opts.input;
+      const { care, fairness, loyalty, authority, sanctity } = opts.input;
 
-    const moralFoundations = await prisma.moralFoundation.create({
-      data: {
-        care,
-        fairness,
-        loyalty,
-        authority,
-        sanctity,
-        user: {
-          connect: {
-            id: userId,
+      const moralFoundations = await prisma.moralFoundation.create({
+        data: {
+          care,
+          fairness,
+          loyalty,
+          authority,
+          sanctity,
+          user: {
+            connect: {
+              id: userId,
+            },
           },
         },
-      },
-    });
+      });
 
-    return moralFoundations;
-  }),
+      return moralFoundations;
+    }),
 });

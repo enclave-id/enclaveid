@@ -3,20 +3,32 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from './Button';
 import { Logo } from './Logo';
 import { CheckmarkIcon } from './Icons';
+import { Questionnaire } from '@enclaveid/shared';
 
 type Steps = 'onboarding' | 'steps' | 'final';
 
 export interface StepFormProps {
   onSkip?: () => void;
   onFinished?: (answers: StepFormAnswers) => void;
-  questions?: string[];
-  options?: string[];
+  questionnaire?: Questionnaire;
 }
 
 type StepFormAnswers = Record<string, string>;
 
 export function StepForm(props: StepFormProps) {
-  const { onSkip, onFinished, questions, options } = props;
+  const {
+    onSkip,
+    onFinished,
+    questionnaire: { title, parts },
+  } = props;
+
+  const [currentPart, setCurrentPart] = useState(0);
+  const { questions, options, headline } = parts[currentPart];
+  const totalQuestions = parts.reduce(
+    (acc, part) => acc + part.questions.length,
+    0,
+  );
+  const [progress, setProgress] = useState(1);
 
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<StepFormAnswers>({});
@@ -24,9 +36,13 @@ export function StepForm(props: StepFormProps) {
 
   const handleSelectOption = (option: string, statement: string) => {
     setAnswers((prev) => ({ ...prev, [statement]: option }));
+    setProgress((prev) => prev + 1);
 
     if (currentStep < questions.length - 1) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep((prev) => prev + 1);
+    } else if (currentPart < parts.length - 1) {
+      setCurrentPart((prev) => prev + 1);
+      setCurrentStep(0);
     } else {
       setSteps('final');
     }
@@ -99,15 +115,15 @@ export function StepForm(props: StepFormProps) {
   }
 
   return (
-    <div className="max-w-[557px] w-full mx-auto">
+    <div className="max-w-[567px] w-full mx-auto">
       <AnimatePresence mode="wait">
         <div className="flex flex-col gap-2.5">
           <div className="flex flex-col gap-[21px]">
             <h2 className="text-passiveLinkColor font-medium text-2xl leading-7 -tracking-[0.02em] text-center">
-              Ten-Item Personality Inventory
+              {title}
             </h2>
             <p className="text-passiveLinkColor leading-[22px] text-center">
-              {questions.indexOf(currentQuestion) + 1} out of {questions.length}
+              {headline} ({progress} out of {totalQuestions})
             </p>
           </div>
           <motion.div
