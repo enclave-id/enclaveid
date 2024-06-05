@@ -14,13 +14,13 @@ if is_cuda_available() or TYPE_CHECKING:
     import torch
     from sentence_transformers import SentenceTransformer
     from vllm import LLM, SamplingParams
-    from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
+    # from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
 else:
     torch = None
     SentenceTransformer = None
     LLM = None
     SamplingParams = None
-    destroy_model_parallel = None
+    # destroy_model_parallel = None
 
 
 class InterestsSpec(BaseModel):
@@ -165,7 +165,8 @@ def get_full_history_sessions(
         daily_records.append(interests_generator.generate_output_record())
 
     logger.info("Unloading the LLM and freeing GPU memory.")
-    destroy_model_parallel()
+    # TODO: This is not available anymore in the latest version of vllm
+    # destroy_model_parallel()
     # del llm.llm_engine.driver_worker  # type: ignore
     del llm
     gc.collect()

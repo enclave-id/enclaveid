@@ -38,6 +38,7 @@ readme = 'README.md'
   pgvector = "^0.2.5"
   universal-pathlib = "^0.2.2"
   psycopg = "^3.1.19"
+  psycopg-binary = "^3.1.19"
   tqdm = "^4.66.2"
   mistralai = "^0.1.8"
   dagster-k8s = "^0.23.7"

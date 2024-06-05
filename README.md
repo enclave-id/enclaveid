@@ -178,7 +178,7 @@ AZURE_CLUSTER_NAME=enclaveid-cluster
 AZURE_NODE_VM_SIZE=Standard_DC4as_cc_v5 # For CPU workloads
 AZURE_NODE_VM_SIZE_GPU=standard_nc24ads_a100_v4 # For GPU workloads
 
-AZURE_REGION=eastus
+AZURE_REGION=westeurope
 AZURE_SERVICE_ACCOUNT_NAME=enclaveid-cluster-identity-sa
 AZURE_SUBSCRIPTION=$(az account show --query id --output tsv)
 AZURE_USER_ASSIGNED_IDENTITY_NAME=enclaveid-cluster-identity
@@ -216,17 +216,21 @@ We configure the cluster autoscaler to minimize costs.
 
 ```bash
 # Create the cluster with one system node (need the same CVM type bc of kata)
-az aks create --location "${AZURE_REGION}" --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --kubernetes-version 1.29 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --node-count 1 --enable-oidc-issuer --enable-workload-identity --generate-ssh-keys
+az aks create --tier standard --location "${AZURE_REGION}" --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --kubernetes-version 1.29 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --node-count 1 --enable-oidc-issuer --enable-workload-identity --generate-ssh-keys  --enable-cluster-autoscaler
 
 # Get cluster credentials
 az aks get-credentials --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --overwrite-existing
 
 # Add a nodepool for CPU workloads with confidential computing
-az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name cpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 0 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation --min-count 0 --max-count 4 --enable-cluster-autoscaler
+# IMPORTANT: Autoscaling is not supported for confidential computing nodes. Configuring the autoscaler for this pool will make austoscaling fail for the whole cluster.
+az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name cpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 2 --os-sku AzureLinux --node-vm-size "${AZURE_NODE_VM_SIZE}" --workload-runtime KataCcIsolation
 
 # Add a nodepool for GPU workloads
 # We also add a taint to make sure only GPU workloads are scheduled here
 az aks nodepool add --resource-group "${AZURE_RESOURCE_GROUP}" --name gpupool --cluster-name "${AZURE_CLUSTER_NAME}" --node-count 0 --labels sku=gpu --node-taints sku=gpu:NoSchedule --node-vm-size "${AZURE_NODE_VM_SIZE_GPU}" --min-count 0 --max-count 1 --enable-cluster-autoscaler --aks-custom-headers UseGPUDedicatedVHD=true
+
+# Configure the autoscaler for the gpu workloads
+az aks update --resource-group "${AZURE_RESOURCE_GROUP}" --name "${AZURE_CLUSTER_NAME}" --cluster-autoscaler-profile skip-nodes-with-system-pods=false
 ```
 
 Setup Federated Identity
@@ -267,4 +271,14 @@ Deploy the Kata portion of the Helm chart:
 
 ```bash
 kubectl apply –f k8s/renders/kata-configs.yaml
+```
+
+## To just deploy dagster agent for testing
+
+```bash
+kubectl create secret generic dagster-cloud-agent-token --from-literal=DAGSTER_CLOUD_AGENT_TOKEN=$DAGSTER_TOKEN
+
+helm repo add dagster-plus https://dagster-io.github.io/helm-user-cloud && helm repo update
+
+helm upgrade --install enclaveid dagster-plus/dagster-cloud-agent --set dagsterCloud.deployment=prod
 ```
