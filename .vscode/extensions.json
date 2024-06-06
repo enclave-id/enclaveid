@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "ms-vscode-remote.remote-containers",
     "eamodio.gitlens",
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
@@ -9,6 +8,15 @@
     "Prisma.prisma",
     "GitHub.copilot",
     "bradlc.vscode-tailwindcss",
-    "vscjava.vscode-java-pack"
+    "vscjava.vscode-java-pack",
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "mads-hartmann.bash-ide-vscode",
+    "tamasfe.even-better-toml",
+    "mkhl.shfmt",
+    "gruntfuggly.todo-tree",
+    "redhat.vscode-xml",
+    "redhat.vscode-yaml",
+    "ms-azuretools.vscode-docker"
   ]
 }
