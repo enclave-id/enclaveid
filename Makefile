@@ -14,6 +14,7 @@ build:
 	pnpm exec nx run-many --target=build --all --parallel
 
 # TODO: Can we make nx handle this too?
+# https://nx.dev/recipes/running-tasks/root-level-scripts
 .PHONY: aux-containers
 aux-containers:
 	@for container in $(AUX_CONTAINERS); do \
