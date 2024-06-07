@@ -4,7 +4,7 @@
 
 To install the requirements:
 
-```
+```bash
 sudo dnf -y install skopeo jq helm dnsmasq
 sudo snap install yq
 ```

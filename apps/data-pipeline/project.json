@@ -11,6 +11,13 @@
         "cwd": "apps/data-pipeline"
       }
     },
+    "dev": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "dagster dev",
+        "cwd": "apps/data-pipeline"
+      }
+    },
     "export": {
       "executor": "@nxlv/python:run-commands",
       "dependsOn": ["lock"],
