@@ -4,6 +4,10 @@ This app is the Dagster pipeline used to convert the raw portability archives in
 
 ## Development
 
+### Requirements
+
+You're gonna need [poetry](https://python-poetry.org/docs/#installation) to install the project dependencies.
+
 ### Local
 
 To install the dependencies, run the `install` nx target, and then to start the development server run the `dev` target.
