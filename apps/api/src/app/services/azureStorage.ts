@@ -4,6 +4,7 @@ import {
   generateBlobSASQueryParameters,
   BlobSASPermissions,
 } from '@azure/storage-blob';
+import { DataProvider } from '@prisma/client';
 
 const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
 const accountKey = process.env.AZURE_STORAGE_ACCOUNT_KEY;
@@ -12,16 +13,21 @@ const defaultContainerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
 const creds = new StorageSharedKeyCredential(accountName, accountKey);
 const blobServiceClient = new BlobServiceClient(
   `https://${accountName}.blob.core.windows.net`,
-  creds
+  creds,
 );
 const containerClient =
   blobServiceClient.getContainerClient(defaultContainerName);
 
-export async function generateSasUrl(blobName) {
+export async function generateSasUrl(
+  dataProvider: DataProvider,
+  userId: string,
+): Promise<string> {
+  const blobName = `${userId}/${dataProvider.toLowerCase()}/${Date.now()}`;
+
   const sasOptions = {
     containerName: defaultContainerName,
     blobName,
-    permissions: BlobSASPermissions.parse('w'), // w is for write permissions
+    permissions: BlobSASPermissions.parse('w'),
     startsOn: new Date(),
     expiresOn: new Date(new Date().valueOf() + 3600 * 1000), // URL valid for 1h
   };

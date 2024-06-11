@@ -24,8 +24,6 @@ model User {
 
   chromePod   ChromePod? @relation(fields: [chromePodId], references: [id])
   chromePodId String?    @unique
-
-  takeoutFiles TakeoutFile[]
 }
 
 model Session {
@@ -53,21 +51,10 @@ model ChromePod {
   user User?
 }
 
-model TakeoutFile {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  dataProvider DataProvider
-  filename     String
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-}
-
 enum DataProvider {
   GOOGLE
   FACEBOOK
+  OPENAI
 }
 
 // PERSONALITY MODELS --------------------------------------------
