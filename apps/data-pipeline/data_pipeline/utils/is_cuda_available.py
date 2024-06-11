@@ -13,8 +13,6 @@ def is_cuda_available():
             capture_output=True,
         ).stdout.strip()
 
-        print(f"Detected CUDA compute capability: {compute_capability}")
-
         return float(compute_capability) >= MIN_CUDA_COMPUTE_CAPABILITY
     except Exception:
         return False
