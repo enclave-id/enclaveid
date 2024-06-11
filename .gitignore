@@ -62,3 +62,6 @@ k8s/renders/*
 
 # Winston logs
 logs
+
+# Dagster
+apps/data-pipeline/tmp*
