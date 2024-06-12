@@ -58,7 +58,7 @@ def parsed_takeout(
     archive_path = (
         PRODUCTION_STORAGE_BUCKET
         / context.partition_key
-        / DataProvider.GOOGLE["name"]
+        / DataProvider.GOOGLE["path_prefix"]
         / "latest.zip"
     )
 

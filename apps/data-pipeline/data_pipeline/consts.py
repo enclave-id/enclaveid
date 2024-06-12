@@ -32,14 +32,14 @@ DEPLOYMENT_ROW_LIMIT = {"LOCAL": 100, "BRANCH": 1000, "PROD": None}[DEPLOYMENT_T
 
 class DataProvider:
     GOOGLE = {
-        "name": "google",
+        "path_prefix": "google",
         "expected_file": "Takeout/My Activity/Search/MyActivity.json",
     }
     FACEBOOK = {
-        "name": "facebook",
+        "path_prefix": "facebook",
         "expected_file": "TODO",
     }
     OPENAI = {
-        "name": "openai",
+        "path_prefix": "openai",
         "expected_file": "TODO",
     }
