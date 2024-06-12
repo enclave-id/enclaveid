@@ -1,3 +1,4 @@
+import zipfile
 from textwrap import dedent
 
 import polars as pl
@@ -54,9 +55,25 @@ def parsed_takeout(
     if not config.threshold.startswith("-"):
         raise ValueError("the `threshold` should always start with a `-` sign.")
 
-    p = PRODUCTION_STORAGE_BUCKET / context.partition_key / "MyActivity.json"
+    base_path = (
+        PRODUCTION_STORAGE_BUCKET / DataProvider.GOOGLE.value / context.partition_key
+    )
+    archive_path = base_path / "latest.zip"
 
-    with p.open("rb") as f:
+    # Extract and validate the archive
+    expected_files = {"Takeout/My Activity/Search/MyActivity.json"}
+    with zipfile.ZipFile(archive_path, "r") as zip_ref:
+        zip_files = set(zip_ref.namelist())
+
+        if not expected_files.issubset(zip_files):
+            missing_files = expected_files - zip_files
+            raise FileNotFoundError(
+                f"Missing expected files in archive: {missing_files}. Found: {zip_files}"
+            )
+
+        zip_ref.extract(expected_files.pop(), base_path)
+
+    with str(base_path / "MyActivity.latest.json").open("rb") as f:
         raw_df = pl.read_json(f.read(), schema_overrides={"time": pl.Datetime})
 
     full_df = raw_df.select(

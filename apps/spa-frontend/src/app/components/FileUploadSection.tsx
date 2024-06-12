@@ -1,4 +1,5 @@
-import { Dropzone, FileMosaic } from '@files-ui/react';
+// TODO: this library sucks hard
+import { Dropzone, ExtFile, FileMosaic } from '@files-ui/react';
 import * as React from 'react';
 
 interface FileUploadSectionProps {
@@ -11,19 +12,8 @@ export function FileUploadSection(props: FileUploadSectionProps) {
 
   const [extFiles, setExtFiles] = React.useState([]);
 
-  const updateFiles = (incommingFiles) => {
-    console.log('incomming files', incommingFiles);
-    setExtFiles(incommingFiles);
-  };
   const onDelete = (id) => {
     setExtFiles(extFiles.filter((x) => x.id !== id));
-  };
-  const handleStart = (filesToUpload) => {
-    console.log('advanced demo start upload', filesToUpload);
-  };
-  const handleFinish = (uploadedFiles) => {
-    console.log('advanced demo finish upload', uploadedFiles);
-    onSuccess();
   };
   const handleAbort = (id) => {
     setExtFiles(
@@ -34,47 +24,60 @@ export function FileUploadSection(props: FileUploadSectionProps) {
       }),
     );
   };
-  const handleCancel = (id) => {
-    setExtFiles(
-      extFiles.map((ef) => {
-        if (ef.id === id) {
-          return { ...ef, uploadStatus: undefined };
-        } else return { ...ef };
-      }),
-    );
-  };
+
+  React.useEffect(() => {
+    if (extFiles.length > 0) {
+      const file = extFiles[0];
+      if (file.xhr && file.xhr.status === 201) {
+        onSuccess();
+      }
+    }
+  }, [extFiles, onSuccess]);
+
   return (
     <Dropzone
-      onChange={updateFiles}
+      onChange={setExtFiles}
       minHeight="80px"
       value={extFiles}
       accept="application/zip"
       maxFiles={1}
       maxFileSize={200 * 1024 * 1024}
-      label="Drag'n drop files here or click to browse"
+      label="Upload file"
       uploadConfig={{
+        asBlob: true,
         autoUpload: true,
         cleanOnUpload: true,
         headers: {
           'Content-Type': 'application/zip',
+          'x-ms-blob-type': 'BlockBlob',
         },
         method: 'PUT',
         url: uploadUrl,
       }}
-      onUploadStart={handleStart}
-      onUploadFinish={handleFinish}
+      onError={(error) => console.error(error)}
     >
-      {extFiles.map((file) => (
-        <FileMosaic
-          {...file}
-          key={file.id}
-          onDelete={onDelete}
-          onAbort={handleAbort}
-          onCancel={handleCancel}
-          resultOnTooltip
-          alwaysActive
-        />
-      ))}
+      {extFiles.map((file: ExtFile) => {
+        return file.xhr ? (
+          file.xhr.status === 201 ? (
+            <FileMosaic
+              {...file}
+              uploadStatus="success"
+              key={file.id}
+              resultOnTooltip={false}
+            />
+          ) : (
+            <FileMosaic
+              {...file}
+              key={file.id}
+              onDelete={() => onDelete(file.id)}
+              onAbort={() => handleAbort(file.id)}
+              resultOnTooltip={false}
+            />
+          )
+        ) : (
+          <FileMosaic {...file} key={file.id} resultOnTooltip={false} />
+        );
+      })}
     </Dropzone>
   );
 }

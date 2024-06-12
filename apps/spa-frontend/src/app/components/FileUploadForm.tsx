@@ -43,14 +43,17 @@ export function FileUploadForm({ uploadUrl }: FileUploadFormProps) {
                     </a>{' '}
                     to obtain a copy of your Google data and upload here the
                     archive. Make sure to select <b>My Activity</b> in{' '}
-                    <b>JSON</b> format.
+                    <b>JSON</b> format.{' '}
+                    <a href="#" className="underline">
+                      See instruction video
+                    </a>
                   </span>
+                  <FileUploadSection
+                    uploadUrl={uploadUrl}
+                    onSuccess={() => setSuccess(true)}
+                  />
                 </div>
               </div>
-              <FileUploadSection
-                uploadUrl={uploadUrl}
-                onSuccess={() => setSuccess(true)}
-              />
             </div>
 
             <div className="flex items-center gap-[17px] flex-row rounded-md bg-white shadow pl-[15px] pt-[17pt] pr-[18px] pb-5">
