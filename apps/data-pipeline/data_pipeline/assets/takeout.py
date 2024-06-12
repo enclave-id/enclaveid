@@ -56,9 +56,10 @@ def parsed_takeout(
         raise ValueError("the `threshold` should always start with a `-` sign.")
 
     base_path = (
-        PRODUCTION_STORAGE_BUCKET / DataProvider.GOOGLE.value / context.partition_key
+        PRODUCTION_STORAGE_BUCKET / context.partition_key / DataProvider.GOOGLE.value
     )
     archive_path = base_path / "latest.zip"
+    dest_path = base_path / "MyActivity.latest.json"
 
     # Extract and validate the archive
     expected_files = {"Takeout/My Activity/Search/MyActivity.json"}
@@ -71,9 +72,9 @@ def parsed_takeout(
                 f"Missing expected files in archive: {missing_files}. Found: {zip_files}"
             )
 
-        zip_ref.extract(expected_files.pop(), base_path)
+        zip_ref.extract(expected_files.pop(), dest_path)
 
-    with str(base_path / "MyActivity.latest.json").open("rb") as f:
+    with str(dest_path).open("rb") as f:
         raw_df = pl.read_json(f.read(), schema_overrides={"time": pl.Datetime})
 
     full_df = raw_df.select(
