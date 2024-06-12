@@ -22,8 +22,7 @@ export async function generateSasUrl(
   dataProvider: DataProvider,
   userId: string,
 ): Promise<string> {
-  const blobName = `${userId}/${dataProvider.toLowerCase()}/${Date.now()}`;
-  const latestBlobName = `${userId}/${dataProvider.toLowerCase()}/latest`;
+  const blobName = `${userId}/${dataProvider.toLowerCase()}/latest.zip`;
 
   const sasOptions = {
     containerName: defaultContainerName,
@@ -34,11 +33,6 @@ export async function generateSasUrl(
   };
 
   const sasToken = generateBlobSASQueryParameters(sasOptions, creds).toString();
-
-  const blobClient = containerClient.getBlobClient(blobName);
-  containerClient
-    .getBlobClient(latestBlobName)
-    .beginCopyFromURL(blobClient.url);
 
   return `${containerClient.url}/${blobName}?${sasToken}`;
 }

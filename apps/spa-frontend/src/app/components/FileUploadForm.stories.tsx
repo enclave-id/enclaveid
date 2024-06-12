@@ -5,4 +5,6 @@ export default {
   component: FileUploadForm,
 };
 
-export const Default = () => <FileUploadForm />;
+export const Default = () => (
+  <FileUploadForm uploadUrl="https://example.com/upload" />
+);

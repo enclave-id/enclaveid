@@ -1,13 +1,11 @@
 import JSZip from 'jszip';
 
-export function validateGoogleTakoutZip(zipFile: File): boolean {
-  JSZip.loadAsync(zipFile).then((zip) => {
-    // Takeout/My Activity/Search/MyActivity.json
+export function validateGoogleTakoutZip(zipFile: File): Promise<boolean> {
+  return JSZip.loadAsync(zipFile).then((zip) => {
+    const myActivityFile = zip.file(
+      'Takeout/My Activity/Search/MyActivity.json',
+    );
 
-    Object.keys(zip.files).forEach((filename) => {
-      console.log(filename);
-    });
+    return !!myActivityFile;
   });
-
-  return false;
 }

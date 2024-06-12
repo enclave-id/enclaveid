@@ -43,13 +43,19 @@
       "executor": "@nx-tools/nx-prisma:push"
     },
     "prisma-reset": {
-      "executor": "@nx-tools/nx-prisma:reset"
+      "executor": "@nx-tools/nx-prisma:reset",
+      "options": {
+        "force": true
+      }
     },
     "prisma-resolve": {
       "executor": "@nx-tools/nx-prisma:resolve"
     },
     "prisma-seed": {
-      "executor": "@nx-tools/nx-prisma:seed"
+      "executor": "@nx-tools/nx-prisma:seed",
+      "options": {
+        "script": "libs/backend/prisma/seed.ts"
+      }
     },
     "prisma-status": {
       "executor": "@nx-tools/nx-prisma:status"

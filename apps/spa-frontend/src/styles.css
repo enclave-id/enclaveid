@@ -57,3 +57,15 @@
 .hideScrollbar {
   scrollbar-width: none; /* Firefox */
 }
+
+.files-ui-dropzone-children-container > label {
+  @apply text-[#6C7A8A] text-lg;
+}
+
+.files-ui-header {
+  display: none !important;
+}
+
+.files-ui-footer {
+  display: none !important;
+}
