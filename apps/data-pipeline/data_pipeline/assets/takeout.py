@@ -54,12 +54,7 @@ def parsed_takeout(
     if not config.threshold.startswith("-"):
         raise ValueError("the `threshold` should always start with a `-` sign.")
 
-    p = (
-        PRODUCTION_STORAGE_BUCKET
-        / DataProvider.GOOGLE.value
-        / context.partition_key
-        / "MyActivity.json"
-    )
+    p = PRODUCTION_STORAGE_BUCKET / context.partition_key / "MyActivity.json"
 
     with p.open("rb") as f:
         raw_df = pl.read_json(f.read(), schema_overrides={"time": pl.Datetime})
