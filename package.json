@@ -2,17 +2,46 @@
   "name": "@enclaveid/enclaveid",
   "version": "0.0.0",
   "license": "MIT",
-  "nx": {},
+  "nx": {
+    "targets": {
+      "helm-chart": {
+        "dependsOn": [
+          "containers",
+          "aux-containers"
+        ],
+        "inputs": [
+          "{workspaceRoot}/k8s/helm"
+        ],
+        "outputs": [
+          "{workspaceRoot}/k8s/renders"
+        ]
+      },
+      "deploy": {
+        "dependsOn": [
+          "helm-chart"
+        ],
+        "inputs": [
+          "{workspaceRoot}/k8s/renders"
+        ]
+      },
+      "undeploy": {
+        "inputs": [
+          "{workspaceRoot}/k8s/renders"
+        ]
+      }
+    }
+  },
   "scripts": {
-    "build": "nx run-many --target=build --all --parallel",
-    "containers": "nx run-many --target=containers --all --parallel",
+    "containers": "nx run-many --target=container --parallel --output-style=dynamic",
     "aux-containers": "nx exec -- scripts/build_aux_containers.sh",
     "bump-version": "nx exec -- scripts/bump_project_version.sh",
     "helm-chart": "nx exec -- k8s/scripts/render_chart_dev.sh",
-    "deploy": "kubectl apply -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
-    "undeploy": "kubectl delete -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "deploy:aks": "kubectl apply --context=enclaveid-cluster -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "undeploy:aks": "kubectl delete --context=enclaveid-cluster -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "deploy:microk8s": "kubectl apply --context=microk8s -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "undeploy:microk8s": "kubectl delete --context=microk8s -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "clean-chrome": "kubectl delete --context=microk8s pods -n default -l class=chrome-pod; kubectl delete services -n default -l class=chrome-pod",
     "sync-dagster": "nx exec -- scripts/sync_dagster.sh",
-    "clean-chrome-pods": "kubectl delete pods -n default -l class=chrome-pod; kubectl delete services -n default -l class=chrome-pod",
     "cloc": "cloc --vcs git --exclude-list-file=.clocignore"
   },
   "private": true,
