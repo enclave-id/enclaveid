@@ -19,8 +19,7 @@ The development cycle for ML features is a little slower, so try to develop as m
 1. Develop the feature in the local environment.
 2. Make sure there are no errors locally.
 3. Build and push the Docker image. (by running the `container` nx target)
-4. In the Dagster Cloud UI, reload the code definition for the pipeline.
-5. Materialize the assets you've modified.
+4. Materialize the assets you've modified.
 
 For the cluster deployments there are two distinct images that will be built by the `container` target: data-pipeline-base and data-pipeline-ml. The base image is small while ml image is around 20gb because of the cuda and pytorch dependencies. The Docker image is layered so that the ML deps are installed first, so to avoid invalidating the layer cache we should minimize their changes.
 

@@ -30,7 +30,16 @@ DAGSTER_STORAGE_BUCKET = {
 DEPLOYMENT_ROW_LIMIT = {"LOCAL": 100, "BRANCH": 1000, "PROD": None}[DEPLOYMENT_TYPE]
 
 
-class DataProvider(Enum):
-    GOOGLE = "google"
-    FACEBOOK = "facebook"
-    OPENAI = "openai"
+class DataProvider:
+    GOOGLE = {
+        "name": "google",
+        "expected_file": "Takeout/My Activity/Search/MyActivity.json",
+    }
+    FACEBOOK = {
+        "name": "facebook",
+        "expected_file": "TODO",
+    }
+    OPENAI = {
+        "name": "openai",
+        "expected_file": "TODO",
+    }

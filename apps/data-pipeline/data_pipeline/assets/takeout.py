@@ -1,5 +1,5 @@
-import zipfile
 from textwrap import dedent
+from zipfile import ZipFile, is_zipfile
 
 import polars as pl
 from dagster import (
@@ -55,27 +55,20 @@ def parsed_takeout(
     if not config.threshold.startswith("-"):
         raise ValueError("the `threshold` should always start with a `-` sign.")
 
-    base_path = (
-        PRODUCTION_STORAGE_BUCKET / context.partition_key / DataProvider.GOOGLE.value
+    archive_path = (
+        PRODUCTION_STORAGE_BUCKET
+        / context.partition_key
+        / DataProvider.GOOGLE["name"]
+        / "latest.zip"
     )
-    archive_path = base_path / "latest.zip"
-    dest_path = base_path / "MyActivity.latest.json"
 
-    # Extract and validate the archive
-    expected_files = {"Takeout/My Activity/Search/MyActivity.json"}
-    with zipfile.ZipFile(archive_path, "r") as zip_ref:
-        zip_files = set(zip_ref.namelist())
+    expected_file = DataProvider.GOOGLE["expected_file"]
+    with archive_path.open("rb") as f:
+        if not is_zipfile(f):
+            raise ValueError("Expected a zip archive but got a different file type.")
 
-        if not expected_files.issubset(zip_files):
-            missing_files = expected_files - zip_files
-            raise FileNotFoundError(
-                f"Missing expected files in archive: {missing_files}. Found: {zip_files}"
-            )
-
-        zip_ref.extract(expected_files.pop(), dest_path)
-
-    with str(dest_path).open("rb") as f:
-        raw_df = pl.read_json(f.read(), schema_overrides={"time": pl.Datetime})
+        with ZipFile(f, "r") as zip_ref, zip_ref.open(expected_file) as zip_f:
+            raw_df = pl.read_json(zip_f.read(), schema_overrides={"time": pl.Datetime})
 
     full_df = raw_df.select(
         pl.all().exclude("time"),
