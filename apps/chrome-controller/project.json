@@ -62,7 +62,7 @@
         "push": true,
         "metadata": {
           "images": [
-            "registry.container-registry.svc.cluster.local:5000/enclaveid/chrome-controller"
+            "docker.io/enclaveid/chrome-controller"
           ],
           "tags": [
             "type=schedule",

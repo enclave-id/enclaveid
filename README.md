@@ -42,6 +42,7 @@ These variables are also made available in the Microk8s cluster.
 - `apps/`: Nx managed applications
 - `libs/`: Nx managed libraries
 - `docs/`: Documentation
+- `scripts/`: Scripts to manage the project
 - `k8s/aux_containers/`: Auxiliary containers (initContainers, sidecars)
 - `k8s/helm/`: Helm chart
 - `k8s/renders/`: Helm chart renders

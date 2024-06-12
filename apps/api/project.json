@@ -5,6 +5,7 @@
   "projectType": "application",
   "targets": {
     "build": {
+      "dependsOn": ["backend:build"],
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -64,9 +65,7 @@
         "engine": "docker",
         "push": true,
         "metadata": {
-          "images": [
-            "registry.container-registry.svc.cluster.local:5000/enclaveid/api"
-          ],
+          "images": ["docker.io/enclaveid/api"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",

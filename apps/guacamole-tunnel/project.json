@@ -11,9 +11,7 @@
         "engine": "docker",
         "push": true,
         "metadata": {
-          "images": [
-            "registry.container-registry.svc.cluster.local:5000/enclaveid/guacamole-tunnel"
-          ],
+          "images": ["docker.io/enclaveid/guacamole-tunnel"],
           "tags": [
             "type=schedule",
             "type=ref,event=branch",

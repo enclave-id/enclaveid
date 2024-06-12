@@ -2,7 +2,7 @@ import { ReactElement, cloneElement, useCallback } from 'react';
 import { validateGoogleTakoutZip } from '../../utils/archiveValidation';
 import { FileUploadFormProps } from '../FileUploadForm';
 import { trpc } from '../../utils/trpc';
-import { DataProvider } from '@prisma/client';
+import { DataProvider } from '@enclaveid/shared';
 
 export function FileUploadContainer({
   children,

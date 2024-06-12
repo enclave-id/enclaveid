@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { AppContext } from '../context';
 import { router, authenticatedProcedure } from '../trpc';
 import { generateSasUrl } from '../services/azureStorage';
-import { DataProvider } from '@prisma/client';
+import { DataProvider } from '@enclaveid/shared';
 
 export const fileUpload = router({
   getUploadUrl: authenticatedProcedure

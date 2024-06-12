@@ -1,4 +1,4 @@
-import StepForm from '../components/StepForm';
+import { StepForm } from '../components/StepForm';
 
 function TestPage() {
   return (

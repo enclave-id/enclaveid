@@ -8,7 +8,7 @@ from dagster import (
 )
 from pydantic import Field
 
-from ..consts import PRODUCTION_STORAGE_BUCKET
+from ..consts import PRODUCTION_STORAGE_BUCKET, DataProvider
 from ..partitions import user_partitions_def
 from ..utils.custom_config import RowLimitConfig
 
@@ -19,10 +19,10 @@ class TakeoutConfig(RowLimitConfig):
         default="-15d",
         description=dedent(
             """
-            The threshold for determining if data is 'old' or 'recent'. See 
-            the docs for `polars.Expr.dt.offset_by` for examples of Polars' 
-            "time offset language. 
-            
+            The threshold for determining if data is 'old' or 'recent'. See
+            the docs for `polars.Expr.dt.offset_by` for examples of Polars'
+            "time offset language.
+
             Note that it should always begin with a negative sign since we want
             to offset a negative amount from the date of the last record.
 
@@ -54,7 +54,12 @@ def parsed_takeout(
     if not config.threshold.startswith("-"):
         raise ValueError("the `threshold` should always start with a `-` sign.")
 
-    p = PRODUCTION_STORAGE_BUCKET / context.partition_key / "MyActivity.json"
+    p = (
+        PRODUCTION_STORAGE_BUCKET
+        / DataProvider.GOOGLE.value
+        / context.partition_key
+        / "MyActivity.json"
+    )
 
     with p.open("rb") as f:
         raw_df = pl.read_json(f.read(), schema_overrides={"time": pl.Datetime})

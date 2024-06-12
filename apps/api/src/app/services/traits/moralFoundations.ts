@@ -64,14 +64,8 @@ export function getMfq20Scores(mfq20Answers: Record<string, string>) {
     .reduce(
       (acc, partScores) => {
         Object.entries(partScores).forEach(([key, value]) => {
-          if (key === 'mathCheck') {
-            acc[key] = value > 3 ? false : true;
-          } else if (key === 'goodCheck') {
-            acc[key] = value < 3 ? false : true;
-          } else {
-            const normalizedScore = value / 10;
-            acc[key] = acc[key] ? acc[key] + normalizedScore : normalizedScore;
-          }
+          const normalizedScore = value / 10;
+          acc[key] = acc[key] ? acc[key] + normalizedScore : normalizedScore;
         });
 
         return acc;

@@ -8,3 +8,9 @@ const userTraitsShared = {
   updatedAt: '',
   userTraitsId: '',
 };
+
+export enum DataProvider {
+  GOOGLE = 'GOOGLE',
+  FACEBOOK = 'FACEBOOK',
+  OPENAI = 'OPENAI',
+}

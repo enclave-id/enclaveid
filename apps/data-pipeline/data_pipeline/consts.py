@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 
 from upath import UPath
 
@@ -27,3 +28,9 @@ DAGSTER_STORAGE_BUCKET = {
 }[DEPLOYMENT_TYPE]
 
 DEPLOYMENT_ROW_LIMIT = {"LOCAL": 100, "BRANCH": 1000, "PROD": None}[DEPLOYMENT_TYPE]
+
+
+class DataProvider(Enum):
+    GOOGLE = 0
+    FACEBOOK = 1
+    OPENAI = 2

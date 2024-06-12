@@ -1,8 +1,18 @@
 {
-  "name": "@enclaveid/source",
+  "name": "@enclaveid/enclaveid",
   "version": "0.0.0",
   "license": "MIT",
+  "nx": {},
   "scripts": {
+    "build": "nx run-many --target=build --all --parallel",
+    "containers": "nx run-many --target=containers --all --parallel",
+    "aux-containers": "nx exec -- scripts/build_aux_containers.sh",
+    "bump-version": "nx exec -- scripts/bump_project_version.sh",
+    "helm-chart": "nx exec -- k8s/scripts/render_chart_dev.sh",
+    "deploy": "kubectl apply -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "undeploy": "kubectl delete -f k8s/renders/k8s-configs.yaml -f k8s/renders/kata-configs.yaml",
+    "sync-dagster": "nx exec -- scripts/sync_dagster.sh",
+    "clean-chrome-pods": "kubectl delete pods -n default -l class=chrome-pod; kubectl delete services -n default -l class=chrome-pod",
     "cloc": "cloc --vcs git --exclude-list-file=.clocignore"
   },
   "private": true,

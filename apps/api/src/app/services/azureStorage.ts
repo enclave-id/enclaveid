@@ -4,7 +4,7 @@ import {
   generateBlobSASQueryParameters,
   BlobSASPermissions,
 } from '@azure/storage-blob';
-import { DataProvider } from '@prisma/client';
+import { DataProvider } from '@enclaveid/shared';
 
 const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
 const accountKey = process.env.AZURE_STORAGE_ACCOUNT_KEY;
@@ -23,16 +23,22 @@ export async function generateSasUrl(
   userId: string,
 ): Promise<string> {
   const blobName = `${userId}/${dataProvider.toLowerCase()}/${Date.now()}`;
+  const latestBlobName = `${userId}/${dataProvider.toLowerCase()}/latest`;
 
   const sasOptions = {
     containerName: defaultContainerName,
     blobName,
     permissions: BlobSASPermissions.parse('w'),
     startsOn: new Date(),
-    expiresOn: new Date(new Date().valueOf() + 3600 * 1000), // URL valid for 1h
+    expiresOn: new Date(3600 * 1000 * 24 + new Date().valueOf()), // URL valid for 1 day
   };
 
   const sasToken = generateBlobSASQueryParameters(sasOptions, creds).toString();
+
+  const blobClient = containerClient.getBlobClient(blobName);
+  containerClient
+    .getBlobClient(latestBlobName)
+    .beginCopyFromURL(blobClient.url);
 
   return `${containerClient.url}/${blobName}?${sasToken}`;
 }
