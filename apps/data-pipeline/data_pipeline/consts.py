@@ -31,6 +31,6 @@ DEPLOYMENT_ROW_LIMIT = {"LOCAL": 100, "BRANCH": 1000, "PROD": None}[DEPLOYMENT_T
 
 
 class DataProvider(Enum):
-    GOOGLE = 0
-    FACEBOOK = 1
-    OPENAI = 2
+    GOOGLE = "google"
+    FACEBOOK = "facebook"
+    OPENAI = "openai"
