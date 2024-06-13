@@ -10,7 +10,9 @@ You're gonna need [poetry](https://python-poetry.org/docs/#installation) to inst
 
 ### Local
 
-To install the dependencies, run the `install` nx target, and then to start the development server run the `dev` target.
+To install the dependencies, run the `install` nx target, and then to start the development server run the `dev` target. If you don't have a CUDA compatible GPU, make sure to exclude the `ml` group dependencies when running the `install` target.
+
+You can use your own Google Takeout data by creating a `test_user/google/latest.zip` file in the `apps/data-pipeline/data` folder.
 
 ### Cluster
 
