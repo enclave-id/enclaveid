@@ -1,5 +1,4 @@
 import os
-from enum import Enum
 
 from upath import UPath
 

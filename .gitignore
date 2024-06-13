@@ -65,3 +65,5 @@ logs
 
 # Dagster
 apps/data-pipeline/tmp*
+apps/data-pipeline/data/*
+!apps/data-pipeline/data/.gitkeep
