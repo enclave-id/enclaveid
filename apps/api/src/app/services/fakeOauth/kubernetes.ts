@@ -58,7 +58,7 @@ function createPodTemplate(name): k8s.V1Pod {
           name: 'rdesktop',
           image:
             process.env['CHROME_CONTROLLER_IMAGE'] ||
-            'localhost:32000/enclaveid/chrome-controller:master',
+            'docker.io/enclaveid/chrome-controller:master',
           ports: [
             {
               containerPort: 3389,
@@ -258,13 +258,13 @@ export async function connectFreePod(
 
   // This is not necessary because the tunnel service is stateless
   // But still can be useful for debugging
-  getGuacAuthToken()
-    .then((guacAuthToken) =>
-      createGuacConnection(guacAuthToken, initViewport, freePod),
-    )
-    .catch((error) => {
-      logger.error(`Failed to create Guacamole connection: ${error}`);
-    });
+  // getGuacAuthToken()
+  //   .then((guacAuthToken) =>
+  //     createGuacConnection(guacAuthToken, initViewport, freePod),
+  //   )
+  //   .catch((error) => {
+  //     logger.error(`Failed to create Guacamole connection: ${error}`);
+  //   });
 
   await prisma.user.update({
     where: {

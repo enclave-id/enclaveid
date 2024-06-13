@@ -121,7 +121,7 @@ async def recent_sessions(
         }
     )
 
-    return pl.concat((out.output_df for out in daily_outputs))
+    return pl.concat(out.output_df for out in daily_outputs)
 
 
 # TODO: Consider encapsulating this logic in an IOManager and/or moving the binary
@@ -130,14 +130,13 @@ def upload_embeddings(
     context: AssetExecutionContext, client: PGVectorClient, df: pl.DataFrame
 ):
     context.log.info(f"Flushing existing rows for partition: {context.partition_key}")
-    with client._get_conn() as conn:
-        with client._get_cursor(conn) as cur:
-            cleanup_query = (
-                f"DELETE FROM {context.asset_key.path[-1]} "
-                f"WHERE user_id = '{context.partition_key}'"
-            )
-            context.log.debug(f"Executing query:\n{cleanup_query}")
-            cur.execute(cleanup_query)  # type: ignore
+    with client._get_conn() as conn, client._get_cursor(conn) as cur:
+        cleanup_query = (
+            f"DELETE FROM {context.asset_key.path[-1]} "
+            f"WHERE user_id = '{context.partition_key}'"
+        )
+        context.log.debug(f"Executing query:\n{cleanup_query}")
+        cur.execute(cleanup_query)  # type: ignore
 
     context.log.info(f"COPYing {len(df)} rows to Postgres...")
     col_list = (
