@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useCallback, useEffect } from 'react';
 import { StepFormProps } from '../StepForm';
 import React from 'react';
 import { trpc } from '../../utils/trpc';
@@ -18,46 +18,22 @@ export function QuestionnaireContainer({
   const createMoralFoundationsMutation =
     trpc.private.createMoralFoundations.useMutation();
 
-  const [onSkip, setOnSkip] = React.useState<StepFormProps['onSkip']>();
-  const [onFinished, setOnFinished] =
-    React.useState<StepFormProps['onFinished']>();
-  const [whichQuestionnaire, setWhichQuestionnaire] =
-    React.useState<QuestionnaireId>('TIPI');
+  const [todoQuestionnaires, setTodoQuestionnaires] = React.useState<
+    QuestionnaireId[]
+  >(['TIPI', 'MFQ20']);
 
   useEffect(() => {
     if (personalityQuery.error || politicsQuery.error) return;
 
     if (personalityQuery.isLoading || politicsQuery.isLoading) return;
 
-    if (!personalityQuery.data?.bigfive) {
-      setWhichQuestionnaire('TIPI');
-      setOnSkip(() => {
-        setWhichQuestionnaire('MFQ20');
-      });
-      setOnFinished((answers) => {
-        createbigFiveMutation.mutate({
-          tipiAnswers: answers,
-        });
-        setWhichQuestionnaire('MFQ20');
-      });
-    } else if (
-      personalityQuery.data?.bigfive &&
-      !politicsQuery.data?.moralFoundations
-    ) {
-      setWhichQuestionnaire('MFQ20');
-      setOnSkip(() => {
-        onSkipAll();
-      });
-      setOnFinished((answers) => {
-        createMoralFoundationsMutation.mutate(answers);
-      });
-    } else {
-      onSkipAll();
-    }
+    setTodoQuestionnaires(
+      [
+        !personalityQuery.data.bigfive ? 'TIPI' : undefined,
+        !politicsQuery.data.moralFoundations ? 'MFQ20' : undefined,
+      ].filter((id) => id) as QuestionnaireId[],
+    );
   }, [
-    createMoralFoundationsMutation,
-    createbigFiveMutation,
-    onSkipAll,
     personalityQuery.data,
     personalityQuery.error,
     personalityQuery.isLoading,
@@ -66,11 +42,49 @@ export function QuestionnaireContainer({
     politicsQuery.isLoading,
   ]);
 
+  useEffect(() => {
+    if (todoQuestionnaires.length === 0) {
+      onSkipAll();
+    }
+  }, [todoQuestionnaires, onSkipAll]);
+
+  const onFinished = useCallback(
+    (answers) => {
+      if (todoQuestionnaires[0] === 'TIPI') {
+        createbigFiveMutation.mutateAsync(
+          { answers },
+          {
+            onSuccess: () => {
+              personalityQuery.refetch();
+            },
+          },
+        );
+      } else if (todoQuestionnaires[0] === 'MFQ20') {
+        createMoralFoundationsMutation.mutateAsync(
+          { answers },
+          {
+            onSuccess: () => {
+              politicsQuery.refetch();
+            },
+          },
+        );
+      }
+    },
+    [
+      todoQuestionnaires,
+      createbigFiveMutation,
+      personalityQuery,
+      createMoralFoundationsMutation,
+      politicsQuery,
+    ],
+  );
+
   return React.cloneElement(children, {
-    questionnaire: questionnaires.find(
-      (questionnaire) => questionnaire.id === whichQuestionnaire,
-    ),
-    onFinished: onFinished,
-    onSkip: onSkip,
+    questionnaire:
+      questionnaires.find(
+        (questionnaire) => questionnaire.id === todoQuestionnaires[0],
+      ) || questionnaires[0],
+    onFinished,
+    onSkip: onSkipAll,
   });
 }

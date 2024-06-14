@@ -50,6 +50,7 @@ export function StepForm(props: StepFormProps) {
 
   useEffect(() => {
     if (steps === 'final' && onFinished) {
+      setSteps('onboarding');
       onFinished(answers);
     }
   }, [steps, answers, onFinished]);

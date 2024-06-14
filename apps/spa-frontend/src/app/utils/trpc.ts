@@ -7,6 +7,7 @@ import {
   wsLink,
   splitLink,
   loggerLink,
+  httpLink,
 } from '@trpc/client';
 import { symmetricEncrypt, symmetricDecrypt } from './crypto/symmetricBrowser';
 import { TRPC_PREFIX, TRPC_PRIVATE_NAMESPACE } from '@enclaveid/shared';
@@ -52,6 +53,14 @@ const customFetch = async (input: RequestInfo, init: RequestInit) => {
   return response;
 };
 
+const httpLinkConfig = {
+  url:
+    (import.meta.env.DEV ? 'http://' : 'https://') +
+    import.meta.env.VITE_API_URL +
+    TRPC_PREFIX,
+  fetch: customFetch,
+};
+
 const wsClient = createWSClient({
   url:
     (import.meta.env.DEV ? 'ws://' : 'wss://') +
@@ -71,14 +80,13 @@ export const trpcClient = trpc.createClient({
       condition: (op) => op.type === 'subscription',
       true: wsLink({
         client: wsClient,
-
       }),
-      false: httpBatchLink({
-        url:
-          (import.meta.env.DEV ? 'http://' : 'https://') +
-          import.meta.env.VITE_API_URL +
-          TRPC_PREFIX,
-        fetch: customFetch,
+      // Split between public and private operations to avoid
+      // auth problems in the backend
+      false: splitLink({
+        condition: (op) => op.path.includes('private'),
+        true: httpBatchLink(httpLinkConfig),
+        false: httpLink(httpLinkConfig),
       }),
     }),
   ],

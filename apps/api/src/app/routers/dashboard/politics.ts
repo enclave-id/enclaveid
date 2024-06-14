@@ -40,7 +40,7 @@ export const politics = router({
   createMoralFoundations: authenticatedProcedure
     .input(
       z.object({
-        mfq20Answers: z.record(z.string(), z.string()),
+        answers: z.record(z.string(), z.string()),
       }),
     )
     .mutation(async (opts) => {
@@ -48,9 +48,9 @@ export const politics = router({
         user: { id: userId },
       } = opts.ctx as AppContext;
 
-      const { mfq20Answers } = opts.input;
+      const { answers } = opts.input;
 
-      const normalizedScores = getMfq20Scores(mfq20Answers);
+      const normalizedScores = getMfq20Scores(answers);
 
       return await prisma.moralFoundations.create({
         data: {

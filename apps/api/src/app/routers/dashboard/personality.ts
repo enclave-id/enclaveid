@@ -47,7 +47,7 @@ export const personality = router({
   createbigFive: authenticatedProcedure
     .input(
       z.object({
-        tipiAnswers: z.record(z.string(), z.string()),
+        answers: z.record(z.string(), z.string()),
       }),
     )
     .mutation(async (opts) => {
@@ -55,9 +55,9 @@ export const personality = router({
         user: { id: userId },
       } = opts.ctx as AppContext;
 
-      const { tipiAnswers } = opts.input;
+      const { answers } = opts.input;
 
-      const normalizedScores = getTipiScores(tipiAnswers);
+      const normalizedScores = getTipiScores(answers);
 
       return await prisma.bigFive.create({
         data: {
