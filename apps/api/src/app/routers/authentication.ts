@@ -4,6 +4,7 @@ import { AppContext } from '../context';
 import { TRPCError } from '@trpc/server';
 import { asymmetricDecrypt } from '../services/crypto/asymmetricNode';
 import { prisma } from '@enclaveid/backend';
+import { hashPassword, verifyPassword } from '../services/crypto/passwords';
 
 export const authentication = router({
   login: publicProcedure
@@ -14,20 +15,29 @@ export const authentication = router({
     )
     .mutation(async (opts) => {
       const { encryptedCredentials } = opts.input;
-      const { setJwtCookie, logger } = opts.ctx as AppContext;
+      const { setJwtCookie } = opts.ctx as AppContext;
 
       const { email, password, b64SessionKey } = JSON.parse(
         await asymmetricDecrypt(encryptedCredentials),
       );
 
       const user = await prisma.user.findUnique({
-        where: { email, password, confirmedAt: { not: null } },
+        where: { email, confirmedAt: { not: null } },
       });
 
       if (!user) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
-          message: 'Invalid credentials',
+          message: 'User not found',
+        });
+      }
+
+      const passwordMatch = await verifyPassword(password, user.password);
+
+      if (!passwordMatch) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Invalid password',
         });
       }
 
@@ -70,7 +80,7 @@ export const authentication = router({
       await prisma.user.create({
         data: {
           email,
-          password,
+          password: await hashPassword(password),
           confirmedAt: new Date(), // TODO remove this and send confirmation email
           userTraits: {
             create: {},

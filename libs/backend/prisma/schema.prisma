@@ -14,7 +14,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   email            String    @unique
-  password         String // TODO hash+salt
+  password         String
   confirmationCode String    @default(cuid())
   confirmedAt      DateTime?
   session          Session?
