@@ -6,9 +6,15 @@ interface SidebarItemProps {
   icon: ReactElement;
   text: string;
   href?: string;
+  onClick?: () => void;
 }
 
-function SidebarItem({ icon, text, href }: SidebarItemProps): ReactElement {
+function SidebarItem({
+  icon,
+  text,
+  href,
+  onClick,
+}: SidebarItemProps): ReactElement {
   const location = useLocation();
 
   const activeLinkClass = 'font-semibold text-greenBg';
@@ -23,24 +29,14 @@ function SidebarItem({ icon, text, href }: SidebarItemProps): ReactElement {
     ),
   });
 
-  if (href) {
-    return (
-      <Link className="flex items-center gap-2.5 px-2.5 py-3 w-full" to={href}>
-        {iconWithClassName}
-        <span
-          className={classNames(
-            'leading-5',
-            active ? activeLinkClass : passiveLinkClass,
-          )}
-        >
-          {text}
-        </span>
-      </Link>
-    );
-  }
+  const Component = href ? Link : 'button';
 
   return (
-    <button className="flex items-center gap-2.5 px-2.5 py-3 w-full">
+    <Component
+      className="flex items-center gap-2.5 px-2.5 py-3 w-full"
+      to={href}
+      onClick={onClick}
+    >
       {iconWithClassName}
       <span
         className={classNames(
@@ -50,7 +46,7 @@ function SidebarItem({ icon, text, href }: SidebarItemProps): ReactElement {
       >
         {text}
       </span>
-    </button>
+    </Component>
   );
 }
 

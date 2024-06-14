@@ -2,7 +2,7 @@ import React, { ReactElement, useCallback } from 'react';
 import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAwsNitroAttestation } from '../../hooks/attestation/useAwsNitroAttestation';
 import { getSessionKey } from '../../utils/crypto/symmetricBrowser';
 import { Buffer } from 'buffer';
@@ -24,6 +24,10 @@ export function AuthenticationContainer({
   // TODO change to Azure
   const { publicKey, error } = useAwsNitroAttestation();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // In the login case, we might want to redirect the user to the page they were trying to access
+  const { from } = location.state || { from: { pathname: '/dashboard' } };
 
   const handleSubmit = useCallback(
     async (email: string, password: string) => {
@@ -40,14 +44,19 @@ export function AuthenticationContainer({
         encryptedCredentials,
       });
 
+      console.log(from);
+
       if (authMutation.error) {
+        // TODO: error handling
         console.error(authMutation.error);
       } else {
-        // TODO: we should use loaders/actions here
-        authenticationType === 'login' ? navigate('/dashboard') : navigate('/');
+        // TODO: we should use loaders/actions ?
+        authenticationType === 'login'
+          ? navigate(from.pathname)
+          : navigate('/fileUpload');
       }
     },
-    [publicKey, authMutation, authenticationType, navigate],
+    [publicKey, authMutation, authenticationType, navigate, from],
   );
 
   return React.cloneElement(children, { handleSubmit, authenticationType });

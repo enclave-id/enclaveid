@@ -16,6 +16,7 @@
         "bundle": true,
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
+        "external": ["argon2"],
         "assets": ["apps/api/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {

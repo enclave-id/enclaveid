@@ -1,5 +1,7 @@
+export type QuestionnaireId = 'TIPI' | 'MFQ20';
+
 export interface Questionnaire {
-  id: string;
+  id: QuestionnaireId;
   title: string;
   parts: Array<{
     headline: string;
@@ -41,7 +43,7 @@ export const questionnaires: Array<Questionnaire> = [
     ],
   },
   {
-    id: 'MFQ20P1',
+    id: 'MFQ20',
     title: 'Moral Foundations Questionnaire',
     parts: [
       {

@@ -2,7 +2,7 @@ import { ReactElement, useEffect } from 'react';
 import { StepFormProps } from '../StepForm';
 import React from 'react';
 import { trpc } from '../../utils/trpc';
-import { questionnaires } from '@enclaveid/shared';
+import { QuestionnaireId, questionnaires } from '@enclaveid/shared';
 
 export function QuestionnaireContainer({
   onSkipAll,
@@ -21,7 +21,8 @@ export function QuestionnaireContainer({
   const [onSkip, setOnSkip] = React.useState<StepFormProps['onSkip']>();
   const [onFinished, setOnFinished] =
     React.useState<StepFormProps['onFinished']>();
-  const [whichQuestionnaire, setWhichQuestionnaire] = React.useState('TIPI');
+  const [whichQuestionnaire, setWhichQuestionnaire] =
+    React.useState<QuestionnaireId>('TIPI');
 
   useEffect(() => {
     if (personalityQuery.error || politicsQuery.error) return;

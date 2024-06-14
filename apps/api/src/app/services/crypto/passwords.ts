@@ -1,11 +1,10 @@
-import { genSalt, hash, compare } from 'bcrypt';
+import { hash, verify } from 'argon2';
 
 export async function hashPassword(password) {
-  const salt = await genSalt(10);
-  const hashedPassword = await hash(password, salt);
-  return hashedPassword;
+  // Argon2 already handles salting
+  return await hash(password);
 }
 
 export async function verifyPassword(userInputPassword, storedHashPassword) {
-  return compare(userInputPassword, storedHashPassword);
+  return await verify(storedHashPassword, userInputPassword);
 }

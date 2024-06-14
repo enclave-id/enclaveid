@@ -81,7 +81,7 @@ export function FileUploadForm({ uploadUrl }: FileUploadFormProps) {
             {success ? (
               <Button label="Next" fullWidth />
             ) : (
-              <Link href="/">I'm waiting for the data export</Link>
+              <Link href="/questionnaire">I'm waiting for the data export</Link>
             )}
           </div>
         </FormCardLayout>

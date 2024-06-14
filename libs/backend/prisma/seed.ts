@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { hash } from 'argon2';
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -11,7 +13,7 @@ async function main() {
   return await prisma.user.create({
     data: {
       email: 'john.doe@example.com',
-      password: 'password',
+      password: await hash('password'),
       confirmedAt: new Date(),
       userTraits: {
         create: {

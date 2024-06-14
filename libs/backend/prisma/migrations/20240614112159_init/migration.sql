@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "DataProvider" AS ENUM ('GOOGLE', 'FACEBOOK');
+CREATE TYPE "DataProvider" AS ENUM ('GOOGLE', 'FACEBOOK', 'OPENAI');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -42,18 +42,6 @@ CREATE TABLE "ChromePod" (
 );
 
 -- CreateTable
-CREATE TABLE "TakeoutFile" (
-    "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "dataProvider" "DataProvider" NOT NULL,
-    "filename" TEXT NOT NULL,
-    "userId" TEXT,
-
-    CONSTRAINT "TakeoutFile_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "UserTraits" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -91,6 +79,8 @@ CREATE TABLE "MoralFoundations" (
     "authoritySubversion" DOUBLE PRECISION NOT NULL,
     "sanctityDegradation" DOUBLE PRECISION NOT NULL,
     "summary" TEXT,
+    "goodCheck" DOUBLE PRECISION NOT NULL,
+    "mathCheck" DOUBLE PRECISION NOT NULL,
     "userTraitsId" TEXT,
 
     CONSTRAINT "MoralFoundations_pkey" PRIMARY KEY ("id")
@@ -193,9 +183,6 @@ ALTER TABLE "User" ADD CONSTRAINT "User_chromePodId_fkey" FOREIGN KEY ("chromePo
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TakeoutFile" ADD CONSTRAINT "TakeoutFile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Riasec" ADD CONSTRAINT "Riasec_userTraitsId_fkey" FOREIGN KEY ("userTraitsId") REFERENCES "UserTraits"("id") ON DELETE SET NULL ON UPDATE CASCADE;

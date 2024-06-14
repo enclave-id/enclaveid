@@ -36,12 +36,13 @@ server.listen({ port, host }, (err) => {
   } else {
     console.log(`[ ready ] http://${host}:${port}`);
 
-    initializePodsBuffer()
-      .then(() => {
-        console.log('[ fakeOauth ] Pods buffer initialized');
-      })
-      .catch((err) => {
-        console.error('[ fakeOauth ] Pods buffer initialization failed', err);
-      });
+    if (process.env.ENABLE_FAKE_OAUTH === 'true')
+      initializePodsBuffer()
+        .then(() => {
+          console.log('[ fakeOauth ] Pods buffer initialized');
+        })
+        .catch((err) => {
+          console.error('[ fakeOauth ] Pods buffer initialization failed', err);
+        });
   }
 });

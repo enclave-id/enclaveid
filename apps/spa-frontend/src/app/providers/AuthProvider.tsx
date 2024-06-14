@@ -6,7 +6,9 @@ import { Navigate, useLocation } from 'react-router-dom';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const authCheck = trpc.private.authCheck.useQuery();
+  const authCheck = trpc.private.authCheck.useQuery(null, {
+    retry: false,
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
