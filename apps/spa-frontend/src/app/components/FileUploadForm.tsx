@@ -3,13 +3,19 @@ import { Button } from './Button';
 import { FacebookIcon, GoogleIcon, OpenAiIcon } from './Icons';
 import { FileUploadSection } from './FileUploadSection';
 import { FormCardLayout } from './FormCardLayout';
-import { Link } from './Link';
 
 export interface FileUploadFormProps {
   uploadUrl?: string;
+  onNext?: () => void;
+  onSkip?: () => void;
 }
 
-export function FileUploadForm({ uploadUrl }: FileUploadFormProps) {
+// TODO: instruction video link
+export function FileUploadForm({
+  uploadUrl,
+  onNext,
+  onSkip,
+}: FileUploadFormProps) {
   const [success, setSuccess] = useState(false);
 
   return (
@@ -79,9 +85,22 @@ export function FileUploadForm({ uploadUrl }: FileUploadFormProps) {
           </p>
           <div className="mt-6 flex flex-col gap-[18px]">
             {success ? (
-              <Button label="Next" fullWidth />
+              <Button
+                label="Next"
+                fullWidth
+                onClick={() => {
+                  onNext && onNext();
+                }}
+              />
             ) : (
-              <Link href="/questionnaire">I'm waiting for the data export</Link>
+              <Button
+                label="I'm waiting for the data export"
+                fullWidth
+                variant="secondary"
+                onClick={() => {
+                  onSkip && onSkip();
+                }}
+              />
             )}
           </div>
         </FormCardLayout>

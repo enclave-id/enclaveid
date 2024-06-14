@@ -60,6 +60,8 @@
 
 .files-ui-dropzone-children-container > label {
   @apply text-[#6C7A8A] text-lg;
+
+  cursor: pointer;
 }
 
 .files-ui-header {
