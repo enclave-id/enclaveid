@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 import { trpc } from '../../utils/trpc';
 import { asymmetricEncrypt } from '../../utils/crypto/asymmetricBrowser';
 import { AuthenticationFormProps } from '../AuthenticationForm';
@@ -16,6 +16,7 @@ export function AuthenticationContainer({
   children: ReactElement<AuthenticationFormProps>;
   authenticationType: AuthenticationType;
 }) {
+  const authCheck = trpc.private.authCheck.useQuery();
   const authMutation =
     authenticationType === 'login'
       ? trpc.public.login.useMutation()
@@ -27,7 +28,9 @@ export function AuthenticationContainer({
   const location = useLocation();
 
   // In the login case, we might want to redirect the user to the page they were trying to access
-  const { from } = location.state || { from: { pathname: '/dashboard' } };
+  const { from } = location.state || {
+    from: { pathname: '/dashboard/personality' },
+  };
 
   const handleSubmit = useCallback(
     async (email: string, password: string) => {
@@ -40,24 +43,24 @@ export function AuthenticationContainer({
         publicKey,
       );
 
-      await authMutation.mutate({
+      authMutation.mutate({
         encryptedCredentials,
       });
-
-      console.log(from);
-
-      if (authMutation.error) {
-        // TODO: error handling
-        console.error(authMutation.error);
-      } else {
-        // TODO: we should use loaders/actions ?
-        authenticationType === 'login'
-          ? navigate(from.pathname)
-          : navigate('/fileUpload');
-      }
     },
-    [publicKey, authMutation, authenticationType, navigate, from],
+    [publicKey, authMutation],
   );
+
+  useEffect(() => {
+    if (authMutation.isSuccess) {
+      authCheck.refetch().then(() => {
+        if (authenticationType === 'login') {
+          navigate(from.pathname);
+        } else {
+          navigate('/fileUpload');
+        }
+      });
+    }
+  }, [authMutation.isSuccess, navigate, from, authenticationType, authCheck]);
 
   return React.cloneElement(children, { handleSubmit, authenticationType });
 }

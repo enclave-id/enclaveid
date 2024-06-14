@@ -1,5 +1,6 @@
 import { ChatIcon, SearchIcon } from '../Icons';
 import { Sidebar } from '../Sidebar';
+import { SidebarContainer } from '../containers/SidebarContainer';
 import { ChatBubble } from './ChatBubble';
 import { ChatCard } from './ChatCard';
 import { ChatNavbar } from './ChatNavbar';
@@ -8,7 +9,9 @@ import { ChatSendMessage } from './ChatSendMessage';
 function ChatPage() {
   return (
     <div className="h-screen bg-white flex sm:flex-row flex-col">
-      <Sidebar />
+      <SidebarContainer>
+        <Sidebar />
+      </SidebarContainer>
       <div className="flex flex-1 pt-12 px-6">
         <div className="h-[745px] flex flex-1 border border-[#E5E8EE] rounded-3xl">
           <div className="w-[220px] lg:w-[333px] flex flex-col shrink-0 border-r border-[#E5E8EE]">

@@ -9,12 +9,14 @@ import { CogIcon } from '@heroicons/react/24/outline';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { trpc } from '../utils/trpc';
 
-function Sidebar() {
+export interface SidebarProps {
+  onLogout?: () => void;
+}
+
+function Sidebar(props: SidebarProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const logoutMutation = trpc.private.logout.useMutation();
+  const { onLogout } = props;
 
   return (
     <aside className="w-full sm:w-[296px] bg-[#F3F5F7] px-[18px] sm:px-[22px] flex flex-col sm:h-full h-max border-b border-b-[#E5E8EE] sm:border-none relative">
@@ -53,9 +55,7 @@ function Sidebar() {
           <SidebarItem
             icon={<ArrowLeftStartOnRectangleIcon />}
             text="Log out"
-            onClick={() => {
-              logoutMutation.mutate();
-            }}
+            onClick={onLogout}
           />
         </SidebarSection>
       </div>
@@ -146,9 +146,7 @@ function Sidebar() {
                       <SidebarItem
                         icon={<ArrowLeftStartOnRectangleIcon />}
                         text="Log out"
-                        onClick={() => {
-                          logoutMutation.mutate();
-                        }}
+                        onClick={onLogout}
                       />
                     </SidebarSection>
                   </div>
