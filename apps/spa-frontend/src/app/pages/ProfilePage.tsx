@@ -2,7 +2,8 @@ import { useLocation } from 'react-router-dom';
 import { Tabs } from '../components/Tabs';
 import { SocialCard } from '../components/SocialCard';
 import { useEffect, useState } from 'react';
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
+import { RequireAuth } from '../providers/AuthProvider';
 
 const tabs = [
   { title: 'Personality', path: '/socials/:title/personality' },
@@ -46,12 +47,12 @@ function ProfilePage() {
   }, [location.pathname]);
 
   return (
-    <div>
+    <RequireAuth>
       <div className="px-4 mt-5 pb-2">
         <SocialCard {...location.state} />
       </div>
       <Tabs tabs={userTabs} />
-    </div>
+    </RequireAuth>
   );
 }
 

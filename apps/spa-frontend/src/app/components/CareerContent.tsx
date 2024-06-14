@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from './Button';
 
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
 import { useState } from 'react';
 import { radarChart } from './mock-data';
 import { SimilarProfileBadge } from './SimilarProfileBadge';

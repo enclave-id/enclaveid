@@ -6,7 +6,7 @@ import { FormCardLayout } from './FormCardLayout';
 import { Link } from './Link';
 
 export interface FileUploadFormProps {
-  uploadUrl: string;
+  uploadUrl?: string;
 }
 
 export function FileUploadForm({ uploadUrl }: FileUploadFormProps) {

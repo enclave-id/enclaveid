@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { TraitCard1 } from './TraitCard1';
 import { traitCard1 } from './mock-data';
 import { withRouter } from 'storybook-addon-remix-react-router';
-import { BreadcrumbProvider } from '../context/BreadcrumbContext';
+import { BreadcrumbProvider } from '../providers/BreadcrumbContext';
 
 export default {
   title: 'Components/TraitCard1',

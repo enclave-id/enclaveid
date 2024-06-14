@@ -4,7 +4,7 @@ import { DashboardCardLayout } from './DashboardCardLayout';
 
 import { useNavigate } from 'react-router-dom';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
 import { CustomDrawer } from './CustomDrawer';
 
 export interface IntjCardProps {
@@ -18,7 +18,7 @@ export interface IntjCardProps {
 }
 
 function IntjCard({ header, label, description, data }: IntjCardProps) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { setLink } = useBreadcrumb();
 

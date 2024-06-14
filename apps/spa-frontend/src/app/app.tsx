@@ -2,7 +2,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthenticationPage } from './pages/AuthenticationPage';
-import { BreadcrumbProvider } from './context/BreadcrumbContext';
+import { BreadcrumbProvider } from './providers/BreadcrumbContext';
 import { DashboardPage } from './pages/DashboardPage';
 import { PersonalityContent } from './components/PersonalityContent';
 import { TraitCardDetails } from './components/TraitCardDetails';
@@ -23,6 +23,7 @@ import { SocialPage } from './pages/SocialPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { FileUploadPage } from './pages/FileUploadPage';
 import { QuestionnairePage } from './pages/QuestionnairePage';
+import { AuthProvider } from './providers/AuthProvider';
 
 const reactRouter = createBrowserRouter([
   {
@@ -105,9 +106,11 @@ const reactRouter = createBrowserRouter([
 
 export function App() {
   return (
-    <BreadcrumbProvider>
-      <RouterProvider router={reactRouter} />
-      <Toaster position="bottom-right" reverseOrder={false} />
-    </BreadcrumbProvider>
+    <AuthProvider>
+      <BreadcrumbProvider>
+        <RouterProvider router={reactRouter} />
+        <Toaster position="bottom-right" reverseOrder={false} />
+      </BreadcrumbProvider>
+    </AuthProvider>
   );
 }

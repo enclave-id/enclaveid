@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { IntjCard } from './IntjCard';
 import { withRouter } from 'storybook-addon-remix-react-router';
-import { BreadcrumbProvider } from '../context/BreadcrumbContext';
+import { BreadcrumbProvider } from '../providers/BreadcrumbContext';
 import { intjCard } from './mock-data';
 
 export default {

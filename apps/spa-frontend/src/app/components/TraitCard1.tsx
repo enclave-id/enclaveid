@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { TraitCard } from './TraitCard';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
 import { CustomDrawer } from './CustomDrawer';
 
 interface DataProps {

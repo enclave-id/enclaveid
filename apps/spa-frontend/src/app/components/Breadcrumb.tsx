@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
 import { useEffect } from 'react';
 
 function Breadcrumb() {

@@ -1,13 +1,13 @@
 import { MFTChart } from './MFTChart';
 import { MFTChartData } from './mock-data';
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
 import { CustomDrawer } from './CustomDrawer';
 
 function MFTSection() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { setLink } = useBreadcrumb();
   const { description, ...circles } = MFTChartData;

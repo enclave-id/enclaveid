@@ -2,7 +2,7 @@ import { GradientLine } from './GradientLine';
 import { Button } from './Button';
 import { DashboardCardLayout } from './DashboardCardLayout';
 import { useNavigate } from 'react-router-dom';
-import { useBreadcrumb } from '../context/BreadcrumbContext';
+import { useBreadcrumb } from '../providers/BreadcrumbContext';
 import { useState } from 'react';
 import { SimilarProfileBadge } from './SimilarProfileBadge';
 import { CustomDrawer } from './CustomDrawer';
