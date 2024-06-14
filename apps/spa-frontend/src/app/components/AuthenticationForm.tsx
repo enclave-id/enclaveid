@@ -4,6 +4,7 @@ import { Input } from './Input';
 import { Button } from './Button';
 import { FormCardLayout } from './FormCardLayout';
 import { AuthenticationType } from './containers/AuthenticationContainer';
+import { useNavigate } from 'react-router-dom';
 
 export interface AuthenticationFormProps {
   handleSubmit?: (email: string, password: string) => void;
@@ -16,6 +17,7 @@ function AuthenticationForm({
 }: AuthenticationFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-10 max-w-[478px] w-full mx-auto">
@@ -65,6 +67,24 @@ function AuthenticationForm({
             fullWidth
             onClick={() => {
               if (handleSubmit) handleSubmit(email, password);
+            }}
+          />
+        </div>
+        <div className="mt-5">
+          <Button
+            label={
+              authenticationType === 'signup'
+                ? 'Log In with existing account'
+                : 'Sign Up for a new account'
+            }
+            variant="secondary"
+            fullWidth
+            onClick={() => {
+              if (authenticationType === 'signup') {
+                navigate('/login');
+              } else {
+                navigate('/signup');
+              }
             }}
           />
         </div>

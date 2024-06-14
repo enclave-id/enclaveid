@@ -22,7 +22,7 @@ export function LoadingPage() {
             d="M12 2a10 10 0 000 20m0-18v4m0 14v4m-8-8h4m10 0h4"
           ></path>
         </svg>
-        <span className="text-gray-600">Loading...</span>
+        <span className="text-gray-600">Connecting to server...</span>
       </div>
     </div>
   );
