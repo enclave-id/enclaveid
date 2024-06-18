@@ -16,7 +16,7 @@ function Tabs({ tabs }: TabsProps) {
 
   return (
     <div className="sm:px-6 px-0">
-      {showTabs && (
+      {showTabs && !pathSegments.includes('account-settings') && (
         <div className="flex overflow-auto border-b border-[#E5E8EE] hideScrollbar pb-1">
           {tabs.map((tab, index) => (
             <Tab {...tab} key={index} />

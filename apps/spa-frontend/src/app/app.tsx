@@ -24,6 +24,8 @@ import { ProfilePage } from './pages/ProfilePage';
 import { FileUploadPage } from './pages/FileUploadPage';
 import { QuestionnairePage } from './pages/QuestionnairePage';
 import { AuthProvider } from './providers/AuthProvider';
+import { AccountSettings } from './components/AccountSettings';
+import { AccountSettingsLayout } from './components/AccountSettingsLayout';
 
 const reactRouter = createBrowserRouter([
   {
@@ -101,6 +103,16 @@ const reactRouter = createBrowserRouter([
   {
     path: '/chat',
     element: <ChatPage />,
+  },
+  {
+    path: '/account-settings',
+    element: <AccountSettingsLayout />,
+    children: [
+      {
+        index: true,
+        element: <AccountSettings />,
+      },
+    ],
   },
 ]);
 

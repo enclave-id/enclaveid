@@ -4,7 +4,7 @@ import React from 'react';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   fullWidth?: boolean;
-  variant?: 'primary' | 'secondary' | 'tertiary';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'error';
   size?: 'small';
 }
 
@@ -21,6 +21,8 @@ function Button({
   const tertiaryVariant =
     'text-passiveLinkColor py-[7px] px-8 bg-white shadow rounded-lg';
   const secondarySmallSize = 'text-xs font-normal !leading-4';
+  const errorVariant =
+    'py-[11.5px] w-full text-center text-white leading-[18px] font-medium rounded-lg bg-[#A62F2F]';
 
   let variantClass;
 
@@ -34,6 +36,9 @@ function Button({
     case 'tertiary':
       variantClass = tertiaryVariant;
       break;
+    case 'error':
+      variantClass = errorVariant;
+      break;
     default:
       break;
   }
@@ -45,7 +50,7 @@ function Button({
         'font-medium leading-[22.4px] text-center',
         fullWidth && 'w-full',
         variantClass,
-        variant === 'secondary' && size === 'small' && secondarySmallSize
+        variant === 'secondary' && size === 'small' && secondarySmallSize,
       )}
     >
       {label}
