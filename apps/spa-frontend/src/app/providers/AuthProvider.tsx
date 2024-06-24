@@ -34,7 +34,7 @@ export function RequireAuth({ children }) {
 
   return isAuthenticated == null ? (
     <LoadingPage />
-  ) : isAuthenticated ? (
+  ) : !isAuthenticated ? (
     children
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />

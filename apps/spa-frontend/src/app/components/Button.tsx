@@ -5,7 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   fullWidth?: boolean;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'error';
-  size?: 'small';
+  size?: 'small' | 'large';
 }
 
 function Button({
@@ -47,10 +47,11 @@ function Button({
     <button
       {...rest}
       className={classNames(
-        'font-medium leading-[22.4px] text-center',
+        'font-medium leading-[22.4px] text-center flex items-center justify-center',
         fullWidth && 'w-full',
         variantClass,
         variant === 'secondary' && size === 'small' && secondarySmallSize,
+        size === 'large' && 'w-44 h-8',
       )}
     >
       {label}

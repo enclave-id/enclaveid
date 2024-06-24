@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { Button } from './Button';
-import { MarkIcon } from './Icons';
+import { Button } from '../components/Button';
+import { MarkIcon } from '../components/Icons';
 
 interface SettingOption {
   label: string;
