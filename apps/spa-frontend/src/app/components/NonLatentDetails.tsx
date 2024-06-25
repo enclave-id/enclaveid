@@ -1,7 +1,10 @@
-import { Tab } from '@headlessui/react';
+import { Dialog, Tab, Transition } from '@headlessui/react';
 import { NonLatentCard } from './NonLatentCard';
 import { Stepper } from './Stepper';
 import { Button } from './Button';
+import { Fragment } from 'react/jsx-runtime';
+import { useState } from 'react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const data = [
   {
@@ -30,6 +33,16 @@ const steps = [
 ];
 
 function NonLatentDetails() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="pt-[21px] pb-[13px] leading-[21.11px] text-lg text-passiveLinkColor text-center border-b w-full border-[#E5E8EE]">
@@ -47,11 +60,11 @@ function NonLatentDetails() {
             ))}
           </Tab.List>
           <Tab.Panels className="w-full">
-            {data.map((card, index) => (
+            {data.map((_, index) => (
               <Tab.Panel key={index} className="size-full">
                 <div className="border border-[#E5E8EE] bg-[#F3F5F7] pt-5 pb-3.5 px-2.5 rounded-xl flex flex-col gap-[60px] h-full">
                   <Stepper steps={steps} />
-                  <div className="text-passiveLinkColor bg-white px-3.5 pt-5 pb-4 border border-[#E5E8EE] h-full flex flex-col justify-between">
+                  <div className="text-passiveLinkColor bg-white rounded-xl px-3.5 pt-5 pb-4 border border-[#E5E8EE] h-full flex flex-col justify-between">
                     <p className="text-passiveLinkColor leading-[22px]">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                       Pellentesque leo lorem, pellentesque at rutrum sit amet,
@@ -67,9 +80,60 @@ function NonLatentDetails() {
                       interdum feugiat vitae in libero.
                     </p>
                     <div className="flex items-center justify-center">
-                      <Button label="Expand" size="large" />
+                      <Button label="Expand" size="large" onClick={openModal} />
                     </div>
                   </div>
+                  <Transition appear show={isOpen} as={Fragment}>
+                    <Dialog
+                      as="div"
+                      className="relative z-10"
+                      onClose={closeModal}
+                    >
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <div className="fixed inset-0 bg-black/25" />
+                      </Transition.Child>
+
+                      <div className="fixed inset-0 overflow-y-auto">
+                        <div className="flex items-center justify-center p-4 text-center h-full">
+                          <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
+                          >
+                            <Dialog.Panel className="w-full max-w-[1112px] h-full max-h-[752px] transform overflow-hidden rounded-xl bg-white px-[17px] pt-5 pb-6 text-left align-middle shadow-xl transition-all relative flex flex-col">
+                              <Dialog.Title
+                                as="h3"
+                                className="text-lg font-medium leading-[21px] text-passiveLinkColor"
+                              >
+                                Expanded Path - Repairing the e-shifter on your
+                                VanMoof S3
+                              </Dialog.Title>
+                              <button
+                                onClick={closeModal}
+                                className="absolute right-4 top-5"
+                              >
+                                <XMarkIcon className="w-5 h-5 stroke-[3px] text-passiveLinkColor" />
+                              </button>
+
+                              <div className="mt-6 border-[1.28px] border-[#E4E4E7] rounded-lg h-full"></div>
+                            </Dialog.Panel>
+                          </Transition.Child>
+                        </div>
+                      </div>
+                    </Dialog>
+                  </Transition>
                 </div>
               </Tab.Panel>
             ))}
