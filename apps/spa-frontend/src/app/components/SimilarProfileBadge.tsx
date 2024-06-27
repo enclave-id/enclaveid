@@ -1,14 +1,23 @@
+import classNames from 'classnames';
+
 interface SimilarProfileBadgeProps {
   peopleCount: number;
   url?: string;
+  variant?: 'sm';
 }
 
 function SimilarProfileBadge({
   peopleCount = 1123,
   url,
+  variant,
 }: SimilarProfileBadgeProps) {
   return (
-    <div className="bg-white pt-[15px] pb-[13px] pl-[9px] pr-[17px] border border-[#E5E8EE] rounded-xl w-full">
+    <div
+      className={classNames(
+        'bg-white pl-[9px] pr-[17px] border border-[#E5E8EE] rounded-xl w-full',
+        variant === 'sm' ? 'py-1.5 shadow' : 'pt-[15px] pb-[13px]',
+      )}
+    >
       <div className="flex items-center gap-2.5">
         <div className="flex -space-x-2 overflow-hidden shrink-0">
           <img

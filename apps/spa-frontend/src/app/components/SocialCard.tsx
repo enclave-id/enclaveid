@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { LocationPinIcon } from './Icons';
 import { toSvg } from 'jdenticon';
+import classNames from 'classnames';
 
 type User = {
   name: string;
@@ -9,6 +10,7 @@ type User = {
   type: string;
   image: string;
   loading?: boolean;
+  matchPercentage: number;
 };
 
 function getIdenticon(uniqueId: string): string {
@@ -20,7 +22,13 @@ function getIdenticon(uniqueId: string): string {
   );
 }
 
-function SocialCard({ name, gender, location, loading }: User) {
+function SocialCard({
+  name,
+  gender,
+  location,
+  loading,
+  matchPercentage,
+}: User) {
   const formattedLink = (name: string) => {
     return name
       .split(' ')
@@ -43,6 +51,16 @@ function SocialCard({ name, gender, location, loading }: User) {
     );
   }
 
+  const getMatchBackgroundColor = (percentage: number) => {
+    if (percentage < 50) {
+      return 'bg-[#FF5C00]/10 text-[#FF5C00]';
+    } else if (percentage < 80) {
+      return 'bg-[#2F5FA6]/20 text-[#2F5FA6]';
+    } else {
+      return 'bg-greenBg/10 text-greenBg';
+    }
+  };
+
   return (
     <Link
       to={`/socials/${formattedLink(name)}`}
@@ -54,18 +72,33 @@ function SocialCard({ name, gender, location, loading }: User) {
         alt=""
         className="w-[101px] h-[101px] rounded-full"
       />
-      <div className="flex flex-col">
-        <h4 className="text-passiveLinkColor font-medium text-2xl leading-7">
-          {name}
-        </h4>
-        <h5 className="text-passiveLinkColor font-medium leading-[18px] mt-[9px]">
-          {gender}
-        </h5>
-        <div className="flex items-center gap-2 mt-3">
-          <LocationPinIcon />
-          <h6 className="text-passiveLinkColor font-medium leading-[18px]">
-            {location}
-          </h6>
+      <div className="flex justify-between w-full flex-wrap gap-3">
+        <div className="flex flex-col">
+          <h4 className="text-passiveLinkColor font-medium text-2xl leading-7">
+            {name}
+          </h4>
+
+          <h5 className="text-passiveLinkColor font-medium leading-[18px] mt-[9px]">
+            {gender}
+          </h5>
+          <div className="flex items-center gap-2 mt-3">
+            <LocationPinIcon />
+            <h6 className="text-passiveLinkColor font-medium leading-[18px]">
+              {location}
+            </h6>
+          </div>
+        </div>
+        <div>
+          {matchPercentage && (
+            <div
+              className={classNames(
+                'p-2.5 rounded-full text-sm leading-[16.4px] font-medium',
+                getMatchBackgroundColor(matchPercentage),
+              )}
+            >
+              {matchPercentage}% overall match
+            </div>
+          )}
         </div>
       </div>
     </Link>

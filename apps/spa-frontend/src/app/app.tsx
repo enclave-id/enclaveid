@@ -24,6 +24,9 @@ import { ProfilePage } from './pages/ProfilePage';
 import { FileUploadPage } from './pages/FileUploadPage';
 import { QuestionnairePage } from './pages/QuestionnairePage';
 import { AuthProvider } from './providers/AuthProvider';
+import { AccountSettings } from './pages/AccountSettingsPage';
+import { AccountSettingsLayout } from './components/AccountSettingsLayout';
+import { NonLatentDetails } from './components/NonLatentDetails';
 
 const reactRouter = createBrowserRouter([
   {
@@ -74,6 +77,7 @@ const reactRouter = createBrowserRouter([
       { path: 'politics/mft', element: <MFTDetails /> },
       { path: 'career', element: <CareerContent /> },
       { path: 'career/radar', element: <RadarChartDetails /> },
+      { path: 'non-latent', element: <NonLatentDetails /> },
     ],
   },
   {
@@ -101,6 +105,16 @@ const reactRouter = createBrowserRouter([
   {
     path: '/chat',
     element: <ChatPage />,
+  },
+  {
+    path: '/account-settings',
+    element: <AccountSettingsLayout />,
+    children: [
+      {
+        index: true,
+        element: <AccountSettings />,
+      },
+    ],
   },
 ]);
 

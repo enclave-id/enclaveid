@@ -219,6 +219,7 @@ export const userData = [
     intj: intjCard,
     traitCard1: traitCard1,
     traitCard2: traitCard2,
+    matchPercentage: 20,
   },
   {
     name: 'Jane Smith',
@@ -226,6 +227,7 @@ export const userData = [
     location: 'Houston',
     type: 'MBTI',
     image: '/s2.png',
+    matchPercentage: 49,
   },
   {
     name: 'Sophia Robinson',
@@ -233,6 +235,7 @@ export const userData = [
     location: 'San Diego',
     type: '16FP',
     image: '/s3.png',
+    matchPercentage: 79,
   },
   {
     name: 'Ethan Martinez',
@@ -240,6 +243,7 @@ export const userData = [
     location: 'San Diego',
     type: 'Compass',
     image: '/s1.png',
+    matchPercentage: 92,
   },
   {
     name: 'Olivia Garcia',
@@ -247,6 +251,7 @@ export const userData = [
     location: 'San Antonio',
     type: 'MFT',
     image: '/s2.png',
+    matchPercentage: 10,
   },
   {
     name: 'Ethan Martinez',
@@ -254,6 +259,7 @@ export const userData = [
     location: 'San Antonio',
     type: 'Riasec',
     image: '/s3.png',
+    matchPercentage: 44,
   },
   {
     name: 'Olivia Garcia',
@@ -261,6 +267,7 @@ export const userData = [
     location: 'Chicago',
     type: 'Ocean',
     image: '/s1.png',
+    matchPercentage: 66,
   },
   {
     name: 'Emma Wilson',
@@ -268,6 +275,7 @@ export const userData = [
     location: 'Chicago',
     type: 'MBTI',
     image: '/s2.png',
+    matchPercentage: 71,
   },
   {
     name: 'Jane Smith',
@@ -275,6 +283,7 @@ export const userData = [
     location: 'Houston',
     type: '16FP',
     image: '/s3.png',
+    matchPercentage: 88,
   },
   {
     name: 'Michael Brown',
@@ -282,5 +291,6 @@ export const userData = [
     location: 'New York',
     type: 'Compass',
     image: '/s1.png',
+    matchPercentage: 100,
   },
 ];

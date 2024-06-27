@@ -51,7 +51,11 @@ function Sidebar(props: SidebarProps) {
           </SidebarSection>
         </div>
         <SidebarSection noGap={true}>
-          <SidebarItem icon={<CogIcon />} text="Account and Settings" />
+          <SidebarItem
+            icon={<CogIcon />}
+            text="Account and Settings"
+            href="/account-settings"
+          />
           <SidebarItem
             icon={<ArrowLeftStartOnRectangleIcon />}
             text="Log out"
