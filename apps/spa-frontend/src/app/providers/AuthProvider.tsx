@@ -24,17 +24,13 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
-
 export function RequireAuth({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useContext(AuthContext);
   const location = useLocation();
 
   return isAuthenticated == null ? (
     <LoadingPage />
-  ) : !isAuthenticated ? (
+  ) : isAuthenticated ? (
     children
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
