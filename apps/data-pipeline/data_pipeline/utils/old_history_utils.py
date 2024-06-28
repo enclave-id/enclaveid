@@ -2,7 +2,7 @@ import datetime
 import re
 from dataclasses import dataclass
 from logging import Logger
-from typing import TYPE_CHECKING, Any, List
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 import polars as pl
 from pydantic import BaseModel, Field
@@ -34,21 +34,20 @@ class FullHistorySessionsOutput:
 
 @dataclass
 class InterestsGenerator:
-    daily_dfs: dict[datetime.date, pl.DataFrame]
+    daily_dfs: Dict[datetime.date, pl.DataFrame]
     first_instruction: str
     second_instruction: str
     llm: LLM
     sampling_params: SamplingParams
     chunk_size: int = 15
 
-    def _extract_interests_list(self, text):
+    def _extract_interests_list(self, text: str) -> Optional[List[str]]:
         match = re.search(r"\[(.*?)\]", text)
         if match:
             # If a match is found, split the substring by comma
             interests = match.group(1).replace('"', "").replace("'", "").split(",")
-            return [s.strip() for s in interests]
-        else:
-            return None
+            return [interest.strip() for interest in interests]
+        return None
 
     def _generate_chunks(self):
         self.chunks: dict[datetime.date, List[pl.DataFrame]] = {}
@@ -108,12 +107,16 @@ class InterestsGenerator:
         self._generate_chunks()
         self._generate_chunked_interests()
 
-        for date, chunked_interests, chunked_convos in zip(self.dates, self.chunked_interests, self.chunked_convos):
+        for date, chunked_interests, chunked_convos in zip(
+            self.dates, self.chunked_interests, self.chunked_convos
+        ):
             # Filter out invalid responses
             valid_chunks = [chunk for chunk in chunked_interests if chunk is not None]
 
             # Flatten the chunks
-            merged_interests = [interest for chunk in valid_chunks for interest in chunk]
+            merged_interests = [
+                interest for chunk in valid_chunks for interest in chunk
+            ]
 
             yield {
                 "date": date,
@@ -122,9 +125,7 @@ class InterestsGenerator:
                 # Different chunks may have the same interests; we only want the
                 # distinct interests across all chunks
                 "interests": list(set(merged_interests)),
-                "count_invalid_responses": (
-                    len(chunked_interests) - len(valid_chunks)
-                ),
+                "count_invalid_responses": (len(chunked_interests) - len(valid_chunks)),
             }
 
 
@@ -147,7 +148,6 @@ def get_full_history_sessions(
 
     logger.info(f"Processing {len(daily_dfs)} records")
 
-    # for idx, (day, day_df) in enumerate(daily_dfs.items(), start=1):
     interests_generator = InterestsGenerator(
         daily_dfs=daily_dfs,
         first_instruction=first_instruction,
