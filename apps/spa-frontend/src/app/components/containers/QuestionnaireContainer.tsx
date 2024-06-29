@@ -20,7 +20,7 @@ export function QuestionnaireContainer({
 
   const [todoQuestionnaires, setTodoQuestionnaires] = React.useState<
     QuestionnaireId[]
-  >(['TIPI', 'MFQ20']);
+  >(questionnaires.map((questionnaire) => questionnaire.id));
 
   useEffect(() => {
     if (personalityQuery.error || politicsQuery.error) return;
