@@ -59,6 +59,16 @@
         "debug": false
       }
     },
+    "install-base": {
+      "executor": "@nxlv/python:install",
+      "options": {
+        "silent": false,
+        "args": "--without ml",
+        "cacheDir": ".cache/pypoetry",
+        "verbose": false,
+        "debug": false
+      }
+    },
     "lint": {
       "executor": "@nxlv/python:ruff-check",
       "outputs": [],
