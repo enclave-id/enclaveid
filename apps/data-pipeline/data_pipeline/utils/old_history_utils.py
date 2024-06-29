@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from logging import Logger
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
+from dagster import get_dagster_logger
 import polars as pl
 from pydantic import BaseModel, Field
 
@@ -82,7 +83,9 @@ class InterestsGenerator:
                         f"<s> [INST] {self.first_instruction}\n\n{frame}\n [/INST]"
                     )
 
-        first_requests = self.llm.generate(first_prompts, self.sampling_params)
+        first_requests = self.llm.generate(
+            first_prompts, self.sampling_params, use_tqdm=True
+        )
         first_responses = [resp.outputs[0].text for resp in first_requests]
 
         second_prompts: list[str] = []
@@ -91,7 +94,9 @@ class InterestsGenerator:
                 f"{p1} {r1}</s> [INST] {self.second_instruction} [/INST]"
             )
 
-        second_requests = self.llm.generate(second_prompts, self.sampling_params)
+        second_requests = self.llm.generate(
+            second_prompts, self.sampling_params, use_tqdm=True
+        )
         second_responses = [resp.outputs[0].text for resp in second_requests]
 
         self.chunked_interests = [
@@ -110,23 +115,20 @@ class InterestsGenerator:
         for date, chunked_interests, chunked_convos in zip(
             self.dates, self.chunked_interests, self.chunked_convos
         ):
-            # Filter out invalid responses
-            valid_chunks = [chunk for chunk in chunked_interests if chunk is not None]
-
-            # Flatten the chunks
-            merged_interests = [
-                interest for chunk in valid_chunks for interest in chunk
-            ]
-
-            yield {
-                "date": date,
-                "chunked_convos": chunked_convos,
-                "chunked_interests": chunked_interests,
-                # Different chunks may have the same interests; we only want the
-                # distinct interests across all chunks
-                "interests": list(set(merged_interests)),
-                "count_invalid_responses": (len(chunked_interests) - len(valid_chunks)),
-            }
+            if chunked_interests is None:
+                yield {
+                    "date": date,
+                    "chunked_convos": chunked_convos,
+                    "interests": [],
+                    "count_invalid_responses": 1,
+                }
+            else:
+                yield {
+                    "date": date,
+                    "chunked_convos": chunked_convos,
+                    "interests": list(set(chunked_interests)),
+                    "count_invalid_responses": 0
+                }
 
 
 def get_full_history_sessions(
