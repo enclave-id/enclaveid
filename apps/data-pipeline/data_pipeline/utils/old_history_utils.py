@@ -160,7 +160,7 @@ def get_full_history_sessions(
     daily_records = interests_generator.generate_output_records()
 
     return FullHistorySessionsOutput(
-        output_df=pl.from_records(daily_records),
+        output_df=pl.DataFrame(daily_records),
         # Sum the invalid responses across all days
         count_invalid_responses=sum(
             out["count_invalid_responses"] for out in daily_records
