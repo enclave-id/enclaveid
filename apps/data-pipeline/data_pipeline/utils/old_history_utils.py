@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from logging import Logger
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-from dagster import get_dagster_logger
 import polars as pl
 from pydantic import BaseModel, Field
 
@@ -115,20 +114,14 @@ class InterestsGenerator:
         for date, chunked_interests, chunked_convos in zip(
             self.dates, self.chunked_interests, self.chunked_convos
         ):
-            if chunked_interests is None:
-                yield {
-                    "date": date,
-                    "chunked_convos": chunked_convos,
-                    "interests": [],
-                    "count_invalid_responses": 1,
-                }
-            else:
-                yield {
-                    "date": date,
-                    "chunked_convos": chunked_convos,
-                    "interests": list(set(chunked_interests)),
-                    "count_invalid_responses": 0
-                }
+            chunked_interests = chunked_interests or []
+
+            yield {
+                "date": date,
+                "chunked_convos": chunked_convos,
+                "interests": chunked_interests,
+                "count_invalid_responses": 1 if len(chunked_interests) == 0 else 0,
+            }
 
 
 def get_full_history_sessions(
@@ -161,12 +154,21 @@ def get_full_history_sessions(
 
     daily_records = interests_generator.generate_output_records()
 
+    output_df = (
+        pl.DataFrame(daily_records)
+        .group_by("date")
+        .agg(
+            [
+                pl.col("chunked_convos").join(),
+                pl.col("interests").explode().unique().list(),
+                pl.col("count_invalid_responses").sum(),
+            ]
+        )
+    )
+
     return FullHistorySessionsOutput(
-        output_df=pl.DataFrame(daily_records),
-        # Sum the invalid responses across all days
-        count_invalid_responses=sum(
-            out["count_invalid_responses"] for out in daily_records
-        ),
+        output_df=output_df,
+        count_invalid_responses=output_df["count_invalid_responses"].sum().first(),
     )
 
 
