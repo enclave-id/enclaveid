@@ -20,7 +20,6 @@ if is_cuda_available() or TYPE_CHECKING:
     import cuml
     import cupy as cp
     from cuml.cluster import HDBSCAN
-    from cuml.metrics import pairwise_distances
     from sentence_transformers import SentenceTransformer
 
 
@@ -33,7 +32,7 @@ SUMMARY_PROMPT = (
 
 class InterestsConfig(RowLimitConfig):
     ml_model_name: str = Field(
-        default="mistralai/Mistral-7B-Instruct-v0.2",
+        default="meta-llama/Meta-Llama-3-8B-Instruct",
         description=(
             "The Hugging Face model to use as the LLM. See the vLLMs docs for a "
             "list of the support models:\n"
@@ -102,7 +101,7 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
             chunk_size=config.chunk_size,
             first_instruction=spec.first_instruction,
             second_instruction=spec.second_instruction,
-            logger=context.log,
+            ml_model_name=config.ml_model_name,
         )
 
         context.add_output_metadata(
@@ -167,24 +166,23 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
 
         # Reduce the embeddings dimensions
         umap_model = cuml.UMAP(
-            n_neighbors=15, n_components=100, min_dist=0.1, metric="cosine"
+            n_neighbors=15, n_components=100, min_dist=0.1, metric="euclidean"
         )
         reduced_data_gpu = umap_model.fit_transform(embeddings_gpu)
 
         # TODO: Implement a search across cluster_selection_epsilon to ensure a max
         # of 50 clusters are returned.
 
-        # Compute the pairwise distances between the interests
-        cosine_dist = pairwise_distances(reduced_data_gpu, metric="cosine")
-
         # Make the clusters
         clusterer = HDBSCAN(
             min_cluster_size=5,
             gen_min_span_tree=True,
-            metric="precomputed",
+            metric="euclidean",
             cluster_selection_epsilon=0.02,
         )
-        cluster_labels = clusterer.fit_predict(cosine_dist.astype(np.float64).get())
+        cluster_labels = clusterer.fit_predict(
+            reduced_data_gpu.astype(np.float64).get()
+        )
 
         context.add_output_metadata(
             {

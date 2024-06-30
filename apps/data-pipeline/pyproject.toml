@@ -47,7 +47,8 @@ readme = 'README.md'
   # These are very large packages.
   # They are cached as a docker layer and shouldn't be changed often.
   torch = "2.3.0"
-  vllm = "0.4.2"
+  vllm = "0.5.0.post1"
+  transformers = "4.42.3"
   sentence-transformers = "3.0.0"
   dask-cudf-cu12 = { version = "24.4.0", source = "nvidia" }
   cuml-cu12 = { version = "24.4.0", source = "nvidia" }
