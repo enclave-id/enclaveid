@@ -82,9 +82,8 @@ class InterestsGenerator:
                         f"<s> [INST] {self.first_instruction}\n\n{frame}\n [/INST]"
                     )
 
-        first_requests = self.llm.generate(
-            first_prompts, self.sampling_params, use_tqdm=True
-        )
+        # TODO: How do we print the progress bar?
+        first_requests = self.llm.generate(first_prompts, self.sampling_params)
         first_responses = [resp.outputs[0].text for resp in first_requests]
 
         second_prompts: list[str] = []
@@ -93,9 +92,7 @@ class InterestsGenerator:
                 f"{p1} {r1}</s> [INST] {self.second_instruction} [/INST]"
             )
 
-        second_requests = self.llm.generate(
-            second_prompts, self.sampling_params, use_tqdm=True
-        )
+        second_requests = self.llm.generate(second_prompts, self.sampling_params)
         second_responses = [resp.outputs[0].text for resp in second_requests]
 
         self.chunked_interests = [
@@ -115,6 +112,8 @@ class InterestsGenerator:
             self.dates, self.chunked_interests, self.chunked_convos
         ):
             chunked_interests = chunked_interests or []
+
+            chunked_interests = [interest for interest in chunked_interests if interest]
 
             yield {
                 "date": date,
@@ -139,8 +138,6 @@ def get_full_history_sessions(
     # configured from the Dagster UI
     sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=1024)
 
-    daily_records: list[dict[str, Any]] = []
-
     logger.info(f"Processing {len(daily_dfs)} records")
 
     interests_generator = InterestsGenerator(
@@ -156,11 +153,12 @@ def get_full_history_sessions(
 
     output_df = (
         pl.DataFrame(daily_records)
+        .filter(pl.col("interests").is_not_null())
         .group_by("date")
         .agg(
             [
-                pl.col("chunked_convos").join(),
-                pl.col("interests").explode().unique().list(),
+                pl.col("chunked_convos").str.concat("\n"),
+                pl.col("interests").flatten().unique(),
                 pl.col("count_invalid_responses").sum(),
             ]
         )
@@ -168,7 +166,7 @@ def get_full_history_sessions(
 
     return FullHistorySessionsOutput(
         output_df=output_df,
-        count_invalid_responses=output_df["count_invalid_responses"].sum().first(),
+        count_invalid_responses=int(output_df["count_invalid_responses"].sum()),
     )
 
 

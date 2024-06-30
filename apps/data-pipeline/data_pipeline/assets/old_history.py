@@ -1,4 +1,5 @@
 from functools import partial
+from typing import TYPE_CHECKING
 
 import numpy as np
 import polars as pl
@@ -15,7 +16,7 @@ from ..utils.old_history_utils import (
     get_full_history_sessions,
 )
 
-if is_cuda_available():
+if is_cuda_available() or TYPE_CHECKING:
     import cuml
     import cupy as cp
     from cuml.cluster import HDBSCAN
@@ -54,7 +55,7 @@ class InterestsConfig(RowLimitConfig):
 
 class InterestsEmbeddingsConfig(RowLimitConfig):
     ml_model_name: str = Field(
-        default="Salesforce/SFR-Embedding-Mistral",
+        default="Salesforce/SFR-Embedding-2_R",
         description=("The Hugging Face model to use with SentenceTransformers."),
     )
 
@@ -128,6 +129,8 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
             .select("date", "interests")
             # Explode the interests so we get the embeddings for each individual interest
             .explode("interests")
+            # Drop any null values just in case
+            .drop_nulls()
         )
 
         context.log.info("Loading the model. This may take a few minutes...")
