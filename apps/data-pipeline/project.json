@@ -125,6 +125,25 @@
         }
       }
     },
+    "container-jupyter": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "options": {
+        "engine": "docker",
+        "push": true,
+        "file": "apps/data-pipeline/notebooks/Dockerfile",
+        "metadata": {
+          "images": ["docker.io/enclaveid/jupyter"],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-"
+          ]
+        }
+      }
+    },
     "container": {
       "executor": "nx:run-commands",
       "options": {
