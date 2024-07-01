@@ -42,6 +42,7 @@ readme = 'README.md'
   tqdm = "^4.66.2"
   mistralai = "^0.1.8"
   dagster-k8s = "^0.23.7"
+  hdbscan = "^0.8.37"
 
   [tool.poetry.group.ml.dependencies]
   # These are very large packages.

@@ -2,7 +2,7 @@ import datetime
 import re
 from dataclasses import dataclass
 from logging import Logger
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import polars as pl
 from dagster import get_dagster_logger
@@ -18,8 +18,8 @@ if is_cuda_available() or TYPE_CHECKING:
 else:
     torch = None
     SentenceTransformer = None
-    LLM = None
-    SamplingParams = None
+    LLM = SamplingParams = None
+    AutoTokenizer = PreTrainedTokenizer = PreTrainedTokenizerFast = None
 
 
 class InterestsSpec(BaseModel):
@@ -40,7 +40,7 @@ class InterestsGenerator:
     first_instruction: str
     second_instruction: str
     llm: LLM
-    tokenizer: PreTrainedTokenizer | PreTrainedTokenizerFast
+    tokenizer: Union[PreTrainedTokenizer, PreTrainedTokenizerFast]
     sampling_params: SamplingParams
     chunk_size: int = 15
 

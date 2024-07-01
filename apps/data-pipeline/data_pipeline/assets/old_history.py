@@ -19,7 +19,7 @@ from ..utils.old_history_utils import (
 if is_cuda_available() or TYPE_CHECKING:
     import cuml
     import cupy as cp
-    from cuml.cluster import HDBSCAN
+    from cuml.cluster.hdbscan import HDBSCAN
     from sentence_transformers import SentenceTransformer
 
 
@@ -171,11 +171,11 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         reduced_data_gpu = umap_model.fit_transform(embeddings_gpu)
 
         # TODO: Implement a search across cluster_selection_epsilon to ensure a max
-        # of 50 clusters are returned.
+        # of N clusters are returned.
 
         # Make the clusters
         clusterer = HDBSCAN(
-            min_cluster_size=5,
+            min_cluster_size=10,
             gen_min_span_tree=True,
             metric="euclidean",
             cluster_selection_epsilon=0.02,
@@ -202,18 +202,18 @@ sensitive_interests_spec = InterestsSpec(
     name_prefix="sensitive",
     first_instruction=(
         "Here is a list of my Google search data. Are there any highly sensitive "
-        "psychosocial interests?"
+        "psychosocial topics?"
     ),
     second_instruction=(
-        "Summarize the previous answer as a comma-separated array of strings. "
+        "Summarize these detailed topics in a comma separated array of strings delimited by square brackets"
         "Only include highly sensitive psychosocial data."
     ),
 )
 
 general_interests_spec = InterestsSpec(
     name_prefix="general",
-    first_instruction="Here is a list of my Google search data. What interests can you find?",
-    second_instruction="Summarize the previous answer as a comma-separated array of strings.",
+    first_instruction="Here is a list of my recent Google search activity. What have I been doing?",
+    second_instruction="Format the previous answer as a comma-separated array of strings delimited by square brackets",
 )
 
 interests_assets = [

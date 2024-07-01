@@ -448,6 +448,7 @@ def recent_sessions_merged(
         client.execute_query(f"DELETE FROM recent_sessions_merged WHERE id = {b}")
 
 
+# TODO: The logic is quite similar to what HDBSCAN does, we should consider using it instead.
 @asset(
     partitions_def=user_partitions_def,
     deps=[recent_sessions_merged],
