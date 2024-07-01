@@ -23,13 +23,6 @@ if is_cuda_available() or TYPE_CHECKING:
     from sentence_transformers import SentenceTransformer
 
 
-SUMMARY_PROMPT = (
-    "Here is a list of my Google search data. Are there any highly sensitive "
-    "psychosocial interests? Summarize the answer as a comma-separated array of "
-    "strings. Only include highly sensitive psychosocial data."
-)
-
-
 class InterestsConfig(RowLimitConfig):
     ml_model_name: str = Field(
         default="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -185,7 +178,9 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
         context.add_output_metadata(
             {
                 "clusters_count": len(cluster_stats[0]),
-                "noise_count": cluster_stats[1][0],
+                "noise_count": int(cluster_stats[1][0])
+                if -1 in cluster_stats[0]
+                else 0,
             }
         )
 
@@ -196,17 +191,19 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
     return [interests, interests_embeddings, interests_clusters]
 
 
-sensitive_interests_spec = InterestsSpec(
-    name_prefix="sensitive",
-    first_instruction=(
-        "Here is a list of my Google search data. Are there any highly sensitive "
-        "psychosocial topics?"
-    ),
-    second_instruction=(
-        "Summarize these detailed topics in a comma separated array of strings delimited by square brackets"
-        "Only include highly sensitive psychosocial data."
-    ),
-)
+# sensitive_interests_spec = InterestsSpec(
+#     name_prefix="sensitive",
+#     first_instruction=(
+#         "Here is a list of my recent Google search activity. "
+#         "What have I been doing? What were my goals? "
+#         "Are there any sensitive psychosocial topics?"
+#     ),
+#     second_instruction=(
+#         "Format the previous answer as a semicolon-separated array of strings delimited by square brackets. "
+#         "Focus on the goal of the search activity in realtion to the specific topic. "
+#         "Only include the sensitive psychosocial activity."
+#     ),
+# )
 
 general_interests_spec = InterestsSpec(
     name_prefix="general",
@@ -215,12 +212,12 @@ general_interests_spec = InterestsSpec(
         "What have I been doing? What were my goals?"
     ),
     second_instruction=(
-        "Format the previous answer as a semicolon-separated array of strings delimited by square brackets."
-        " Focus on the goal of the search activity in realtion to the specific topic."
+        "Format the previous answer as a semicolon-separated array of strings delimited by square brackets. "
+        "Focus on the goal of the search activity in realtion to the specific topic."
     ),
 )
 
 interests_assets = [
-    *build_interests_assets(sensitive_interests_spec),
+    #*build_interests_assets(sensitive_interests_spec),
     *build_interests_assets(general_interests_spec),
 ]
