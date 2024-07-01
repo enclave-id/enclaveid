@@ -166,28 +166,26 @@ def build_interests_assets(spec: InterestsSpec) -> list[AssetsDefinition]:
 
         # Reduce the embeddings dimensions
         umap_model = cuml.UMAP(
-            n_neighbors=15, n_components=100, min_dist=0.1, metric="euclidean"
+            n_neighbors=15, n_components=100, min_dist=0.1, metric="cosine"
         )
         reduced_data_gpu = umap_model.fit_transform(embeddings_gpu)
 
-        # TODO: Implement a search across cluster_selection_epsilon to ensure a max
-        # of N clusters are returned.
-
-        # Make the clusters
         clusterer = HDBSCAN(
             min_cluster_size=10,
             gen_min_span_tree=True,
             metric="euclidean",
-            cluster_selection_epsilon=0.02,
+            cluster_selection_epsilon=0.15,  # 0.15 seems to work well enough
         )
         cluster_labels = clusterer.fit_predict(
             reduced_data_gpu.astype(np.float64).get()
         )
 
+        cluster_stats = np.unique(cluster_labels, return_counts=True)
+
         context.add_output_metadata(
             {
-                "num_clusters": len(np.unique(cluster_labels)),
-                "cluster_names": np.unique(cluster_labels).tolist(),
+                "clusters_count": len(cluster_stats[0]),
+                "noise_count": cluster_stats[1][0],
             }
         )
 
@@ -212,8 +210,14 @@ sensitive_interests_spec = InterestsSpec(
 
 general_interests_spec = InterestsSpec(
     name_prefix="general",
-    first_instruction="Here is a list of my recent Google search activity. What have I been doing?",
-    second_instruction="Format the previous answer as a comma-separated array of strings delimited by square brackets",
+    first_instruction=(
+        "Here is a list of my recent Google search activity. "
+        "What have I been doing? What were my goals?"
+    ),
+    second_instruction=(
+        "Format the previous answer as a semicolon-separated array of strings delimited by square brackets."
+        " Focus on the goal of the search activity in realtion to the specific topic."
+    ),
 )
 
 interests_assets = [

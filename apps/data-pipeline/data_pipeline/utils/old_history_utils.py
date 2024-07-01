@@ -47,8 +47,8 @@ class InterestsGenerator:
     def _extract_interests_list(self, text: str) -> Optional[List[str]]:
         match = re.search(r"\[(.*?)\]", text)
         if match:
-            # If a match is found, split the substring by comma
-            interests = match.group(1).replace('"', "").replace("'", "").split(",")
+            # If a match is found, split the substring by semicolon
+            interests = match.group(1).replace('"', "").replace("'", "").split(";")
             return [interest.strip() for interest in interests]
         return None
 
